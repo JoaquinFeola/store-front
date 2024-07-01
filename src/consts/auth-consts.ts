@@ -1,0 +1,10 @@
+
+
+
+export const AUTH_LOGIN_KEY = 'auth_access_token';
+
+export const AUTH_STATE = {
+    AUTHENTICATED: 'AUTHENTICATED',
+    NOT_AUTHENTICATED: 'NOT-AUTHENTICATED',
+    CHECKING: 'CHECKING'
+}

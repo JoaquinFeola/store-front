@@ -1,0 +1,12 @@
+
+
+
+
+
+
+export const PRODUCTS_TYPES = {
+    CREATE: 'CREATE-[{PRODUCT}]',
+    INITIALIZER: 'FIRST-FETCH-API[{PRODUCT}]',
+    DELETE: 'DELETE-[{PRODUCT}]',
+    UPDATE: 'UPDATE-[{PRODUCT}]'
+}
