@@ -25,7 +25,6 @@ export const CreateSuppliersView = () => {
         e.preventDefault();
         if (formState.name === '') return;
         setIsSubmitting(true)
-
         await createSupplier({
             bussinessName: formState.businessName === '' ? null : formState.businessName,
             email: formState.email === '' ? null : formState.email,
@@ -33,7 +32,7 @@ export const CreateSuppliersView = () => {
             telephone: formState.telephone === '' ? null : formState.telephone,
             name: formState.name,
         });
-        setIsSubmitting(true)
+        setIsSubmitting(false)
 
     }
 

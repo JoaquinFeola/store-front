@@ -16,6 +16,8 @@ interface CategoriesContextProps {
     handlePreviousPage: () => void;
     getAllCategories: () => Promise<Category[]>,
     isCategoriesLoading: boolean;
+    getCategoriesPaginated: () => Promise<void>,
+    categoriesPageIndexInternal: number;
 
 }
 

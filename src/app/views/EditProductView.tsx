@@ -10,13 +10,19 @@ import { Tooltip } from "../../ui/components/tooltip/Tooltip";
 import { useForm } from "../../hooks/useForm";
 import { Button } from "../../ui/components";
 import { Checkbox } from "../../ui/components/inputs/Checkbox";
+import { BarcodesList } from "../components/BarcodesList";
+import { Alert } from "../../ui/components/alerts/Alert";
 
 export const EditProductView = () => {
+  const [formErrors, setFormErrors] = useState<string[]>([]);
+
+
   const { getProductById, updateProduct } = useContext(ProductsContext);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { productId } = useParams();
   const [product, setProduct] = useState<Product>({} as Product);
   const [isLoading, setIsLoading] = useState(false);
+
 
   if (productId === undefined) return <h3>Ocurrió un error, por favor vuelve atrás e intentalo nuevamente</h3>
 
@@ -47,7 +53,7 @@ export const EditProductView = () => {
     sku: '',
     description: '',
     productCategories: [] as number[],
-    productProviders: [] as number[],
+    providerId: 0,
     barCodes: [] as string[],
     purchasePrice: '0',
     percentageProfit: '0',
@@ -80,13 +86,20 @@ export const EditProductView = () => {
   }
   const addProductSupplier = (id: number) => {
 
-    if (formState.productProviders.indexOf(id) === -1 && formState.productProviders.length <= 4) {
+    if (formState.providerId === id) {
       assignAllNewValues({
-        productProviders: [...formState.productProviders, id]
+        providerId: 0
+      })
+      return;
+    }
+
+    if (formState.providerId !== id && formState.providerId === 0) {
+      assignAllNewValues({
+        providerId: id
       })
     } else {
       assignAllNewValues({
-        productProviders: formState.productProviders.filter((el) => el !== id)
+        providerId: id
       })
     }
 
@@ -131,24 +144,38 @@ export const EditProductView = () => {
   }, [formState.purchasePrice, formState.percentageProfit])
 
 
+  const handleDeleteProductCodeBar = (codebar: string) => {
+    const codeBarToDelete = formState.barCodes.indexOf(codebar);
+
+    if ( codeBarToDelete === -1 ) return;
+    assignAllNewValues({
+        barCodes: formState.barCodes.toSpliced(codeBarToDelete, 1),
+    });
+}
 
 
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    updateProduct({
+    setIsSubmitting(true)
+    const productResponse = await updateProduct({
       sku: formState.sku,
       description: formState.description,
       percentageProfit: parseFloat(formState.percentageProfit),
       purchasePrice: parseFloat(formState.purchasePrice),
-      salePrice: formState.salePrice,
-      image: formState.image === '' ? null : formState.image.split(',')[1],
-      barCodes: formState.barCodes.length === 0 ? null : formState.barCodes,
+      image: formState.image === '' || formState.image === null ? null : formState.image.split(',')[1],
+      barCodes: formState.barCodes.length === 0 ? [] : formState.barCodes,
       expirationDate: formState.expirationDate === '' ? null : formState.expirationDate,
-      productCategories: formState.productCategories,
-      productProviders: formState.productProviders
+      categoriesIds: formState.productCategories,
+      providerId: formState.providerId
     }, parseInt(productId))
     
+    if (productResponse !== null) {
+      setFormErrors(productResponse.response?.data.errors!);
+      scrollTo({ top: 0 })
+    };
+
+    setIsSubmitting(false)
+
 
   }
   const formatCurrency = (value: number, currency: string) => {
@@ -159,27 +186,26 @@ export const EditProductView = () => {
   }
 
   useEffect(() => {
-    const productsCategories =  product.productCategories?.map((pc) => { return pc.category.id }) as number[]
-    const productsSuppliers =  product.productProviders?.map((pc) => { return pc.provider.id }) as number[]
-    const barcodes =  product.barCodes?.map((bc) => { return bc.code }) as string[];
-    
-      console.log(productsSuppliers, product)
-      assignAllNewValues({
-        sku: product.sku,
-        description: product.description,
-        productCategories: productsCategories,
-        productProviders: productsSuppliers,
-        barCodes: barcodes,
-        purchasePrice: (product.purchasePrice !== undefined) ? product.purchasePrice.toString() : '0',
-        percentageProfit: (product.percentageProfit !== undefined) ? product.percentageProfit.toString() : '0',
-        salePrice: product.salePrice,
-        image: product.image,
-        inputCodeBar: '',
-        expirationDate: (product.expirationDate === null) ? '' : product.expirationDate ,
-      })
-      setHasExpirationDate(Boolean(product.expirationDate))
+    const productsCategories = product.productCategories?.map((pc) => { return pc.category.id }) as number[]
+    const barcodes = product.barCodes?.map((bc) => { return bc.code }) as string[];
+
+    assignAllNewValues({
+      sku: product.sku,
+      description: product.description,
+      productCategories: productsCategories,
+      providerId: product.providerId,
+      barCodes: barcodes,
+      purchasePrice: (product.purchasePrice !== undefined) ? product.purchasePrice.toString() : '0',
+      percentageProfit: (product.percentageProfit !== undefined) ? product.percentageProfit.toString() : '0',
+      salePrice: product.salePrice,
+      image: product.image,
+      inputCodeBar: '',
+      expirationDate: (product.expirationDate === null) ? '' : product.expirationDate,
+    })
+    setHasExpirationDate(Boolean(product.expirationDate))
 
   }, [product])
+
   if (isLoading) return (<LoadingInfo />)
   return (
     <div className="pb-10">
@@ -189,6 +215,12 @@ export const EditProductView = () => {
         </Tooltip>
         <h4 className="flex-grow text-center font-medium text-3xl">Editar producto</h4>
       </div>
+      {
+        formErrors.length > 0
+        && formErrors.map((formError) => (
+          <Alert message={formError} type="warning" />
+        ))
+      }
       <form onSubmit={handleSubmit} action="" className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 items-start ">
         <div className="grid grid-cols-1 items-start ">
           <InputLabel
@@ -231,7 +263,7 @@ export const EditProductView = () => {
               <Checkbox
                 onChange={() => setHasExpirationDate(!hasExpirationDate)}
                 checked={hasExpirationDate ?? false}
-                
+
               />
               <h4>¿Tiene vencimiento?</h4>
             </div>
@@ -259,15 +291,10 @@ export const EditProductView = () => {
               />
               <Button type="button" className="rounded-md py-[5px] " onClick={addProductCodeBars}>Agregar</Button>
             </div>
-            <ul className="mt-1 pl-5 ">
-              {
-                formState.barCodes?.length === 0
-                  ? <li>Sin códigos de barras</li>
-                  : formState.barCodes?.map((barcode, index) => (
-                    <li className="list-disc" key={barcode + index}>{barcode}</li>
-                  ))
-              }
-            </ul>
+            <BarcodesList
+              barcodes={formState.barCodes ?? []}
+              deleteFunc={handleDeleteProductCodeBar}
+            />
           </div>
         </div>
 
@@ -296,7 +323,7 @@ export const EditProductView = () => {
               <h3 className="font-medium text-lg mt-2 mb-2 ">Proveedores del producto</h3>
               <SelectWithFilter
                 items={suppliers}
-                selectionArr={formState.productProviders ?? []}
+                selectionArr={(formState.providerId === 0) ? [] : [formState.providerId]}
                 select={addProductSupplier}
 
               />

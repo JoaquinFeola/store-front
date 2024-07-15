@@ -15,8 +15,6 @@
     animation: fadeInUp .3s ease forwards ;
 }
 
-
-
 @keyframes scaleUpAndFade {
     from {
         scale: 0;

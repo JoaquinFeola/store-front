@@ -23,6 +23,8 @@ interface SuppliersContextProps {
     getAllSuppliers: () => Promise<Supplier[]>,
     getSupplierById: (id: number | string) => Promise<Supplier | AxiosError>;
     isSuppliersLoading: boolean;
+    suppliersPageIndexInternal: number;
+    getSuppliersPaginated: () => Promise<void>
 }
 
 

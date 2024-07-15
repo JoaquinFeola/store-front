@@ -182,9 +182,9 @@ export const useSuppliers = () => {
             
         }
     }
-    useEffect(() => {
-        getSuppliersPaginated()
-    }, [suppliersPageIndexInternal]);
+    // useEffect(() => {
+    //     getSuppliersPaginated()
+    // }, [suppliersPageIndexInternal]);
 
 
 
@@ -193,12 +193,15 @@ export const useSuppliers = () => {
         isSuppliersLoading,
         suppliersPagination,
         suppliers,
+        suppliersPageIndexInternal,
         createSupplier,
         updateSupplier,
         deleteSupplier,
         getAllSuppliers,
         handleNextPage,
         handlePreviousPage,
-        getSupplierById
+        getSupplierById,
+        getSuppliersPaginated,
+
     }
 }

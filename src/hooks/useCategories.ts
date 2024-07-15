@@ -20,7 +20,7 @@ interface CategoriesPaginateResponse {
 export const useCategories = () => {
 
     const [categories, categoriesDispatch] = useReducer(categoriesReducer, []);
-    const [ isCategoriesLoading, setIsCategoriesLoading ] = useState(false)
+    const [ isCategoriesLoading, setIsCategoriesLoading ] = useState(true)
     const { addAlert } = useContext(AlertsContext);
     const [categoriesPageIndexInternal, setCategoriesPageIndexInternal] = useState(1);
     const [categoriesPagination, setCategoriesPagination] = useState({
@@ -166,20 +166,22 @@ export const useCategories = () => {
         }
     };
 
-    useEffect(() => {
-        getCategoriesPaginated()
-    }, [categoriesPageIndexInternal]);
+    // useEffect(() => {
+    //     getCategoriesPaginated();
+    // }, [categoriesPageIndexInternal]);
 
     return {
         categories,
         categoriesPagination,
         isCategoriesLoading,
+        categoriesPageIndexInternal,
         createCategory,
         deleteCategory,
         updateCategory,
         handlePreviousPage,
         handleNextPage,
         getAllCategories,
+        getCategoriesPaginated,
 
     }
 

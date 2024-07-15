@@ -1,13 +1,12 @@
-import { useContext, useEffect, useReducer, useState } from "react"
+import { useContext, useReducer, useState } from "react"
 import { AlertsContext } from "../context";
-import { ApiResponse } from "../interfaces";
+import { ApiResponse, ApiResponseBody } from "../interfaces";
 import { httpClient } from "../api/axios-config";
 import { PRODUCTS_TYPES } from "../consts";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { productsReducer } from "../reducers/products.reducer";
-import { Product, ProductDTO } from "../interfaces/product.interfaces";
-import { SEARCH_PRODUCTS_TYPES } from "../consts/product-search-consts";
+import { Product, ProductDTO, ProductPriceBySupplierRequestDTO, ProductRequestDTO } from "../interfaces/product.interfaces";
 
 
 interface ProductsPaginateResponse {
@@ -16,15 +15,20 @@ interface ProductsPaginateResponse {
     totalPages: number;
     totalSize: number;
     rows: Product[];
-
-
 }
 
+
+const initialSearchPagination = {
+    sku: '',
+    barcode: '',
+    providerId: 0,
+    categoryId: 0,
+}
 
 export const useProducts = () => {
     const [products, productsDispatch] = useReducer(productsReducer, []);
     const { addAlert } = useContext(AlertsContext);
-    const [ isProductsLoading, setIsProductsLoading ] = useState(false);
+    const [isProductsLoading, setIsProductsLoading] = useState(false);
     const [productPageIndexInternal, setProductsPageIndexInternal] = useState(1);
     const [productsPagination, setProductsPagination] = useState({
         pageIndex: 1,
@@ -32,31 +36,62 @@ export const useProducts = () => {
         totalPages: 0,
         totalSize: 0,
     });
-    const [ searchPagination, setSearchPagination ] = useState({
-        filter: '',
-        search: '',
+    const [searchPagination, setSearchPagination] = useState({
+        filters: initialSearchPagination,
     })
 
-    const handleSearch = (search: string, filter: keyof typeof SEARCH_PRODUCTS_TYPES ) => {
+    const handleSearch = (filters: typeof searchPagination.filters) => {
         setSearchPagination({
-            filter: filter,
-            search: search
-        });
+            ...searchPagination,
+            filters: filters
+        })
+
     }
 
 
 
     const navigate = useNavigate();
 
-    const handleNextPage = () => {
-        if (productsPagination.pageIndex >= productsPagination.totalPages) return;
-        setProductsPageIndexInternal(productPageIndexInternal + 1);
+
+    const updateSalePriceForSupplierId = async (body: { percentageToUp: number; providerId: number }) => {
+        if (body.percentageToUp === 0 || body.providerId === 0) return;
+        try {
+            const params: ProductPriceBySupplierRequestDTO = {
+                PercentageToUp: body.percentageToUp,
+                ProviderId: body.providerId
+            }
+
+            const response: ApiResponse = await httpClient.put('/product/update-purchase-price', {}, { params });
+
+            addAlert({
+                message: response.data.message,
+                type: 'success',
+                duration: 4000
+            })
+
+        }
+        catch (error) {
+            addAlert({
+                message: 'Ocurrió un error al actualizar los precios',
+                type: 'error',
+                duration: 4000
+            })
+        }
 
 
     }
-    const handlePreviousPage = () => {
+
+    const handleNextPage = async () => {
+        if (productsPagination.pageIndex >= productsPagination.totalPages) return;
+        setProductsPageIndexInternal(productPageIndexInternal + 1);
+        await getProductsPaginated(productPageIndexInternal + 1);
+
+    }
+    const handlePreviousPage = async () => {
         if (productsPagination.pageIndex <= 1) return;
         setProductsPageIndexInternal(productPageIndexInternal - 1);
+        await getProductsPaginated(productPageIndexInternal - 1)
+
     }
 
 
@@ -90,7 +125,7 @@ export const useProducts = () => {
     const updateProduct = async (newProduct: ProductDTO, id: number) => {
         try {
             const { data }: ApiResponse<Product> = await httpClient.put(`/product/${id}`, newProduct)
-            
+
             addAlert({
                 duration: 4000,
                 message: data.message,
@@ -99,14 +134,22 @@ export const useProducts = () => {
             navigate('/products')
 
             await getProductsPaginated();
+            setSearchPagination({
+                filters: initialSearchPagination
+            })
+            return null;
         }
         catch (error) {
 
+            const errorAxios = error as AxiosError<ApiResponseBody>
+
             addAlert({
                 duration: 4000,
-                message: 'Ocurrió un error inesperado al intentar editar un producto',
+                message: errorAxios.response?.data.message as string ?? 'Ocurrió un error inesperado al intentar editar un producto',
                 type: 'error',
-            })
+            });
+
+            return error as AxiosError<ApiResponseBody>;
         }
     };
 
@@ -125,32 +168,43 @@ export const useProducts = () => {
                 type: 'success'
             });
             navigate('/products')
-            await getProductsPaginated()
+            await getProductsPaginated();
+            setSearchPagination({
+                filters: initialSearchPagination
+            })
+            return null
         }
         catch (error) {
+            const errorAxios = error as AxiosError<ApiResponseBody>
 
             addAlert({
                 duration: 4000,
-                message: 'Ocurrió un error inesperado al intentar crear un producto',
+                message: errorAxios.response?.data.message as string ?? 'Ocurrió un error inesperado al intentar crear un producto',
                 type: 'error',
-            })
+            });
+
+            return error as AxiosError<ApiResponseBody>;
         }
     };
 
-    const getProductsPaginated = async () => {
+    const getProductsPaginated = async (newPageIndex?: number) => {
         setIsProductsLoading(true)
         try {
 
-            const { data }: ApiResponse<ProductsPaginateResponse> = await httpClient.get(`/product/paginate`, {
-                params: {
-                    pageSize: 10,
-                    pageIndex: productPageIndexInternal
-                }
-            });
+            const params: ProductRequestDTO = {
+                pageSize: 10,
+                pageIndex: newPageIndex ?? productPageIndexInternal,
+                CategoryId: searchPagination.filters.categoryId,
+                BarCode: searchPagination.filters.barcode,
+                SKU: searchPagination.filters.sku,
+                ProviderId: searchPagination.filters.providerId,
+            };
+
+            const { data }: ApiResponse<ProductsPaginateResponse> = await httpClient.get(`/product/paginate`, { params });
             const { pageIndex, rows, totalPages, totalSize } = data.data;
             setProductsPagination({
                 pageIndex: pageIndex,
-                pageSize: 10,
+                pageSize: 3,
                 totalPages: totalPages,
                 totalSize: totalSize
             })
@@ -173,28 +227,28 @@ export const useProducts = () => {
 
             const { data }: ApiResponse<Product[]> = await httpClient.get(`/product/all`);
             return data.data;
-            
+
         }
         catch (error) {
             return [];
         }
     };
 
-    const getProductById = async(id: number | string) => {
+    const getProductById = async (id: number | string) => {
         try {
-            const { data }: ApiResponse<Product> = await httpClient.get(`/product/${id}`);    
-    
+            const { data }: ApiResponse<Product> = await httpClient.get(`/product/${id}`);
+
             return data.data
-        } 
+        }
         catch (error) {
             return error as AxiosError;
-            
+
         }
     }
 
-    useEffect(() => {
-        getProductsPaginated()
-    }, [productPageIndexInternal]);
+    // useEffect(() => {
+    //     getProductsPaginated()
+    // }, [productPageIndexInternal, searchPagination.search]);
 
 
 
@@ -202,12 +256,17 @@ export const useProducts = () => {
         isProductsLoading,
         productsPagination,
         products,
+        searchPagination,
+        productPageIndexInternal,
         createProduct,
         updateProduct,
         deleteProduct,
         getAllProducts,
         handleNextPage,
         handlePreviousPage,
-        getProductById
+        getProductById,
+        handleSearch,
+        getProductsPaginated,
+        updateSalePriceForSupplierId
     }
 }

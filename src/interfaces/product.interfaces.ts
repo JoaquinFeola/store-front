@@ -10,7 +10,8 @@ export interface Product {
     purchasePrice: number;
     percentageProfit: number;
     productCategories?: {category:  Category}[],
-    productProviders?: {provider: Supplier}[]
+    providerId?: number;
+    provider?: Supplier;
     salePrice: number;
     image?: string;
     barCodes?: {code: string}[],
@@ -19,17 +20,29 @@ export interface Product {
     updated?: Date | null;
 }
 
+export interface ProductRequestDTO {
+    pageSize: number;
+    pageIndex: number;
+    SKU?: string;
+    ProviderId: number;
+    CategoryId: number;
+    BarCode?: string;
+}
 
+
+export interface ProductPriceBySupplierRequestDTO {
+    ProviderId: number;
+    PercentageToUp: number;
+}
 
 export interface ProductDTO {
     sku: string;
     description: string;
     purchasePrice: number;
     percentageProfit: number;
-    salePrice: number,
     image?: string | null,
-    productProviders?: number[] | null,
-    productCategories?: number[] | null,   
+    providerId?: number,
+    categoriesIds?: number[] | null,   
     barCodes?: string[] | null,
     expirationDate?: string | null,
 }

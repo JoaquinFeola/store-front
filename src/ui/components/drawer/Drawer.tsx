@@ -28,7 +28,7 @@ export const Drawer = ({ children }: DrawerProps) => {
 
     return (
         <div className="flex ">
-            <header className="w-full h-14 fixed top-0 left-0 bg-blue-500  z-20 shadow-sm" >
+            <header className="w-full h-14 fixed top-0 left-0 bg-blue-500  z-[400] shadow-sm" >
                 <nav className="w-full  h-full relative flex justify-between px-3 items-center" >
                     <button className=" *:min-w-2 *:w-6 *:transition-all *:duration-100 *:ease-in-out *:max-w-8  *:h-[3px] overflow-hidden *:bg-white *:rounded-lg h-10 w-10 flex flex-col gap-[5px] items-center justify-center" onClick={toggleDrawerOpen}>
                         <div className={`${isDrawerOpen ? '-rotate-45 translate-y-2' : ''} `}></div>

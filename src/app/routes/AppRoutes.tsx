@@ -9,6 +9,8 @@ import { ProductsPage } from "../pages/ProductsPage"
 import { CreateProductView } from "../views/CreateProductView"
 import { EditProductView } from "../views/EditProductView"
 import { ListProductsView } from "../views/ListProductsView"
+import { UpdatePricesForSupplier } from "../pages/UpdatePricesForSupplier"
+import { StockPage } from "../pages/StockPage"
 
 export const AppRoutes = () => {
   return (
@@ -34,7 +36,15 @@ export const AppRoutes = () => {
           <Route index element={<ListProductsView />} />
           <Route path="create" element={<CreateProductView />} />
           <Route path="edit/:productId" element={<EditProductView />} />
+          <Route path="update-by-supplier" element={<UpdatePricesForSupplier />} />
         </Route>
+        <Route
+          path="/stock"
+          element={<StockPage />}
+        />
+
+
+
       </Routes>
     </Drawer>
   )

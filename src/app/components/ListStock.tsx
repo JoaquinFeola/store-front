@@ -1,29 +1,29 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
-import { CategoriesContext, ProductsContext, SuppliersContext } from "../../context";
+import { CategoriesContext, ProductsContext, StockContext, SuppliersContext } from "../../context";
 import { ProductsTableItem } from "./ProductsTableItem";
 import { useForm } from "../../hooks/useForm";
 import { InputLabel } from "../../ui/components/inputs/InputLabel";
 import { SelectWithFilter } from "../../ui/components/inputs/SelectWithFilter";
+import { StockTableItem } from "./StockTableItem";
 
 
-interface ListProductsProps {
+interface ListStockProps {
     isFiltersOpen: boolean;
 }
 
 
-export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
+export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
     const {
-        products,
-        productsPagination,
+        stockList,
+        stockPagination,
         handleNextPage,
         handlePreviousPage,
-        isProductsLoading,
+        isStockLoading,
         handleSearch,
         searchPagination,
-        productsPageIndexInternal,
-        getProductsPaginated
-    } = useContext(ProductsContext);
+        getStockPaginated,
+    } = useContext(StockContext);
 
     const {
         formState,
@@ -32,25 +32,17 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
         onInputWrite,
 
     } = useForm({
-        sku: '',
-        providerId: 0,
-        categoryId: 0,
+        productId: 0,
         barCode: '',
     })
 
 
-    const { getAllSuppliers } = useContext(SuppliersContext);
-    const { getAllCategories } = useContext(CategoriesContext);
-    const [suppliers, setSuppliers] = useState<{ img?: string; title: string; id: number }[]>([]);
-    const [categories, setCategories] = useState<{ img?: string; title: string; id: number }[]>([]);
 
     const handleResetFiltersAndSearch = () => {
         resetFormValues();
         handleSearch({
             barcode: '',
-            categoryId: 0,
-            providerId: 0,
-            sku: ''
+            productId: 0,
         })
     }
 
@@ -59,83 +51,33 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
 
         handleSearch({
             barcode: formState.barCode,
-            categoryId: formState.categoryId,
-            providerId: formState.providerId,
-            sku: formState.sku
-        })
+            productId: formState.productId,
+        });
     }
     const filterSupplier = (id: number) => {
 
 
-        if (formState.providerId === id) {
+        if (formState.productId === id) {
             assignAllNewValues({
-                providerId: 0
+                productId: 0
             })
             return;
         }
-        if (formState.providerId !== id && formState.providerId === 0) {
+        if (formState.productId !== id && formState.productId === 0) {
             assignAllNewValues({
-                providerId: id
+                productId: id
             })
         } else {
             assignAllNewValues({
-                providerId: id
+                productId: id
             })
         }
 
 
     };
-    const filterCategory = (id: number) => {
-        console.log(id, formState);
-
-        if (formState.categoryId === id) {
-            assignAllNewValues({
-                categoryId: 0
-            });
-            return;
-        }
-
-        if (formState.categoryId !== id && formState.categoryId === 0) {
-            assignAllNewValues({
-                categoryId: id
-            })
-        } else {
-            assignAllNewValues({
-                categoryId: id
-            })
-        }
-
-    };
 
     useEffect(() => {
-        const mapCategories = async () => {
-            const categoriesGetted = await getAllCategories();
-            setCategories(
-                categoriesGetted.map(category => ({
-                    id: category.id!,
-                    title: category.name!,
-                    img: '',
-                }))
-
-            );
-        }
-        const mapSuppliers = async () => {
-            const suppliersGetted = await getAllSuppliers();
-            setSuppliers(
-                suppliersGetted.map(supplier => ({
-                    id: supplier.id!,
-                    title: supplier.name!,
-                    img: supplier.image || '',
-                }))
-
-            );
-        }
-        mapSuppliers();
-        mapCategories();
-    }, []);
-
-    useEffect(() => {
-        getProductsPaginated();
+        getStockPaginated();
     }, [searchPagination.filters]);
 
     return (
@@ -144,7 +86,7 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
                 <div>
                     <h4 className="font-medium text-2xl  px-2 py-2 rounded-md shadow-sm border-b-[1px]">Filtros</h4>
                 </div>
-                <form onSubmit={onFormSubmit} className={`grid  items-center gap-4   `}>
+                {/* <form onSubmit={onFormSubmit} className={`grid  items-center gap-4   `}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         <InputLabel
                             labelText="SKU"
@@ -170,12 +112,12 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
                             labelText="Proveedores"
                             items={suppliers}
                             select={filterSupplier}
-                            selectionArr={formState.providerId === 0 ? [] : [formState.providerId]}
+                            selectionArr={formState.productId === 0 ? [] : [formState.productId]}
                         />
                         <Button type="submit"><i className="bi bi-search"></i> Buscar</Button>
                         <Button type="button" onClick={handleResetFiltersAndSearch} ><i className="bi bi-arrow-clockwise"></i> Reiniciar filtros</Button>
                     </div>
-                </form>
+                </form> */}
 
             </div>
             <Table >
@@ -186,32 +128,18 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
                         <TableCell className="w-0" align="left">
                             #
                         </TableCell>
-                        <TableCell className="" align="left">
-                            Imagen
-                        </TableCell>
-                        <TableCell align="left" >
-                            SKU
+
+                        <TableCell align="left">
+                            Id del producto
                         </TableCell>
                         <TableCell align="left">
-                            Descripción
+                            SKU 
                         </TableCell>
                         <TableCell align="left">
-                            Precio de venta
-                        </TableCell>
-                        {/* <TableCell align="left">
-                            Precio de compra
+                            Códigos de barras 
                         </TableCell>
                         <TableCell align="left">
-                            % de ganancia
-                        </TableCell> */}
-                        <TableCell align="left">
-                            Categorías
-                        </TableCell>
-                        <TableCell align="left">
-                            Proveedor
-                        </TableCell>
-                        <TableCell align="left">
-                            Códigos de barras
+                            Stock 
                         </TableCell>
                         <TableCell align="left">
                             Acciones
@@ -219,17 +147,18 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
+                    
                     {
-                        (isProductsLoading)
+                        (isStockLoading)
                             ? <TableRow colSpan={10}>
                                 <TableCell>Cargando...</TableCell>
                             </TableRow>
-                            : (products.length === 0)
+                            : (stockList.length === 0)
                                 ? <NoRegistries />
-                                : products.map((product) => (
-                                    <ProductsTableItem
-                                        key={product.id}
-                                        product={product}
+                                : stockList.map((stock) => (
+                                    <StockTableItem
+                                        stock={stock}
+                                        key={stock.id}
                                     />))
                     }
 
@@ -238,19 +167,19 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
             <div className="px-4 py-4 border-[1px]">
                 <div className="flex justify-end items-center gap-4 *:text-gray-800">
                     <div className="flex gap-10">
-                        <p>Elementos por pagina: {products.length}</p>
-                        <p>Página {productsPagination.pageIndex} de {productsPagination.totalPages === 0 ? 1 : productsPagination.totalPages} </p>
+                        <p>Elementos por pagina: {stockList.length}</p>
+                        <p>Página {stockPagination.pageIndex} de {stockPagination.totalPages === 0 ? 1 : stockPagination.totalPages} </p>
                     </div>
                     <Button
-                        disabled={productsPagination.pageIndex <= 1 ? true : false}
-                        isButtonLoading={isProductsLoading}
+                        disabled={stockPagination.pageIndex <= 1 ? true : false}
+                        isButtonLoading={isStockLoading}
 
                         onClick={handlePreviousPage}
                         className="disabled:bg-slate-100 bi bi-chevron-left bg-transparent transition-all duration-200  rounded-full hover:bg-slate-100">
                     </Button>
                     <Button
-                        disabled={productsPagination.pageIndex < productsPagination.totalPages ? false : true}
-                        isButtonLoading={isProductsLoading}
+                        disabled={stockPagination.pageIndex < stockPagination.totalPages ? false : true}
+                        isButtonLoading={isStockLoading}
                         onClick={handleNextPage}
                         className="disabled:bg-slate-100 bi bi-chevron-right bg-transparent  transition-all duration-200  rounded-full hover:bg-slate-100 ">
                     </Button>

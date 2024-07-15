@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 import { CategoriesTableItem } from "./CategoriesTableItem"
 import { CategoriesContext } from "../../context";
@@ -6,10 +6,18 @@ import { CategoriesContext } from "../../context";
 export const ListCategories = () => {
 
 
-    const { categories, categoriesPagination, handlePreviousPage, handleNextPage } = useContext(CategoriesContext);
+    const { categories, categoriesPagination, getCategoriesPaginated, 
+        handlePreviousPage, handleNextPage, categoriesPageIndexInternal,
+        isCategoriesLoading
+    } = useContext(CategoriesContext);
+
+    useEffect(() => {
+        getCategoriesPaginated();
+        
+    }, [categoriesPageIndexInternal])
 
     return (
-        <div>
+        <div className="mt-6 fadeInUp">
             <Table >
                 <TableHead>
                     <TableRow className="sticky top-0 bg-white shadow-sm">
@@ -26,9 +34,11 @@ export const ListCategories = () => {
                 </TableHead>
                 <TableBody>
                     {
-                        (categories.length == 0)
-                            ? <NoRegistries />
-                            : categories.map((category) => <CategoriesTableItem key={category.id} category={category} />)
+                        (isCategoriesLoading == true)
+                            ? <TableRow><TableCell colSpan={10}>Cargando</TableCell></TableRow>
+                            : (categories.length == 0)
+                                ? <NoRegistries />
+                                : categories.map((category) => <CategoriesTableItem key={category.id} category={category} />)
                     }
 
                 </TableBody>

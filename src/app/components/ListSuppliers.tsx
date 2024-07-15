@@ -1,15 +1,26 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { useContext, useEffect } from "react";
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 import { SuppliersContext } from "../../context";
 import { SuppliersTableItem } from "./SuppliersTableItem";
 
 export const ListSuppliers = () => {
-    const { suppliers, suppliersPagination, isSuppliersLoading, handleNextPage, handlePreviousPage } = useContext(SuppliersContext);
+    const { 
+        suppliers, 
+        suppliersPagination, 
+        isSuppliersLoading, 
+        suppliersPageIndexInternal,
+        handleNextPage, 
+        handlePreviousPage ,
+        getSuppliersPaginated,
+    } = useContext(SuppliersContext);
 
 
+    useEffect(() => {
+        getSuppliersPaginated();
+    }, [suppliersPageIndexInternal]);
 
     return (
-        <div className="mt-6">
+        <div className="mt-6 fadeInUp">
             <Table >
                 <TableHead>
 

@@ -18,7 +18,7 @@ root.render(
             </AuthProvider>
         </AlertsProvider>
         </BrowserRouter>
-    </React.StrictMode>
+     </React.StrictMode>
 )
 
 

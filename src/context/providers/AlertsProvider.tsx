@@ -38,7 +38,7 @@ export const AlertsProvider = ({ children }: { children: ReactNode }) => {
         }} >
             {
                 createPortal(
-                    <div className="fixed top-3 flex flex-col gap-3 z-[150] right-2">
+                    <div className="fixed top-3 flex flex-col gap-3 z-[1500] right-2">
                         {
                             alerts.map((alert, index) => <FlotatingAlert key={index} message={alert.message} type={alert.type} />)
                         }

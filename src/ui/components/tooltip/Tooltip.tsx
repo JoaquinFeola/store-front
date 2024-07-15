@@ -68,11 +68,11 @@ export const Tooltip = ({ children, title, position }: TooltipProps) => {
         <div
             onMouseEnter={onHoverTooltip}
             onMouseLeave={onBlurTooltip}
-            className="w-max relative"
+            className="w-max relative "
 
         >
 
-            <div data-titletooltip={title} className={`after:z-[100]   ${getPositionClasses(position?.horizontal!, position?.vertical!)}  ${tooltipActive ? ' after:scale-100 after:delay-100' : 'after:scale-0 after:delay-100'} after:transition-all after:duration-200  after:w-max after:absolute   after:bg-black/70 after:rounded-md after:content-[attr(data-titletooltip)] after:px-2 after:py-1  text-white `}>
+            <div data-titletooltip={title} className={`after:z-[100] pointer-events-none   ${getPositionClasses(position?.horizontal!, position?.vertical!)}  ${tooltipActive ? ' after:scale-100 after:delay-100' : 'after:scale-0 after:delay-100'} after:transition-all after:duration-200  after:w-max after:absolute   after:bg-black/70 after:rounded-md after:content-[attr(data-titletooltip)] after:px-2 after:py-1  text-white `}>
 
             </div>
             {children}

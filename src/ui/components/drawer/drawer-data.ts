@@ -59,16 +59,22 @@ const drawerLinks: ICreateDrawerLink[] = [
         children: [
             {
                 title: 'Listado de productos',
-                icon: 'tags',
+                icon: 'card-list',
                 path: '/products',
             },
             {
                 title: 'Actualizacion por proveedor',
-                icon: 'tags',
-                path: '/pr',
+                icon: 'person-up',
+                path: '/products/update-by-supplier',
             },
+            
         ]
-
+            
+    },
+    {
+        title: 'Stock',
+        icon: 'bar-chart-fill',
+        path: '/stock',
     },
 ];
 

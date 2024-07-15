@@ -8,20 +8,28 @@ import { useForm } from "../../hooks/useForm"
 import { ImageInput } from "../components/ImageInput"
 import { Button } from "../../ui/components"
 import { Checkbox } from "../../ui/components/inputs/Checkbox"
+import { BarcodesList } from "../components/BarcodesList"
+import { Alert } from "../../ui/components/alerts/Alert"
 
 export const CreateProductView = () => {
+    const [formErrors, setFormErrors ] = useState<string[]>([]);
 
     const { getAllCategories } = useContext(CategoriesContext);
     const { getAllSuppliers } = useContext(SuppliersContext);
     const { createProduct } = useContext(ProductsContext);
     const [categories, setCategories] = useState<{ title: string; img?: string, id: number }[]>([]);
-    const [suppliers, setSupliers] = useState<{ title: string; img?: string, id: number }[]>([]);
+    const [suppliers, setSuppliers] = useState<{ title: string; img?: string, id: number }[]>([]);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+
+    
     const [hasExpirationDate, setHasExpirationDate] = useState(false);
-    const { formState, onInputWrite, assignAllNewValues, onInputLoadFile, } = useForm({
+
+    const { formState, formValidation, onInputWrite, assignAllNewValues, onInputLoadFile, } = useForm({
         sku: '',
         description: '',
-        productCategories: [] as number[],
-        productProviders: [] as number[],
+        categoriesIds: [] as number[],
+        providerId: 0,
         barCodes: [] as string[],
         purchasePrice: '0',
         percentageProfit: '0',
@@ -29,41 +37,67 @@ export const CreateProductView = () => {
         image: '',
         inputCodeBar: '',
         expirationDate: '',
+    }, {
+        categoriesIds: [(value) => value.length <= 0, 'El campo es requerido'],
+        providerId: [(value) => value === 0, 'El campo es requerido'],
+        sku: [(value) => value.length === 0, ''],
+        description: [(value) => value.length === 0, ''],
+        barCodes: [(value) => value.length === 0, 'error'],
+        purchasePrice: [(value) => value.length === 0, 'error'],
+        percentageProfit: [(value) => value.length === 0, 'error'],
+        salePrice: [(value) => value === 0, 'error'],
+        image: [(value) => value.length === 0, ''],
+        inputCodeBar: [(value) => value.length === 0, ''],
+        expirationDate: [(value) => value.length === 0, ''],
     })
 
 
     const addProductCategory = (id: number) => {
 
-        if (formState.productCategories.indexOf(id) === -1 && formState.productCategories.length <= 4) {
+        if (formState.categoriesIds.indexOf(id) === -1 && formState.categoriesIds.length <= 4) {
             assignAllNewValues({
-                productCategories: [...formState.productCategories, id]
+                categoriesIds: [...formState.categoriesIds, id]
             })
         } else {
             assignAllNewValues({
-                productCategories: formState.productCategories.filter((el) => el !== id)
+                categoriesIds: formState.categoriesIds.filter((el) => el !== id)
             })
         }
 
-    }
+    };
+    
     const addProductCodeBars = () => {
-        if ( formState.inputCodeBar === '' ) return;
+        if (formState.inputCodeBar === '') return;
+        const isAlreadyCodeBarExists = formState.barCodes.indexOf(formState.inputCodeBar);
+
+        if ( isAlreadyCodeBarExists !== -1 ) return;
         assignAllNewValues({
             barCodes: [...formState.barCodes, formState.inputCodeBar],
             inputCodeBar: ''
         });
+    };
+
+    const handleDeleteProductCodeBar = (codebar: string) => {
+        const codeBarToDelete = formState.barCodes.indexOf(codebar);
+
+        if ( codeBarToDelete === -1 ) return;
+        assignAllNewValues({
+            barCodes: formState.barCodes.toSpliced(codeBarToDelete, 1),
+        });
     }
     const addProductSupplier = (id: number) => {
 
-        if (formState.productProviders.indexOf(id) === -1 && formState.productProviders.length <= 4) {
+        if ( formState.providerId === id ) {
             assignAllNewValues({
-                productProviders: [...formState.productProviders, id]
+                providerId: 0
             })
-        } else {
-            assignAllNewValues({
-                productProviders: formState.productProviders.filter((el) => el !== id)
-            })
+            return;
         }
-
+        if (formState.providerId !== id ) {
+            assignAllNewValues({
+                providerId:  id
+            })
+        } 
     };
 
     useEffect(() => {
@@ -80,7 +114,7 @@ export const CreateProductView = () => {
         }
         const mapSuppliers = async () => {
             const suppliersGetted = await getAllSuppliers();
-            setSupliers(
+            setSuppliers(
                 suppliersGetted.map(supplier => ({
                     id: supplier.id!,
                     title: supplier.name!,
@@ -104,32 +138,52 @@ export const CreateProductView = () => {
         createSalePrice()
     }, [formState.purchasePrice, formState.percentageProfit])
 
-    
 
 
 
-    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        createProduct({
-            sku: formState.sku,
-            description: formState.description,
-            percentageProfit: parseFloat(formState.percentageProfit),
-            purchasePrice: parseFloat(formState.purchasePrice),
-            salePrice: formState.salePrice,
-            image: formState.image === '' ? null : formState.image.split(',')[1],
-            barCodes: formState.barCodes.length === 0 ? null : formState.barCodes,
-            expirationDate: formState.expirationDate === '' ? null : formState.expirationDate,
-            productCategories: formState.productCategories,
-            productProviders: formState.productProviders
-        })
+        if (formValidation.isCategoriesIdsValid !== null) return;
+        if (formValidation.isProviderIdValid !== null) return;
+        setIsSubmitting(true);
+        const productResponse = await createProduct({
+                sku: formState.sku,
+                description: formState.description,
+                percentageProfit: parseFloat(formState.percentageProfit),
+                purchasePrice: parseFloat(formState.purchasePrice),
+                image: formState.image === '' ? null : formState.image.split(',')[1],
+                barCodes: formState.barCodes.length === 0 ? [] : formState.barCodes,
+                expirationDate: formState.expirationDate === '' ? null : formState.expirationDate,
+                categoriesIds: formState.categoriesIds,
+                providerId: formState.providerId
+            })
+        
+            if ( productResponse !== null ) {
+                setFormErrors(productResponse.response?.data.errors!);
+                scrollTo({ top: 0 })
+            }
+        
+            
+            setIsSubmitting(false)
 
-    }
+    };
+
     const formatCurrency = (value: number, currency: string) => {
         return new Intl.NumberFormat('es-ar', {
             style: 'currency',
             currency: currency
         }).format(value);
-    }
+    };
+
+    useEffect(() => {
+        if (hasExpirationDate === false) {
+            assignAllNewValues({
+                expirationDate: ''
+            })
+        }
+
+    }, [hasExpirationDate]);
 
     return (
         <div className="pb-10">
@@ -139,6 +193,14 @@ export const CreateProductView = () => {
                 </Tooltip>
                 <h4 className="flex-grow text-center font-medium text-3xl">Agregar producto</h4>
             </div>
+
+            {
+                formErrors.length > 0 
+                    && formErrors.map((formError) => (
+                        <Alert message={formError} key={formError} type="warning"  />
+                    ))
+            }
+
             <form onSubmit={handleSubmit} action="" className="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 items-start ">
                 <div className="grid grid-cols-1 items-start ">
                     <InputLabel
@@ -197,26 +259,22 @@ export const CreateProductView = () => {
                         }
                     </div>
 
-                    <div>
-                        <div className="flex gap-2 items-end codigoIput">
+                    <div className="">
+                        <div className="flex gap-2 items-end  codigoIput">
                             <InputLabel
+                                className=""
                                 labelText="Codigo de barras"
                                 name="inputCodeBar"
                                 placeholder="Código de barras"
                                 value={formState.inputCodeBar}
                                 onChange={onInputWrite}
-/>
+                            />
                             <Button type="button" className="rounded-md py-[5px] " onClick={addProductCodeBars}>Agregar</Button>
                         </div>
-                        <ul className="mt-1 pl-5 ">
-                            {
-                                formState.barCodes.length === 0
-                                    ? <li>Sin códigos de barras</li>
-                                    : formState.barCodes.map((barcode, index) => (
-                                        <li className="list-disc" key={barcode+index}>{barcode}</li>
-                                    ))
-                            }
-                        </ul>
+                        <BarcodesList 
+                            deleteFunc={handleDeleteProductCodeBar}
+                            barcodes={formState.barCodes}
+                        />
                     </div>
                 </div>
 
@@ -227,28 +285,43 @@ export const CreateProductView = () => {
                         placeholder="Descripción"
                         labelText="Descripción"
                         value={formState.description}
-                        onChange={onInputWrite}
+                        onChange={(e) => onInputWrite(e, 2000)}
                         required
                     />
 
                     <div>
                         <div className="col-span-4">
-                            <h3 className="font-medium text-lg mt-2 mb-2">Categorías del producto</h3>
+                            <h3 className="font-medium text-lg mt-2 mb-2 fter:content-['*'] after:text-red-500 after:ml-1">Categorías del producto</h3>
                             <SelectWithFilter
                                 items={categories}
-                                selectionArr={formState.productCategories}
+                                selectionArr={formState.categoriesIds}
                                 select={addProductCategory}
-
                             />
+                            {
+                                formValidation.isCategoriesIdsValid !== null && isSubmitting
+                                && (
+                                    <p className="text-red-500">
+                                        {formValidation.isCategoriesIdsValid}
+                                    </p>
+                                )
+                            }
                         </div>
                         <div>
-                            <h3 className="font-medium text-lg mt-2 mb-2 ">Proveedores del producto</h3>
+                            <h3 className="font-medium text-lg mt-2 mb-2 after:content-['*'] after:text-red-500 after:ml-1">Proveedores del producto</h3>
                             <SelectWithFilter
                                 items={suppliers}
-                                selectionArr={formState.productProviders}
+                                selectionArr={(formState.providerId == 0) ? [] : [ formState.providerId ]}
                                 select={addProductSupplier}
 
                             />
+                            {
+                                formValidation.isProviderIdValid !== null && isSubmitting
+                                && (
+                                    <p className="text-red-500">
+                                        {formValidation.isProviderIdValid}
+                                    </p>
+                                )
+                            }
                         </div>
                     </div>
 
@@ -263,7 +336,7 @@ export const CreateProductView = () => {
 
                 </div>
 
-                <Button className="self-end rounded-md" type="submit">Agregar producto</Button>
+                <Button className="self-end rounded-md " type="submit" isButtonLoading={ isSubmitting } >Agregar producto</Button>
             </form>
 
 
