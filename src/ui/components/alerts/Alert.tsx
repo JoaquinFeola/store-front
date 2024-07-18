@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import { IAlertType } from "../../../interfaces"
 import { Tooltip } from "../tooltip/Tooltip";
 
@@ -28,12 +28,16 @@ const setPriorityClasses = (priority: IAlertType) => {
 
 
 export const Alert = ({ message, type  }: AlertProps) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const autoDestroy = () => {
+    ref.current?.remove()
+  }
   return (
-    <div className={`fadeInUp px-3 py-2  rounded-md shadow-md flex gap-3 items-center ${setPriorityClasses(type)} `} >
+    <div ref={ref} className={`fadeInUp px-3 py-2  rounded-md shadow-md flex gap-3 items-center ${setPriorityClasses(type)} `} >
         <span className="">{message}</span>
         <div className="ml-auto">
           <Tooltip title="Eliminar alerta" position={{horizontal: "left", vertical: 'middle'}}>
-            <button className=" text-2xl"><i className="bi bi-x"></i></button>
+            <button onClick={autoDestroy} className=" text-2xl"><i className="bi bi-x"></i></button>
           </Tooltip>
         </div>
 

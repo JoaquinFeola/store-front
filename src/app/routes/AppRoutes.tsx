@@ -11,6 +11,10 @@ import { EditProductView } from "../views/EditProductView"
 import { ListProductsView } from "../views/ListProductsView"
 import { UpdatePricesForSupplier } from "../pages/UpdatePricesForSupplier"
 import { StockPage } from "../pages/StockPage"
+import { ProductView } from "../views/ProductView"
+import { ListStockView } from "../views/ListStockView"
+import { ImportStockView } from "../views/ImportStockView"
+import { AdjustmentStockView } from "../views/AdjustmentStockView"
 
 export const AppRoutes = () => {
   return (
@@ -35,15 +39,17 @@ export const AppRoutes = () => {
         >
           <Route index element={<ListProductsView />} />
           <Route path="create" element={<CreateProductView />} />
+          <Route path=":productId" element={<ProductView />} />
           <Route path="edit/:productId" element={<EditProductView />} />
           <Route path="update-by-supplier" element={<UpdatePricesForSupplier />} />
         </Route>
-        <Route
-          path="/stock"
-          element={<StockPage />}
-        />
 
+        <Route path="/stock" element={<StockPage />}>
+          <Route index element={<ListStockView />} />
+          <Route path="import" element={<ImportStockView />} />
+          <Route path="adjustment" element={<AdjustmentStockView />} />
 
+        </Route>
 
       </Routes>
     </Drawer>

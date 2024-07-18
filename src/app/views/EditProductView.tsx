@@ -12,6 +12,7 @@ import { Button } from "../../ui/components";
 import { Checkbox } from "../../ui/components/inputs/Checkbox";
 import { BarcodesList } from "../components/BarcodesList";
 import { Alert } from "../../ui/components/alerts/Alert";
+import { formatCurrency } from "../../utils/currency.util";
 
 export const EditProductView = () => {
   const [formErrors, setFormErrors] = useState<string[]>([]);
@@ -29,16 +30,12 @@ export const EditProductView = () => {
 
   useEffect(() => {
     const getProductOnLoad = async () => {
-      try {
+      setIsLoading(true)
         const productFound = await getProductById(productId!);
-        setProduct(productFound as Product);
-      }
-      catch (error) {
-        return;
-      }
-      finally {
+        
+        if ( productFound.hasErrors === true ) return;
+        setProduct(productFound.response as Product);
         setIsLoading(false)
-      }
     }
 
     getProductOnLoad();
@@ -178,12 +175,7 @@ export const EditProductView = () => {
 
 
   }
-  const formatCurrency = (value: number, currency: string) => {
-    return new Intl.NumberFormat('es-ar', {
-      style: 'currency',
-      currency: currency
-    }).format(value);
-  }
+ 
 
   useEffect(() => {
     const productsCategories = product.productCategories?.map((pc) => { return pc.category.id }) as number[]
@@ -210,7 +202,7 @@ export const EditProductView = () => {
   return (
     <div className="pb-10">
       <div className="flex items-center mb-10">
-        <Tooltip title="Volver a proveedores" position={{ horizontal: 'right', vertical: 'middle' }}>
+        <Tooltip title="Volver a productos" position={{ horizontal: 'right', vertical: 'middle' }}>
           <Link to="/products" className=" bg-transparent hover:bg-slate-100 transition-colors duration-200 text-gray-800 text-3xl rounded-full"><i className="bi bi-arrow-left"></i></Link>
         </Tooltip>
         <h4 className="flex-grow text-center font-medium text-3xl">Editar producto</h4>

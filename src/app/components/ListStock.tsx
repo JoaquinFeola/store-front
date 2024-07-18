@@ -1,7 +1,6 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
-import { CategoriesContext, ProductsContext, StockContext, SuppliersContext } from "../../context";
-import { ProductsTableItem } from "./ProductsTableItem";
+import { ProductsContext, StockContext } from "../../context";
 import { useForm } from "../../hooks/useForm";
 import { InputLabel } from "../../ui/components/inputs/InputLabel";
 import { SelectWithFilter } from "../../ui/components/inputs/SelectWithFilter";
@@ -14,6 +13,9 @@ interface ListStockProps {
 
 
 export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
+    
+    const { getAllProducts } = useContext(ProductsContext);
+    
     const {
         stockList,
         stockPagination,
@@ -36,6 +38,7 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
         barCode: '',
     })
 
+    const [products, setProducts] = useState<{ img?: string; title: string; id: number }[]>([]);
 
 
     const handleResetFiltersAndSearch = () => {
@@ -76,6 +79,23 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
 
     };
 
+
+    useEffect(() => {
+        
+        const mapProducts = async () => {
+            const suppliersGetted = await getAllProducts();
+            setProducts(
+                suppliersGetted.map(supplier => ({
+                    id: supplier.id!,
+                    title: supplier.sku!,
+                    img: supplier.image || '',
+                }))
+
+            );
+        }
+        mapProducts();
+    }, []);
+
     useEffect(() => {
         getStockPaginated();
     }, [searchPagination.filters]);
@@ -86,15 +106,9 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
                 <div>
                     <h4 className="font-medium text-2xl  px-2 py-2 rounded-md shadow-sm border-b-[1px]">Filtros</h4>
                 </div>
-                {/* <form onSubmit={onFormSubmit} className={`grid  items-center gap-4   `}>
+                <form onSubmit={onFormSubmit} className={`grid  items-center gap-4   `}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                        <InputLabel
-                            labelText="SKU"
-                            placeholder="SKU del producto"
-                            onChange={onInputWrite}
-                            value={formState.sku}
-                            name="sku"
-                        />
+                        
                         <InputLabel
                             labelText="Código de barra"
                             value={formState.barCode}
@@ -102,22 +116,17 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
                             placeholder="Código de barra del producto"
                             onChange={onInputWrite}
                         />
+                        
                         <SelectWithFilter
-                            labelText="Categorías"
-                            items={categories}
-                            select={filterCategory}
-                            selectionArr={formState.categoryId === 0 ? [] : [formState.categoryId]}
-                        />
-                        <SelectWithFilter
-                            labelText="Proveedores"
-                            items={suppliers}
+                            labelText="Productos"
+                            items={products}
                             select={filterSupplier}
                             selectionArr={formState.productId === 0 ? [] : [formState.productId]}
                         />
                         <Button type="submit"><i className="bi bi-search"></i> Buscar</Button>
                         <Button type="button" onClick={handleResetFiltersAndSearch} ><i className="bi bi-arrow-clockwise"></i> Reiniciar filtros</Button>
                     </div>
-                </form> */}
+                </form>
 
             </div>
             <Table >
@@ -170,6 +179,7 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
                         <p>Elementos por pagina: {stockList.length}</p>
                         <p>Página {stockPagination.pageIndex} de {stockPagination.totalPages === 0 ? 1 : stockPagination.totalPages} </p>
                     </div>
+                    
                     <Button
                         disabled={stockPagination.pageIndex <= 1 ? true : false}
                         isButtonLoading={isStockLoading}

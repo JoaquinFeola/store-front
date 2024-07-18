@@ -19,7 +19,16 @@ interface ProductsContextProps {
     handleNextPage: () => void;
     handlePreviousPage: () => void;
     getAllProducts: () => Promise<Product[]>,
-    getProductById: (id: number | string) => Promise<Product | AxiosError>;
+    getProductById: (id: number | string) => Promise<{
+        hasErrors: boolean;
+        response: Product;
+    } | {
+        hasErrors: boolean;
+        response: {
+            errors: string[];
+            errCode: number;
+        };
+    }>
     handleSearch: (filters: {
         sku: string;
         barcode: string;

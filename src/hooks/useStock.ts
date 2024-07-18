@@ -81,7 +81,7 @@ export const useStock = () => {
                 }
             });
 
-
+            
             const response: ApiResponse = await httpClient.post('stock/bulk', mapProductsToCreateStock);
             
             addAlert({
@@ -89,10 +89,11 @@ export const useStock = () => {
                 message: response.data.message,
                 type: 'success'
             })
-
+            
+            await getStockPaginated();
 
         }
-        catch (error) {
+        catch (error) { 
             addAlert({
                 duration: 5000,
                 message: 'Ocurrió un error al importar todos los productos',

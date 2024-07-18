@@ -1,4 +1,4 @@
-import { FormEvent, useContext } from "react"
+import { FormEvent, useContext, useState } from "react"
 import { Button } from "../../ui/components"
 import { ListCategories } from "../components/ListCategories"
 import { CategoriesContext, ModalsContext } from "../../context"
@@ -33,7 +33,7 @@ const CreateCategoriesForm = () => {
 export const CategoriesPage = () => {
   const { newModal } = useContext(ModalsContext);
   const { createCategory, getAllCategories, categories, isCategoriesLoading } = useContext(CategoriesContext);
-
+  const [isLoading, setIsLoading ] = useState(false);
 
   const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ export const CategoriesPage = () => {
   };
 
   const handleExportAsExcel = async () => {
-
+    setIsLoading(true);
     const allCategories = await getAllCategories();
     const categoriesMapped = allCategories.map((category) => {
       return {
@@ -66,7 +66,8 @@ export const CategoriesPage = () => {
       }
     });
 
-    excel.exportAsExcelWithJsonData(categoriesMapped, 'Categorias');
+    await excel.exportAsExcelWithJsonData(categoriesMapped, 'Categorias');
+    setIsLoading(false);
   };
 
 
@@ -80,8 +81,9 @@ export const CategoriesPage = () => {
           {/* botón de excel tooltip Exportar a excel */}
           <Tooltip title="Exportar a excel" position={{horizontal: 'left', vertical: 'middle'}}>
             <Button
+              isButtonLoading={isLoading}
               onClick={handleExportAsExcel}
-              disabled={isCategoriesLoading === false && categories.length === 0}
+              disabled={isCategoriesLoading === false && categories.length === 0 || isLoading}
               className="rounded-md ml-3 px-3 disabled:bg-green-700/50 bg-green-700 hover:bg-excelGreen ">
               <i className="bi bi-download"></i>
             </Button>

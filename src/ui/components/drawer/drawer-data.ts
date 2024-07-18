@@ -73,6 +73,23 @@ const drawerLinks: ICreateDrawerLink[] = [
     },
     {
         title: 'Stock',
+        children: [
+            {
+                icon: 'card-list',
+                path: '/stock',
+                title: 'Listado de stock'
+            },
+            {
+                icon: 'arrow-bar-down',
+                path: '/stock/import',
+                title: 'Importar stock'
+            },
+            {
+                icon: 'wrench-adjustable-circle',
+                path: '/stock/adjustment',
+                title: 'Ajustar stock'
+            },
+        ],
         icon: 'bar-chart-fill',
         path: '/stock',
     },

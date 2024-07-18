@@ -238,17 +238,24 @@ export const useProducts = () => {
         try {
             const { data }: ApiResponse<Product> = await httpClient.get(`/product/${id}`);
 
-            return data.data
+            return {
+                hasErrors: false,
+                response: data.data
+            }
         }
         catch (error) {
-            return error as AxiosError;
+            const err = error as AxiosError<ApiResponseBody>;
 
+            return {
+                hasErrors: true,
+                response: {
+                    errors: err.response?.data.errors || [],
+                    errCode: err.response?.status || 0
+                }
+            };
         }
     }
 
-    // useEffect(() => {
-    //     getProductsPaginated()
-    // }, [productPageIndexInternal, searchPagination.search]);
 
 
 

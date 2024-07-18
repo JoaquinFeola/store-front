@@ -10,6 +10,7 @@ import { ListProducts } from "../components/ListProducts";
 export const ListProductsView = () => {
     const { getAllProducts, isProductsLoading, products } = useContext(ProductsContext)
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
     const [isFiltersOpen, setFilterOpen] = useState(false);
     const handleToggleFiltersOpen = () => {
@@ -17,6 +18,7 @@ export const ListProductsView = () => {
     }
 
     const handleExportToExcel = async () => {
+        setIsLoading(true)
         const products = await getAllProducts();
         const productsMapped = products.map((product) => {
             return {
@@ -30,10 +32,12 @@ export const ListProductsView = () => {
                 fechaActualizacion: formatDate(product.updated!, 'DD-MM-YYYY hh:mm'),
             } 
         });
-        excel.exportAsExcelWithJsonData(
+        await excel.exportAsExcelWithJsonData(
             productsMapped,
             'Productos'
-        )
+        );
+        setIsLoading(false);
+
     };
 
     return (
@@ -53,7 +57,7 @@ export const ListProductsView = () => {
                         </Button>
                     </Tooltip>
                     <Tooltip title="Exportar a excel" position={{horizontal: 'left', vertical: 'middle'}} >
-                        <Button disabled={isProductsLoading === false && products.length === 0} onClick={handleExportToExcel} className="disabled:bg-green-700/50 rounded-md px-3 hover:bg-green-800 bg-excelGreen">
+                        <Button isButtonLoading={isLoading} disabled={isProductsLoading === false && products.length === 0 || isLoading} onClick={handleExportToExcel} className="disabled:bg-green-700/50 rounded-md px-3 hover:bg-green-800 bg-excelGreen">
                             <i className="bi bi-download"></i>
                         </Button>
                     </Tooltip>

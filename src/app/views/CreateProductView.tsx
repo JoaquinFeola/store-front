@@ -188,7 +188,7 @@ export const CreateProductView = () => {
     return (
         <div className="pb-10">
             <div className="flex items-center mb-10">
-                <Tooltip title="Volver a proveedores" position={{ horizontal: 'right', vertical: 'middle' }}>
+                <Tooltip title="Volver a productos" position={{ horizontal: 'right', vertical: 'middle' }}>
                     <Link to="/products" className=" bg-transparent hover:bg-slate-100 transition-colors duration-200 text-gray-800 text-3xl rounded-full"><i className="bi bi-arrow-left"></i></Link>
                 </Tooltip>
                 <h4 className="flex-grow text-center font-medium text-3xl">Agregar producto</h4>

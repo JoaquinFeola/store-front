@@ -34,11 +34,11 @@ export const SuppliersTableItem = React.memo(({ supplier }: SuppliersTableItemPr
             <TableCell align="center">{supplier.telephone}</TableCell>
             <TableCell align="center">{supplier.email}</TableCell>
             <TableCell align="center">
-                <Button className="ml-3 rounded-sm shadow-md" >
-                    <Link to={`edit/${supplier.id}`}>
+                <Link to={`edit/${supplier.id}`}>
+                    <Button className="ml-3 rounded-sm shadow-md" >
                         <i className="bi bi-pencil-square"></i>
-                    </Link>
-                </Button>
+                    </Button>
+                </Link>
                 <Button onClick={openDeleteModal} className="ml-3 rounded-sm hover:bg-red-600 bg-red-500 shadow-md ">
                     <i className="bi bi-trash3"></i>
                 </Button>

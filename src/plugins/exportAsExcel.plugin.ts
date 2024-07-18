@@ -8,7 +8,8 @@ export const excel = {
         const workbook = excelXlsx.utils.book_new();
         const worksheet = excelXlsx.utils.json_to_sheet(jsonData);
         excelXlsx.utils.book_append_sheet(workbook, worksheet);
-        await excelXlsx.writeFile( workbook, `${filename}.xlsx`)
+        await excelXlsx.writeFile( workbook, `${filename}.xlsx`);
+
     }
 }
 
