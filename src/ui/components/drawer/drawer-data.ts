@@ -93,6 +93,11 @@ const drawerLinks: ICreateDrawerLink[] = [
         icon: 'bar-chart-fill',
         path: '/stock',
     },
+    {
+        title: 'Ventas',
+        path: '/sales',
+        icon: 'bag-fill ',
+    }
 ];
 
 export const drawerService = new DrawerService(drawerLinks);

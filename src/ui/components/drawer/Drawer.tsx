@@ -42,7 +42,7 @@ export const Drawer = ({ children }: DrawerProps) => {
                 style={{
                     width: isDrawerOpen ? 240 : ''
                 }}
-                className="w-16 h-dvh sticky flex-shrink-0 left-0 top-0 transition-all"
+                className="w-16 h-dvh sticky flex-shrink-0 left-0 top-0 transition-all overflow-auto "
             >
                 <aside className="w-full h-full flex flex-col bg-blue-600 pt-16 pb-2 gap-4 " >
                     <ul className="*:list-none bg-blue-800   ">

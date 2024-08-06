@@ -48,16 +48,16 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
             productId: 0,
         })
     }
-
+    
     const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-
+        
         handleSearch({
             barcode: formState.barCode,
             productId: formState.productId,
         });
     }
-    const filterSupplier = (id: number) => {
+    const filterProduct = (id: number) => {
 
 
         if (formState.productId === id) {
@@ -98,6 +98,8 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
 
     useEffect(() => {
         getStockPaginated();
+        console.log(searchPagination)
+
     }, [searchPagination.filters]);
 
     return (
@@ -120,7 +122,7 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
                         <SelectWithFilter
                             labelText="Productos"
                             items={products}
-                            select={filterSupplier}
+                            select={filterProduct}
                             selectionArr={formState.productId === 0 ? [] : [formState.productId]}
                         />
                         <Button type="submit"><i className="bi bi-search"></i> Buscar</Button>
@@ -135,7 +137,7 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
                     <TableRow className="sticky top-0 z-[100]  bg-white shadow-sm ">
 
                         <TableCell className="w-0" align="left">
-                            #
+                            Id Stock
                         </TableCell>
 
                         <TableCell align="left">

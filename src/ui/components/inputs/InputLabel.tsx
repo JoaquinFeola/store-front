@@ -7,7 +7,7 @@ interface InputLabelProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const InputLabel = ({ labelText, className, ...attr }: InputLabelProps) => {
   return (
-    <label htmlFor={attr.name || ''} className={`grid gap-2 mt-3 w-full`}>
+    <label htmlFor={attr.name || ''} className={`grid gap-2 mt-3`}>
       <span className={`font-medium text-lg ${attr.required == true ? "after:content-['*'] after:text-red-500 after:ml-1" : ""}`}>{labelText}</span>
       <input
         type={attr.type || 'text'}

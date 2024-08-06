@@ -9,7 +9,7 @@ export const UpdatePricesForSupplier = () => {
 
     const { getAllSuppliers } = useContext(SuppliersContext);
     const { updateSalePriceForSupplierId } = useContext(ProductsContext);
-    const { formState, onInputWrite, assignAllNewValues, formValidation } = useForm({
+    const { formState, onInputWrite, assignAllNewValues, formValidation, resetFormValues } = useForm({
         percentageToUp: '0',
         providerId: 0
     }, {
@@ -55,15 +55,16 @@ export const UpdatePricesForSupplier = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        setIsSubmit(true);
-        if (formValidation.isProviderIdValid !== null || formValidation.isPercentageToUpValid !== null) return;
+        if (formValidation.isProviderIdValid !== null || formValidation.isPercentageToUpValid !== null) return setIsSubmit(true);
         setSubmittingState(true);
 
         await updateSalePriceForSupplierId({
             percentageToUp: parseFloat(formState.percentageToUp),
             providerId: formState.providerId
         });
-
+        setIsSubmit(false)
+        resetFormValues()
+        
         setSubmittingState(false);
 
     };

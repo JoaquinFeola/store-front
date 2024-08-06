@@ -43,9 +43,14 @@ export const ListProductsView = () => {
     return (
         <div>
             <div className="flex items-center justify-between">
-                <Button onClick={() => navigate('create')} className="rounded-md" >
-                    Agregar producto
-                </Button>
+                <div className="flex items-center gap-3">
+                    <Button onClick={() => navigate('create')} className="rounded-md" >
+                        Agregar producto
+                    </Button>
+                    <Button onClick={() => navigate('import')} className="rounded-md " >
+                        Importar productos
+                    </Button>
+                </div>
                 <div className="flex gap-2 items-center">
                     <Tooltip title={isFiltersOpen ? 'Cerrar filtros' : 'Desplegar filtros'} position={{horizontal: 'left', vertical: 'middle'}} >
                         <Button 

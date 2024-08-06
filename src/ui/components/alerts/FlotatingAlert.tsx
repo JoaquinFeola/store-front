@@ -29,7 +29,7 @@ const setPriorityClasses = (priority: IAlertType) => {
 export const FlotatingAlert = ({ message, type  }: FlotatingAlertProps) => {
   return (
     <div className={`fadeInUp px-3 py-2  rounded-md shadow-md flex gap-3 items-center ${setPriorityClasses(type)} `} >
-        {message}
+        <p className="whitespace-pre-line">{message}</p>
     </div>
   )
 }

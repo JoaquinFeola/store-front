@@ -1,7 +1,7 @@
 import { FormEvent, ReactNode, useReducer } from "react"
 import { ModalsContext } from "../ModalsContext"
 import { modalsReducer } from "../../reducers/modals.reducer"
-import { IModalCreate } from "../../interfaces";
+import { IModal, IModalCreate } from "../../interfaces";
 import { MODAL_TYPES } from "../../consts/modals-consts";
 import { createPortal } from "react-dom";
 import { Modal } from "../../ui/components";
@@ -25,11 +25,11 @@ export const ModalsProvider = ({ children }: { children: ReactNode }) => {
         submitFunc: (e: FormEvent<HTMLFormElement>) => {
           e.preventDefault();
           submitFunc(e);
-          modalsDispatch({type: MODAL_TYPES .DELETE}) 
+          modalsDispatch({ type: MODAL_TYPES.DELETE, payload: {} as IModal })
         },
         confirmLabel: confirmLabel,
         title: title,
-        cancelFunc: () => modalsDispatch({type: MODAL_TYPES.DELETE})
+        cancelFunc: () => modalsDispatch({ type: MODAL_TYPES.DELETE, payload: {} as IModal })
       }
     })
 
@@ -50,7 +50,7 @@ export const ModalsProvider = ({ children }: { children: ReactNode }) => {
           document.body
         )
       }
-      
+
       {children}
     </ModalsContext.Provider>
   )

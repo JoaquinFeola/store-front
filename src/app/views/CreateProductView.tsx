@@ -11,6 +11,30 @@ import { Checkbox } from "../../ui/components/inputs/Checkbox"
 import { BarcodesList } from "../components/BarcodesList"
 import { Alert } from "../../ui/components/alerts/Alert"
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 export const CreateProductView = () => {
     const [formErrors, setFormErrors ] = useState<string[]>([]);
 
@@ -47,7 +71,7 @@ export const CreateProductView = () => {
         percentageProfit: [(value) => value.length === 0, 'error'],
         salePrice: [(value) => value === 0, 'error'],
         image: [(value) => value.length === 0, ''],
-        inputCodeBar: [(value) => value.length === 0, ''],
+        inputCodeBar: [(value) => value.length < 8 && value.length > 13, 'El codigo de barras no tiene un formato valido, por favor intentelo de nuevo'],
         expirationDate: [(value) => value.length === 0, ''],
     })
 
@@ -67,7 +91,7 @@ export const CreateProductView = () => {
     };
     
     const addProductCodeBars = () => {
-        if (formState.inputCodeBar === '') return;
+        if (formValidation.isInputCodeBarValid !== null) return;
         const isAlreadyCodeBarExists = formState.barCodes.indexOf(formState.inputCodeBar);
 
         if ( isAlreadyCodeBarExists !== -1 ) return;

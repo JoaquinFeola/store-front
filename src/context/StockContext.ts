@@ -1,10 +1,8 @@
 import { createContext } from "react";
-import { Stock } from "../interfaces/stock.interfaces";
+import { BulkCreateStock, Stock } from "../interfaces/stock.interfaces";
 
 interface StockContextProps {
     stockList: Stock[];
-    isImportingProducts: boolean;
-    hasProducts: boolean;
     stockPageIndexInternal: number;
     stockPagination: {
         pageIndex: number;
@@ -15,11 +13,16 @@ interface StockContextProps {
     getStockPaginated: (newPageIndex?: number) => Promise<void>;
     handleNextPage: () => Promise<void>;
     handlePreviousPage: () => Promise<void>;
-    importAllProducts: () => Promise<void>;
     handleSearch: (filters: {
         barcode: string;
         productId: number;
     }) => void;
+    adjustStock: (newStock: {
+        stockId: number;
+        quantity: number;
+        stockAdjustmentEnum: 1 | 2;
+    }) => void
+    bulkCreateStock: (stock: BulkCreateStock[], cb: (errorsList: string[]) => void) => Promise<void>;
     searchPagination: {
         filters: {
             barcode: string;

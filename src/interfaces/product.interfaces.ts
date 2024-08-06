@@ -9,12 +9,12 @@ export interface Product {
     description: string;
     purchasePrice: number;
     percentageProfit: number;
-    productCategories?: {category:  Category}[],
+    productCategories?: { category: Category }[],
     providerId?: number;
     provider?: Supplier;
     salePrice: number;
     image?: string;
-    barCodes?: {code: string}[],
+    barCodes?: { code: string }[],
     expirationDate?: string | null;
     created: Date;
     updated?: Date | null;
@@ -29,6 +29,32 @@ export interface ProductRequestDTO {
     BarCode?: string;
 }
 
+export interface ProdcutInCart extends ProductForSale {
+    quantity: number;
+}
+
+export interface ProductForSale {
+    id: number;
+    sku: string;
+    description: string;
+    barCodes: { code: string }[];
+    salePrice: number;
+    image: string;
+}
+
+export interface ImportProductTemplate {
+    productoId: string;
+    sku: string;
+    descripcion: string;
+    proveedorId: string;
+    categoriaId: string;
+    codigoDeBarras: string;
+    precioCompra: string;
+    porcentajeGanancia: string;
+    fechaExpiracion: string;
+}
+
+
 
 export interface ProductPriceBySupplierRequestDTO {
     ProviderId: number;
@@ -42,7 +68,7 @@ export interface ProductDTO {
     percentageProfit: number;
     image?: string | null,
     providerId?: number,
-    categoriesIds?: number[] | null,   
+    categoriesIds?: number[] | null,
     barCodes?: string[] | null,
     expirationDate?: string | null,
 }

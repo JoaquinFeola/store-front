@@ -19,6 +19,12 @@ export interface StockRequestDTO {
 }
 
 
+export interface StockImportTemplate {
+    idStock?: string;
+    productoId?: string;
+    cantidad: string;
+}
+
 export interface BulkCreateStock {
     productId: number;
     quantity: number,

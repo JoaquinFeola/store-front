@@ -1,8 +1,10 @@
 import { useCallback, useContext, useState } from "react"
 import { BulkCreateStock, Stock, StockRequestDTO } from "../interfaces/stock.interfaces";
-import { ApiResponse } from "../interfaces";
+import { ApiResponse, ApiResponseBody } from "../interfaces";
 import { httpClient } from "../api/axios-config";
 import { AlertsContext, ProductsContext } from "../context";
+import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
 
 interface StockPaginateResponse {
     pageIndex: number;
@@ -20,12 +22,8 @@ const initialSearchPagination = {
 }
 export const useStock = () => {
     const { addAlert } = useContext(AlertsContext);
-    const { getAllProducts } = useContext(ProductsContext);
     const [stockList, setStockList] = useState<Stock[]>([]);
-    const [isImportingProducts, setIsImportingProducts] = useState(false);
-    const [ hasProducts, setHasProducts ] = useState(false);
-    const [ isStocLoading, setIsStockLoading ] = useState(false)
- 
+    const [isStocLoading, setIsStockLoading] = useState(false)
     const [stockPageIndexInternal, setStockPageIndexInternal] = useState(1);
     const [stockPagination, setStockPagination] = useState({
         pageIndex: 1,
@@ -39,7 +37,6 @@ export const useStock = () => {
 
     const handleSearch = (filters: typeof searchPagination.filters) => {
         setSearchPagination({
-            ...searchPagination,
             filters: filters
         })
 
@@ -60,62 +57,65 @@ export const useStock = () => {
 
     };
 
-
-    const importAllProducts = async () => {
+    const adjustStock = async (newStock: { stockId: number; quantity: number; stockAdjustmentEnum: 1 | 2 }) => {
         try {
-            setIsImportingProducts(true)
-            const products = await getAllProducts();
+            const response: ApiResponse = await httpClient.post('stock/adjustment', newStock)
 
-            if (products.length === 0) {
-                setIsImportingProducts(false)
-                setHasProducts(false);
-                return;
-            };
-
-
-            setHasProducts(true);
-            const mapProductsToCreateStock: BulkCreateStock[] = products.map((pr) => {
-                return {
-                    productId: pr.id,
-                    quantity: 1,
-                }
-            });
-
-            
-            const response: ApiResponse = await httpClient.post('stock/bulk', mapProductsToCreateStock);
-            
             addAlert({
                 duration: 5000,
                 message: response.data.message,
                 type: 'success'
             })
-            
-            await getStockPaginated();
+            await getStockPaginated()
+        }
+        catch (error) {
 
         }
-        catch (error) { 
+    }
+
+    const bulkCreateStock = async (stock: BulkCreateStock[], cb: (errorsList: string[]) => void) => {
+        try {
+            const response: ApiResponse = await httpClient.post('stock/bulk', stock);
             addAlert({
                 duration: 5000,
-                message: 'Ocurrió un error al importar todos los productos',
+                message: response.data.message,
                 type: 'success'
             })
+
+            if (response.data.errors?.length! > 0) {
+                const errors = response.data.errors as string[];
+                // addAlert({
+                //     duration: 10000,
+                //     message: `${errors.join('\n')}`,
+                //     type: 'error'
+                // })
+                cb(response.data?.errors!)
+
+            }
         }
-        finally {
-            setIsImportingProducts(false)
-            
+        catch (error) {
+            const err = error as AxiosError<ApiResponseBody>
+
+            addAlert({
+                duration: 5000,
+                message: err.response?.data.message ?? 'Ocurrio un error al crear el stock',
+                type: 'error'
+            })
         }
     };
 
-    const getStockPaginated = useCallback(async (newPageIndex?: number) => {
+
+    const getStockPaginated = async (newPageIndex?: number) => {
         setIsStockLoading(true);
         try {
             const reqParams: StockRequestDTO = {
-                ...searchPagination.filters.barcode === '' ? {} : {BarCode: searchPagination.filters.barcode},
                 pageIndex: newPageIndex ?? stockPageIndexInternal,
                 pageSize: stockPagination.pageSize,
                 ProductId: searchPagination.filters.productId
             }
-
+            if (searchPagination.filters.barcode !== '') {
+                reqParams.BarCode = searchPagination.filters.barcode
+            }
             const response: ApiResponse<StockPaginateResponse> = await httpClient.get('stock/paginate', { params: reqParams })
             const { pageIndex, pageSize, rows, totalPages, totalSize } = response.data.data;
 
@@ -127,7 +127,7 @@ export const useStock = () => {
             });
 
             setStockList(rows);
-            
+
         }
         catch (error) {
             addAlert({
@@ -139,15 +139,13 @@ export const useStock = () => {
         finally {
             setIsStockLoading(false)
         }
-    }, []);
+    };
 
 
 
 
     return {
         stockList,
-        isImportingProducts,
-        hasProducts,
         stockPageIndexInternal,
         stockPagination,
         isStocLoading,
@@ -155,8 +153,9 @@ export const useStock = () => {
         getStockPaginated,
         handleNextPage,
         handlePreviousPage,
-        importAllProducts,
-        handleSearch
+        handleSearch,
+        bulkCreateStock,
+        adjustStock
     }
 
 }
