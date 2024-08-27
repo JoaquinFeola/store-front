@@ -1,11 +1,11 @@
-import { useContext, useEffect, useReducer, useState } from "react"
+import { useContext, useReducer, useState } from "react"
 import { suppliersReducer } from "../reducers/suppliers.reducer";
 import { AlertsContext } from "../context";
 import { ApiResponse, Supplier } from "../interfaces";
-import { httpClient } from "../api/axios-config";
 import { SUPPLIERS_TYPES } from "../consts";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
+import { httpClient } from "../api/axios-config";
 
 
 interface SuppliersPaginateResponse {

@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react"
+import React, { ReactNode, useState } from "react"
 
 
 
@@ -53,13 +53,14 @@ const getPositionClasses = (horizontalPositon: HorizontalPosition, verticalPosti
 
 }
 
-export const Tooltip = ({ children, title, position }: TooltipProps) => {
+export const Tooltip = React.memo(({ children, title, position }: TooltipProps) => {
     const [tooltipActive, setTooltipActive] = useState(false);
 
 
     const onBlurTooltip = () => {
         setTooltipActive(false)
     };
+
     const onHoverTooltip = () => {
         setTooltipActive(true)
     };
@@ -80,4 +81,4 @@ export const Tooltip = ({ children, title, position }: TooltipProps) => {
         </div>
 
     )
-}
+}); 

@@ -18,6 +18,7 @@ import { AdjustmentStockView } from "../views/AdjustmentStockView"
 import { SalesPage } from "../pages/SalesPage"
 import { SalesView } from "../views/SalesView"
 import { ImportProductsView } from "../views/ImportProductsView"
+import { ListSalesView } from "../views/ListSalesView"
 
 export const AppRoutes = () => {
   return (
@@ -56,6 +57,7 @@ export const AppRoutes = () => {
         </Route>
         <Route path="/sales" element={<SalesPage />}>
           <Route index element={<SalesView />} />
+          <Route path="list" element={<ListSalesView />} />
         </Route>
 
       </Routes>

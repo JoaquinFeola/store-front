@@ -3,6 +3,9 @@ import { Supplier } from "./suppliers.interfaces";
 
 
 
+
+
+
 export interface Product {
     id: number;
     sku: string;
@@ -53,7 +56,17 @@ export interface ImportProductTemplate {
     porcentajeGanancia: string;
     fechaExpiracion: string;
 }
-
+export interface ProductToImport {
+    productId: number;
+    sku: string;
+    description: string;
+    providerId: number;
+    categoryId: number;
+    barCode: string;
+    purchasePrice: number;
+    percentageProfit: number;
+    expirationDate: string;
+}
 
 
 export interface ProductPriceBySupplierRequestDTO {

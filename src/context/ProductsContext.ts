@@ -1,7 +1,7 @@
 import { createContext } from "react";
-import { Product, ProductDTO } from "../interfaces/product.interfaces";
+import { Product, ProductDTO, ProductToImport } from "../interfaces/product.interfaces";
 import { AxiosError } from "axios";
-import { ApiResponseBody } from "../interfaces";
+import { ApiResponse, ApiResponseBody } from "../interfaces";
 
 
 interface ProductsContextProps {
@@ -46,6 +46,7 @@ interface ProductsContextProps {
             categoryId: number;
         };
     };
+    bulkCreateProducts: (products: ProductToImport[]) => Promise<ApiResponseBody<null>>;
     updateSalePriceForSupplierId: (body: { providerId: number; percentageToUp: number }) => Promise<void>;
 
 }

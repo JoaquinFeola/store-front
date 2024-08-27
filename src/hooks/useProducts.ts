@@ -6,7 +6,7 @@ import { PRODUCTS_TYPES } from "../consts";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
 import { productsReducer } from "../reducers/products.reducer";
-import { Product, ProductDTO, ProductPriceBySupplierRequestDTO, ProductRequestDTO } from "../interfaces/product.interfaces";
+import { Product, ProductDTO, ProductPriceBySupplierRequestDTO, ProductRequestDTO, ProductToImport } from "../interfaces/product.interfaces";
 
 
 interface ProductsPaginateResponse {
@@ -94,6 +94,39 @@ export const useProducts = () => {
 
     }
 
+
+    const bulkCreateProducts = async (products: ProductToImport[]): Promise<ApiResponseBody<null>> => {
+        try {
+            const response: ApiResponse = await httpClient.post('product/import', products);
+
+            if (response.data.errors) throw new Error();
+
+            addAlert({
+                duration: 4000,
+                message: response.data.message,
+                type: "success",
+            });
+
+            return response.data
+        }
+        catch (error) {
+
+            const err = error as AxiosError<ApiResponseBody>;
+            addAlert({
+                duration: 4000,
+                message: err.response?.data.message || 'Ocurrió un error inesperado por favor vuelva a intentarlo',
+                type: "error",
+            });
+            return err.response?.data || {
+                data: null,
+                errors: [],
+                hasError: true,
+                message: '',
+                statusCode: 412,
+                traceId: 1212
+            }
+        }
+    }
 
     const deleteProduct = async (id: number) => {
         try {
@@ -274,6 +307,7 @@ export const useProducts = () => {
         getProductById,
         handleSearch,
         getProductsPaginated,
-        updateSalePriceForSupplierId
+        updateSalePriceForSupplierId,
+        bulkCreateProducts
     }
 }

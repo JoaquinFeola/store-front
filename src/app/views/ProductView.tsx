@@ -7,6 +7,7 @@ import { Alert } from "../../ui/components/alerts/Alert";
 import { NotFound } from "../../ui/components/NotFound";
 import { Tooltip } from "../../ui/components/tooltip/Tooltip";
 import { formatCurrency } from "../../utils/currency.util";
+import { TextBadge } from "../../ui/components/alerts/TextBadge";
 
 
 
@@ -99,6 +100,7 @@ export const ProductView = () => {
                     }
                 </div>
                 <div className="grid grid-cols-1 place-content-start gap-y-4">
+                    <h4 className="font-medium text-xl">Proveedor: <span className="font-normal">{product.provider?.name}</span></h4>
                     <h4 className="font-medium text-xl">SKU: <span className="font-normal">{product.sku}</span></h4>
                     <h4 className="font-medium text-xl">
                         Descripción: <span className=" font-normal">{product.description}</span>
@@ -106,6 +108,29 @@ export const ProductView = () => {
                     <h4 className="font-medium text-xl">Precio de venta: <span className="font-normal">{formatCurrency(product.salePrice, 'ARS')}</span></h4>
                     <h4 className="font-medium text-xl">Precio de compra: <span className="font-normal">{formatCurrency(product.purchasePrice, 'ARS')}</span></h4>
                     <h4 className="font-medium text-xl">Ganancia: <span className="font-normal">{formatCurrency(product.salePrice - product.purchasePrice, 'ARS')}</span></h4>
+                    <h4 className="font-medium text-xl">Fecha de caducidad: <span className="font-normal">{ product.expirationDate || 'Sin fecha de caducidad' }</span></h4>                    
+                    <div>
+                        <h4 className="font-medium text-2xl">Códigos de barras</h4>
+                        <div className="flex flex-wrap gap-4 mt-4">
+                            {
+                                product.barCodes?.map((bc, i) => (
+                                    <TextBadge text={bc.code} key={bc.code+i.toString()} />
+                                ))
+                            }
+                        </div>
+                    </div>
+                    <div>
+                        <h4 className="font-medium text-2xl">Categorías</h4>
+                        <div className="flex flex-wrap gap-4 mt-4">
+                            {
+                                product.productCategories?.map((pc, i) => (
+                                    <TextBadge text={pc.category.name!} key={pc.category.name+i.toString()} />
+                                ))
+                            }
+                            
+                        </div>
+                    </div>
+                
                 </div>
             </div>
 

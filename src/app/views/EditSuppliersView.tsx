@@ -40,7 +40,7 @@ export const EditSuppliersView = () => {
         setIsSubmitting(true);
         if (formState.name === '') return;
         await updateSupplier({
-            bussinessName: formState.businessName === '' ? null : formState.businessName,
+            busisnessName: formState.businessName === '' ? null : formState.businessName,
             email: formState.email === '' ? null : formState.email,
             image: formState.file.base64Image === supplier.image ? null : formState.file.base64Image.split(',')[1],
             telephone: formState.telephone === '' ? null : formState.telephone,
@@ -71,7 +71,7 @@ export const EditSuppliersView = () => {
     }, []);
     useEffect(() => {
         assignAllNewValues({
-            businessName: supplier.bussinessName!,
+            businessName: supplier.busisnessName!,
             email: supplier.email!,
             name: supplier.name,
             file: { base64Image: supplier.image!, name: '' },

@@ -6,6 +6,8 @@ import { ModalsContext, ProductsContext } from "../../context"
 import { Link } from "react-router-dom"
 import { createPortal } from "react-dom"
 import { FullScreenImage } from "./FullScreenImage"
+import { formatCurrency } from "../../utils/currency.util"
+import { TextBadge } from "../../ui/components/alerts/TextBadge"
 
 interface ProductsTableItemProps {
     product: Product
@@ -29,12 +31,7 @@ export const ProductsTableItem = React.memo(({ product }: ProductsTableItemProps
         })
     }
 
-    const formatCurrency = (value: number, currency: string) => {
-        return new Intl.NumberFormat('es-ar', {
-            style: 'currency',
-            currency: currency
-        }).format(value);
-    }
+
     return (
         <TableRow className="border-b-[1px] last:border-b-transparent max-h-20 h-20 min-h-20">
             <TableCell className="font-medium">
@@ -78,65 +75,56 @@ export const ProductsTableItem = React.memo(({ product }: ProductsTableItemProps
                     {
                         product.productCategories?.length === 0
                             ? 'Sin categorías'
-                            : product.productCategories?.slice(0, 2).map((pc) =>
-                                <div key={pc.category.id} className="bg-slate-100 px-2 py-1 rounded-md">
-                                    {pc.category.name}
-                                </div>
-                            )
+                            : product.productCategories?.slice(0, 2).map((pc, i) => (
+                                <TextBadge
+                                    key={i.toString() + pc.category}
+                                    text={pc.category.name!}
+                                />
+                            ))
                     }
                     {
                         (product.productCategories !== undefined)
                         && (product.productCategories.length > 2)
-                        && <Link to={`product/${product.id}`} className="text-blue-500 hover:underline">Ver mas...</Link>
+                        && <Link to={`${product.id}`} className="text-blue-500  hover:underline">Más...</Link>
                     }
                 </div>
             </TableCell>
             <TableCell align="left">
-                <div className="flex gap-3 items-center">
-                    {
-                        (product.provider === null)
-                            ? 'Sin proveedor'
-                            : (
-                                <div className="bg-slate-100 px-2 py-1 rounded-md">
-                                    {product?.provider?.name}
-                                </div>
-                            )
-                    }
-                </div>
+                {
+                    (product.provider === null)
+                        ? 'Sin proveedor'
+                        : product.provider?.name
+                }
             </TableCell>
             <TableCell align="left">
                 <div className="flex gap-3 items-center">
                     {
                         product.barCodes?.length === 0
                             ? 'Sin códigos de barras'
-                            : product.barCodes?.slice(0, 2).map((bc, i) =>
-                                <div key={`${bc.code}${i}`} className="bg-slate-100 px-2 py-1 rounded-md">
-                                    {bc.code}
-                                </div>
-                            )
+                            : product.barCodes?.slice(0, 2).map((bc, i) => <TextBadge key={i.toString() + bc.code} text={bc.code} />)
                     }
                     {
                         (product.barCodes !== undefined)
                         && (product.barCodes.length > 2)
-                        && <Link to={`product/${product.id}`} className="text-blue-500 hover:underline">Ver mas...</Link>
+                        && <Link to={`${product.id}`} className="text-blue-500  hover:underline">Más...</Link>
                     }
                 </div>
             </TableCell>
             <TableCell align="left">
                 <Link to={`/products/edit/${product.id}`} >
                     <Button className="rounded-sm">
-                    <i className="bi bi-pencil-square"></i>
+                        <i className="bi bi-pencil-square"></i>
+                    </Button>
+                </Link>
+                <Button onClick={openDeleteModal} className="bg-red-500 ml-3 rounded-sm hover:bg-red-600 transition-colors duration-150">
+                    <i className="bi bi-trash3"></i>
                 </Button>
-            </Link>
-            <Button onClick={openDeleteModal} className="bg-red-500 ml-3 rounded-sm hover:bg-red-600 transition-colors duration-150">
-                <i className="bi bi-trash3"></i>
-            </Button>
-            <Link to={`${product.id}`}>
-                <Button className="ml-3 rounded-sm bg-transparent hover:bg-slate-300 hover:shadow-sm ">
-                    <i className="bi bi-search text-black text-lg"></i>
-                </Button>
-            </Link>
-        </TableCell>
+                <Link to={`${product.id}`}>
+                    <Button className="ml-3 rounded-sm bg-transparent hover:bg-slate-300 hover:shadow-sm ">
+                        <i className="bi bi-search text-black text-lg"></i>
+                    </Button>
+                </Link>
+            </TableCell>
         </TableRow >
     )
 })

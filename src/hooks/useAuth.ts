@@ -82,7 +82,12 @@ export const useAuth = () => {
       });
     }
     catch (error) {
-      console.error(error);
+      addAlert({
+        duration: 5300,
+        message: 'Ocurrió un error al iniciar sesión, intentalo nuevamente',
+        type: 'error',
+        id: new Date().getTime().toString()
+      });
       changeAuthStatus(AUTH_STATE.NOT_AUTHENTICATED)
     }
   };

@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom"
 
 export const SalesPage = () => {
   return (
-    <div>
+    <div className="">
         <Outlet></Outlet>
     </div>
   )

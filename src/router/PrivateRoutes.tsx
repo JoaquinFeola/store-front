@@ -1,5 +1,5 @@
 import { ReactNode, useContext, useEffect } from "react"
-import { AuthContext, CategoriesProvider, ModalsProvider, ProductsProvider, StockProvider } from "../context"
+import { AuthContext, CategoriesProvider, ModalsProvider, ProductsProvider, SalesProvider, StockProvider } from "../context"
 import { AUTH_STATE } from "../consts";
 import { Navigate, useLocation } from "react-router-dom";
 import { setItemToLocalStorage } from "../utils/localstorage.util";
@@ -27,7 +27,9 @@ export const PrivateRoutes = ({ children }: { children: ReactNode }) => {
                     <SuppliersProvider>
                         <ProductsProvider>
                             <StockProvider>
-                                {children}
+                                <SalesProvider>
+                                    {children}
+                                </SalesProvider>
                             </StockProvider>
                         </ProductsProvider>
                     </SuppliersProvider>

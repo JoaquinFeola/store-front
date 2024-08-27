@@ -3,13 +3,13 @@ import { AlertsContext, AuthContext } from "../context";
 import { getItemFromLocalStorage } from "../utils/localstorage.util";
 import { AUTH_LOGIN_KEY } from "../consts";
 import { InternalAxiosRequestConfig } from "axios";
-import { isTokenExpired, shouldRenewToken } from "../utils/token.util";
+import { isTokenExpired } from "../utils/token.util";
 import { httpClient } from "../api/axios-config";
 
 
 
 export const useConfigureInterceptors = () => {
-    const { logout, auth, renewToken } = useContext(AuthContext);    
+    const { logout, auth } = useContext(AuthContext);    
     const { addAlert } = useContext(AlertsContext);
 
 

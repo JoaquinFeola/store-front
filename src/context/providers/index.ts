@@ -5,3 +5,4 @@ export * from './CategoriesProvider.tsx';
 export * from './SuppliersProvider.tsx';
 export * from './ProductsProvider.tsx';
 export * from './StockProvider.tsx';
+export * from './SalesProvider.tsx';

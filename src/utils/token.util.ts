@@ -10,6 +10,8 @@ export const isTokenExpired = (expirationDate: Date) => {
 
 }
 
+
+
 export const shouldRenewToken = (expirationTime: Date): boolean => {
     // Define el tiempo de verificación (5 minutos) en milisegundos
     const timeToCheck = 30 * 60 * 1000; // 5 minutos en milisegundos

@@ -30,7 +30,7 @@ export const SuppliersTableItem = React.memo(({ supplier }: SuppliersTableItemPr
             <TableCell className="font-medium" align="left">{supplier.id}</TableCell>
             <TableCell align="center">{(supplier.image) ? <img className="max-w-12" src={supplier.image} alt="" /> : <span >Sin imagen</span>}</TableCell>
             <TableCell align="left">{supplier.name}</TableCell>
-            <TableCell align="center">{supplier.bussinessName}</TableCell>
+            <TableCell align="center">{supplier.busisnessName}</TableCell>
             <TableCell align="center">{supplier.telephone}</TableCell>
             <TableCell align="center">{supplier.email}</TableCell>
             <TableCell align="center">

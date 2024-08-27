@@ -26,7 +26,7 @@ export const CreateSuppliersView = () => {
         if (formState.name === '') return;
         setIsSubmitting(true)
         await createSupplier({
-            bussinessName: formState.businessName === '' ? null : formState.businessName,
+            busisnessName: formState.businessName === '' ? null : formState.businessName,
             email: formState.email === '' ? null : formState.email,
             image: formState.image === '' ? null : formState.image.split(',')[1],
             telephone: formState.telephone === '' ? null : formState.telephone,

@@ -43,6 +43,23 @@ const drawerLinks: ICreateDrawerLink[] = [
         path: '/',
     },
     {
+        path: '',
+        title: 'Ventas',
+        icon: 'bag-fill',
+        children: [
+            {
+                path: '/sales/list',
+                title: 'Listado de ventas',
+                icon: 'card-list'
+            },
+            {
+                path: '/sales',
+                title: 'Ventas',
+                icon: 'bag-fill'
+            },
+        ]
+    },
+    {
         title: 'Categorías',
         icon: 'tags-fill',
         path: '/categories',
@@ -93,11 +110,7 @@ const drawerLinks: ICreateDrawerLink[] = [
         icon: 'bar-chart-fill',
         path: '/stock',
     },
-    {
-        title: 'Ventas',
-        path: '/sales',
-        icon: 'bag-fill ',
-    }
+    
 ];
 
 export const drawerService = new DrawerService(drawerLinks);

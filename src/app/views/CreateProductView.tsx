@@ -10,6 +10,7 @@ import { Button } from "../../ui/components"
 import { Checkbox } from "../../ui/components/inputs/Checkbox"
 import { BarcodesList } from "../components/BarcodesList"
 import { Alert } from "../../ui/components/alerts/Alert"
+import { formatCurrency } from "../../utils/currency.util"
 
 
 
@@ -193,12 +194,6 @@ export const CreateProductView = () => {
 
     };
 
-    const formatCurrency = (value: number, currency: string) => {
-        return new Intl.NumberFormat('es-ar', {
-            style: 'currency',
-            currency: currency
-        }).format(value);
-    };
 
     useEffect(() => {
         if (hasExpirationDate === false) {

@@ -1,9 +1,8 @@
-import { useCallback, useContext, useState } from "react"
+import { useContext, useState } from "react"
 import { BulkCreateStock, Stock, StockRequestDTO } from "../interfaces/stock.interfaces";
 import { ApiResponse, ApiResponseBody } from "../interfaces";
-import { httpClient } from "../api/axios-config";
-import { AlertsContext, ProductsContext } from "../context";
-import { useNavigate } from "react-router-dom";
+import { httpClient } from "../api/axios-config";   
+import { AlertsContext } from "../context";
 import { AxiosError } from "axios";
 
 interface StockPaginateResponse {

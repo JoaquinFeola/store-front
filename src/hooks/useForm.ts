@@ -23,7 +23,7 @@ export const useForm = <T>(initialForm: T, formValidations: FormValidation<T> = 
         createValidators();
     }, [formState])
 
-    const onInputWrite = ({ target }: ChangeEvent<HTMLInputElement>, lengthValidation?: number) => {
+    const onInputWrite = ({ target }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, lengthValidation?: number) => {
         const { name, value } = target;
         if (lengthValidation === undefined) {
             setFormState({
