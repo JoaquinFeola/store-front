@@ -2,7 +2,6 @@ import { ReactNode, useState } from "react"
 import { drawerService } from "./drawer-data";
 import { DrawerLink } from "./DrawerLink";
 import { DrawerProfileCircle } from "./DrawerProfileCircle";
-import { Tooltip } from "../tooltip/Tooltip";
 
 
 

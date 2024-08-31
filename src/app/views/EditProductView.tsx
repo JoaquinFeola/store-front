@@ -333,7 +333,7 @@ export const EditProductView = () => {
 
         </div>
 
-        <Button className="self-end rounded-md" type="submit">Editar producto</Button>
+        <Button isButtonLoading={isSubmitting} className="self-end rounded-md" type="submit">Editar producto</Button>
       </form>
 
 

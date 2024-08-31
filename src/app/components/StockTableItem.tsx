@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 import { Button, TableCell, TableRow } from "../../ui/components"
 import { Stock } from "../../interfaces/stock.interfaces"
-import { ChangeEvent, FormEvent, useContext } from "react"
+import { FormEvent, useContext } from "react"
 import { ModalsContext, StockContext } from "../../context"
 import { InputLabel } from "../../ui/components/inputs/InputLabel"
 

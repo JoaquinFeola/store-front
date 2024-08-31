@@ -25,7 +25,7 @@ const ListSaleProducts = ({ products, handleRetireProduct }: { products: Prodcut
                         <TableCell>Total</TableCell>
                     </TableRow>
                 </TableHead>
-                <TableBody>
+                <TableBody> 
                     {
                         (products.length == 0)
                             ? <NoRegistries />

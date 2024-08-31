@@ -9,9 +9,9 @@ export const emailValidationFormat = (input: string) => {
     return isInputValid
 }
 
-export const loginValidationFormat = (input: string) => {
+// export const loginValidationFormat = (input: string) => {
 
     
 
 
-}
+// }

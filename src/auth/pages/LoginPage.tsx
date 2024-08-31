@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useRef, useState } from "react"
+import { FormEvent, useContext, useState } from "react"
 import { AuthContext } from "../../context";
 import { FormValidation, useForm } from "../../hooks/useForm";
 import { emailValidationFormat } from "../../validators/input.validators";

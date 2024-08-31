@@ -1,7 +1,7 @@
 import { createContext } from "react";
 import { Product, ProductDTO, ProductToImport } from "../interfaces/product.interfaces";
 import { AxiosError } from "axios";
-import { ApiResponse, ApiResponseBody } from "../interfaces";
+import { ApiResponseBody } from "../interfaces";
 
 
 interface ProductsContextProps {
@@ -37,7 +37,6 @@ interface ProductsContextProps {
     }) => void;
     isProductsLoading: boolean;
     getProductsPaginated: () => Promise<void>,
-    productsPageIndexInternal: number;
     searchPagination: {
         filters: {
             sku: string;
@@ -48,7 +47,7 @@ interface ProductsContextProps {
     };
     bulkCreateProducts: (products: ProductToImport[]) => Promise<ApiResponseBody<null>>;
     updateSalePriceForSupplierId: (body: { providerId: number; percentageToUp: number }) => Promise<void>;
-
+    productPageIndexInternal: number;
 }
 
 

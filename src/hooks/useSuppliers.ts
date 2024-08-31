@@ -52,7 +52,7 @@ export const useSuppliers = () => {
             const { data }: ApiResponse<Supplier> = await httpClient.delete(`/provider/${id}`)
             suppliersDispatch({
                 type: SUPPLIERS_TYPES.DELETE,
-                payload: { id: id } 
+                payload: { id: id } as Supplier
             });
             addAlert({
                 duration: 4000,
@@ -139,7 +139,7 @@ export const useSuppliers = () => {
                     pageIndex: suppliersPageIndexInternal
                 }
             });
-            const { pageIndex, pageSize, rows, totalPages, totalSize } = data.data;
+            const { pageIndex, rows, totalPages, totalSize } = data.data;
             setSuppliersPagination({
                 pageIndex: pageIndex,
                 pageSize: 10,

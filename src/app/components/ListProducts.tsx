@@ -21,7 +21,6 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
         isProductsLoading,
         handleSearch,
         searchPagination,
-        productsPageIndexInternal,
         getProductsPaginated
     } = useContext(ProductsContext);
 

@@ -20,11 +20,11 @@ export const ListSuppliersView = () => {
             return {
                 id: supplier.id,
                 proveedor: supplier.name,
-                nombreEmpresa: supplier.bussinessName,
+                nombreEmpresa: supplier.busisnessName,
                 telefono: supplier.telephone,
                 email: supplier.email,
-                fechaCreacion: formatDate(supplier.created!, 'DD-MM-YYYY HH:mm'),
-                fechaActualizacion: formatDate(supplier.updated!, 'DD-MM-YYYY HH:mm')
+                fechaCreacion: formatDate(String(supplier.created)!, 'DD-MM-YYYY HH:mm'),
+                fechaActualizacion: formatDate(String(supplier.updated)!, 'DD-MM-YYYY HH:mm')
             }
         });
         await excel.exportAsExcelWithJsonData(

@@ -22,7 +22,7 @@ const initialSearchPagination = {
 export const useStock = () => {
     const { addAlert } = useContext(AlertsContext);
     const [stockList, setStockList] = useState<Stock[]>([]);
-    const [isStocLoading, setIsStockLoading] = useState(false)
+    const [isStockLoading, setIsStockLoading] = useState(false)
     const [stockPageIndexInternal, setStockPageIndexInternal] = useState(1);
     const [stockPagination, setStockPagination] = useState({
         pageIndex: 1,
@@ -82,7 +82,7 @@ export const useStock = () => {
             })
 
             if (response.data.errors?.length! > 0) {
-                const errors = response.data.errors as string[];
+                // const errors = response.data.errors as string[];
                 // addAlert({
                 //     duration: 10000,
                 //     message: `${errors.join('\n')}`,
@@ -147,7 +147,7 @@ export const useStock = () => {
         stockList,
         stockPageIndexInternal,
         stockPagination,
-        isStocLoading,
+        isStockLoading,
         searchPagination,
         getStockPaginated,
         handleNextPage,

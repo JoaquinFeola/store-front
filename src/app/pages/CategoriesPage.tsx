@@ -59,10 +59,10 @@ export const CategoriesPage = () => {
       return {
         id: category.id,
         nombre: category.name,
-        fechaCreacion: formatDate(category.created , 'DD-MM-YYYY HH:mm'),
+        fechaCreacion: formatDate(String(category.created) , 'DD-MM-YYYY HH:mm'),
         fechaModificacion: (category.updated === null)
           ? 'Sin modificación'
-          : formatDate(category.updated!, 'DD-MM-YYYY HH:mm')
+          : formatDate(String(category.updated)!, 'DD-MM-YYYY HH:mm')
       }
     });
 

@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { IModal } from "../../../interfaces";
 import { Button } from "../button";
 

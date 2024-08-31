@@ -25,7 +25,6 @@ export const ImportProductsView = () => {
                     codigoDeBarras: "",
                     porcentajeGanancia: "",
                     precioCompra: "",
-                    productoId: "",
                     categoriaId: "",
                     proveedorId: "",
                 }
@@ -50,7 +49,6 @@ export const ImportProductsView = () => {
                     description: productsToMap.descripcion.toString(),
                     expirationDate: productsToMap.fechaExpiracion || null,
                     percentageProfit: parseFloat(productsToMap.porcentajeGanancia),
-                    // productId: parseInt(productsToMap.productoId),
                     providerId: parseInt(productsToMap.proveedorId),
                     purchasePrice: parseFloat(productsToMap.precioCompra),
                     sku: productsToMap.sku.toString()
@@ -68,21 +66,19 @@ export const ImportProductsView = () => {
         if (productsImported.length === 0) return;
         const response =   await bulkCreateProducts(productsImported)
         scrollTo({ top: 0 })
-        // if ( response.hasError ) {
-        //     setErrorsList(['errores']);
-        //     return;
-        // };
-        console.log(response);
+        if ( response.hasError ) {
+            setErrorsList(response.errors!);
+            return;
+        };
         
-        // setErrorsList(response.errors!);
     }
     return (
         <div>
-            {/* {
+            {
                 errorslist.map(err => (
                     <span className="bg-red-400 text-white">{err}</span>
                 ))
-            } */}
+            }
             <div className="flex items-center mb-10">
                 <Tooltip title="Volver a productos" position={{ horizontal: 'right', vertical: 'middle' }}>
                     <Link to="/products" className=" bg-transparent hover:bg-slate-100 transition-colors duration-200 text-gray-800 text-3xl rounded-full"><i className="bi bi-arrow-left"></i></Link>

@@ -46,7 +46,7 @@ export interface ProductForSale {
 }
 
 export interface ImportProductTemplate {
-    productoId: string;
+    productoId?: string;
     sku: string;
     descripcion: string;
     proveedorId: string;

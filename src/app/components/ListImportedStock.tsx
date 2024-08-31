@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { BulkCreateStock } from "../../interfaces/stock.interfaces"
 import { NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 

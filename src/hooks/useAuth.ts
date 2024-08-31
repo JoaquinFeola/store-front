@@ -1,6 +1,5 @@
-import { useNavigate } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
-import { ALERTS_TYPES, AUTH_LOGIN_KEY, AUTH_STATE } from "../consts";
+import { AUTH_LOGIN_KEY, AUTH_STATE } from "../consts";
 import { User, UserCredentials, ApiResponse } from "../interfaces/";
 import { httpClient } from "../api/axios-config";
 import { getItemFromLocalStorage, removeItemFromLocalStorage, setItemToLocalStorage } from "../utils/localstorage.util";
@@ -26,7 +25,6 @@ export const useAuth = () => {
     status: AUTH_STATE.CHECKING
   });
 
-  const navigate = useNavigate();
 
 
 

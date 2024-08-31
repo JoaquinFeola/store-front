@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode } from "react"
+import { HTMLAttributes } from "react"
 
 
 interface TableBodyProps extends HTMLAttributes<HTMLTableSectionElement>{

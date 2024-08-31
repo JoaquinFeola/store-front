@@ -1,4 +1,4 @@
-import { useContext, useEffect, useReducer, useState } from "react";
+import { useContext, useReducer, useState } from "react";
 import { categoriesReducer } from "../reducers/categories.reducer";
 import { httpClient } from "../api/axios-config";
 import { ApiResponse, Category } from "../interfaces";
@@ -134,7 +134,7 @@ export const useCategories = () => {
                     pageIndex: categoriesPageIndexInternal
                 }
             });
-            const { pageIndex, pageSize, rows, totalPages, totalSize } = data.data;
+            const { pageIndex, rows, totalPages, totalSize } = data.data;
             setCategoriesPagination({
                 pageIndex: pageIndex,
                 pageSize: 10,

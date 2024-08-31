@@ -25,11 +25,11 @@ export const ListProductsView = () => {
                 id: product.id,
                 sku: product.sku,
                 descripcion: product.description,
-                fechaExpiracion: formatDate(new Date(product.expirationDate as string), 'DD-MM-YYYY'),
+                fechaExpiracion: formatDate(product.expirationDate!, 'DD-MM-YYYY'),
                 precioCompra: product.purchasePrice,
                 precioVenta: product.salePrice,
-                fechaCreacion: formatDate(product.created, 'DD-MM-YYYY hh:mm'),
-                fechaActualizacion: formatDate(product.updated!, 'DD-MM-YYYY hh:mm'),
+                fechaCreacion: formatDate(product.created.toString(), 'DD-MM-YYYY hh:mm'),
+                fechaActualizacion: formatDate(product.updated!.toString(), 'DD-MM-YYYY hh:mm'),
             } 
         });
         await excel.exportAsExcelWithJsonData(

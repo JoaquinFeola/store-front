@@ -5,7 +5,7 @@ import { IModalCreate } from "../interfaces";
 
 interface ModalsContextProps {
 
-    newModal: <T>(d: IModalCreate) => void
+    newModal: (d: IModalCreate) => void
 }
 
 
