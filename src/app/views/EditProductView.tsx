@@ -148,7 +148,8 @@ export const EditProductView = () => {
     assignAllNewValues({
         barCodes: formState.barCodes.toSpliced(codeBarToDelete, 1),
     });
-}
+} 
+
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

@@ -17,6 +17,7 @@ export const ImportStockView = () => {
   const [stockExcelImported, setStockExcelImported] = useState<BulkCreateStock[]>([]);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [errorslist, setErrorsList] = useState<string[]>([])
+  const [onFormSubmit, setOnFormSubmit] = useState(false);
 
   const handleDownloadStockTemplate = () => {
     excel.exportAsExcelWithJsonData<StockImportTemplate>([{ cantidad: '', productoId: '' }], "Plantilla para importar stock")
@@ -38,6 +39,7 @@ export const ImportStockView = () => {
           quantity: parseFloat(stockToMap.cantidad),
         } as BulkCreateStock
       })
+      setErrorsList([]);
       setStockExcelImported(mapToStock);
       inputFileRef.current!.value = ''
     }
@@ -47,10 +49,24 @@ export const ImportStockView = () => {
 
 
   const onImportStock = async () => {
-    if (stockExcelImported.length === 0) return;
-    await bulkCreateStock(stockExcelImported, (errl) => setErrorsList(errl))
+    setOnFormSubmit(true)
+    if (stockExcelImported.length === 0) return setOnFormSubmit(false);
+    await bulkCreateStock(
+      stockExcelImported,
+      (errl) => {
+        if ( errl.length === 0 ) {
+          setStockExcelImported([])
+        }
+        setErrorsList(errl)
+      })
+
+
     scrollTo({ top: 0 })
+
+    setOnFormSubmit(false);
   }
+
+
 
   return (
     <div>
@@ -83,8 +99,14 @@ export const ImportStockView = () => {
         className=" hidden opacity-0 "
       />
 
-      <ListImportedStock errorsList={errorslist} stockImported={stockExcelImported} />
+      <ListImportedStock
+        setStockExcelImported={setStockExcelImported}
+        errorsList={errorslist}
+        setErrorsList={setErrorsList}
+        stockImported={stockExcelImported}
+      />
       <Button
+        isButtonLoading={onFormSubmit}
         onClick={onImportStock}
         disabled={stockExcelImported.length === 0}
         className="rounded-md mt-8 disabled:bg-blue-500/70">Importar stock</Button>

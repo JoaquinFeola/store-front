@@ -19,12 +19,14 @@ import { SalesPage } from "../pages/SalesPage"
 import { SalesView } from "../views/SalesView"
 import { ImportProductsView } from "../views/ImportProductsView"
 import { ListSalesView } from "../views/ListSalesView"
+import { SaleInfoView } from "../views/SaleInfoView"
+import { HomePage } from "../pages/HomePage"
 
 export const AppRoutes = () => {
   return (
     <Drawer>
       <Routes>
-        <Route path="/" element={<div className="text-4xl">Hola mundo desde <span className="text-red-500 font-bold text-xl uppercase">Home</span></div>} />
+        <Route path="/" element={<HomePage />} />
         <Route
           path="/categories"
           element={<CategoriesPage />}
@@ -57,6 +59,7 @@ export const AppRoutes = () => {
         </Route>
         <Route path="/sales" element={<SalesPage />}>
           <Route index element={<SalesView />} />
+          <Route path="sale/:saleId" element={<SaleInfoView />} />
           <Route path="list" element={<ListSalesView />} />
         </Route>
 

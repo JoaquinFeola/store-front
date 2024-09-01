@@ -8,7 +8,7 @@ interface ProfileOptionsProps  {
   email?: string;
 }
 
-export const ProfileOptions = React.forwardRef( ({ email, name, }: ProfileOptionsProps, ref ) => {
+export const ProfileOptions = React.forwardRef( ({ email, name }: ProfileOptionsProps, ref ) => {
 
   const { newModal } = useContext(ModalsContext)
   const { logout } = useContext(AuthContext);
@@ -23,7 +23,7 @@ export const ProfileOptions = React.forwardRef( ({ email, name, }: ProfileOption
     })
   }
   return (
-    <div ref={ref as React.LegacyRef<HTMLDivElement>} className="absolute w-max right-0  top-[180%] before:content-[''] scale-up-before  before:absolute before:w-6 before:h-6 before:bg-[#2747a4] before:-top-7 before:right-3 before:rounded-full">
+    <div  ref={ref as React.LegacyRef<HTMLDivElement>} className="absolute w-max right-0  top-[180%] before:content-[''] scale-up-before  before:absolute before:w-6 before:h-6 before:bg-[#2747a4] before:-top-7 before:right-3 before:rounded-full">
       <div className="w-full  px-4 bg-[#2747a4] opacity-0 rounded-md min-h-24 py-2 shadow-md scale-up">
         <div className="text-white">
           <h4 className="text-xl text-center tracking-wide">¡Hola <span className="font-bold ">{name}!</span></h4>

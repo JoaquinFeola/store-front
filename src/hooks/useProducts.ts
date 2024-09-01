@@ -165,8 +165,8 @@ export const useProducts = () => {
                 type: 'success'
             });
             navigate('/products')
-
-            await getProductsPaginated();
+            console.log({data,  newProduct});
+            
             setSearchPagination({
                 filters: initialSearchPagination
             })

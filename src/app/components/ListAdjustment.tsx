@@ -1,18 +1,21 @@
 import { BulkCreateStock } from "../../interfaces/stock.interfaces"
-import { NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
+import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 
 interface ListImportedStockProps {
     stockImported: BulkCreateStock[];
     errorsList: string[];
+    setErrorsList: React.Dispatch<React.SetStateAction<string[]>>;
+    setStockExcelImported: React.Dispatch<React.SetStateAction<BulkCreateStock[]>>
 }
 
 interface ImportedStockTableItemProps {
     stock: BulkCreateStock;
     hasRowError: boolean;
-    
+    handleDeleteRow: (index: number, isErrorRow: boolean) => void;
+    index: number;
 }
 
-const ImportedStockTableItem = ({ stock, hasRowError=false }: ImportedStockTableItemProps) => {
+const ImportedStockTableItem = ({ stock, hasRowError = false, handleDeleteRow, index }: ImportedStockTableItemProps) => {
     return (
         <TableRow style={{
             ...hasRowError
@@ -28,12 +31,15 @@ const ImportedStockTableItem = ({ stock, hasRowError=false }: ImportedStockTable
             <TableCell>
                 {stock.quantity}
             </TableCell>
+            <TableCell>
+                <Button onClick={() => handleDeleteRow(index, hasRowError)} type="button" className="hover:bg-red-600 bg-red-500 rounded-sm"><i className="bi bi-trash"></i></Button>
+            </TableCell>
         </TableRow>
     )
 }
 
 
-export const ListAdjustment = ({ stockImported, errorsList }:ListImportedStockProps) => {
+export const ListAdjustment = ({ stockImported, errorsList, setErrorsList, setStockExcelImported }: ListImportedStockProps) => {
 
 
     const errorsListMapped = errorsList.map(value => {
@@ -44,6 +50,17 @@ export const ListAdjustment = ({ stockImported, errorsList }:ListImportedStockPr
 
 
 
+    const handleDeleteRow = (index: number, isErrorRow: boolean) => {
+
+        if (isErrorRow) {
+            const errorIndex = errorsListMapped.indexOf(errorsListMapped[index]);
+            setErrorsList(errorsList.toSpliced(errorIndex, 1))
+        }
+
+        setStockExcelImported(
+            stockImported.toSpliced(index, 1)
+        )
+    }
 
     return (
         <div className="mt-6    ">
@@ -51,12 +68,15 @@ export const ListAdjustment = ({ stockImported, errorsList }:ListImportedStockPr
                 <TableHead >
 
                     <TableRow className="sticky top-0 z-[100]  bg-white shadow-sm ">
-                       
+
                         <TableCell align="left">
                             Id del stock
                         </TableCell>
                         <TableCell align="left">
                             Cantidad
+                        </TableCell>
+                        <TableCell align="left">
+                            Acciones
                         </TableCell>
                     </TableRow>
                 </TableHead>
@@ -66,9 +86,11 @@ export const ListAdjustment = ({ stockImported, errorsList }:ListImportedStockPr
                             ? <NoRegistries />
                             : stockImported.map((stock, index) => (
                                 <ImportedStockTableItem
-                                    stock={stock}
+                                    index={index}
+                                    handleDeleteRow={handleDeleteRow}
                                     hasRowError={errorsListMapped.findIndex(val => parseInt(val![0]) == index + 1 && parseInt(val![1]) == stock.productId) !== -1 ? true : false}
-                                    key={`${stock.stockId}${index}`}
+                                    stock={stock}
+                                    key={`${stock.productId}${index + 1}`}
                                 />))
                     }
 

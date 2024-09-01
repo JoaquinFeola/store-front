@@ -6,6 +6,7 @@ import { Tooltip } from "../tooltip/Tooltip";
 export interface AlertProps {
     type: IAlertType;
     message: ReactNode | string;
+    deleteFunction?: () => void;
 }
 
 
@@ -27,9 +28,10 @@ const setPriorityClasses = (priority: IAlertType) => {
 }
 
 
-export const Alert = ({ message, type  }: AlertProps) => {
+export const Alert = ({ message, type, deleteFunction  }: AlertProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const autoDestroy = () => {
+    ( deleteFunction != undefined  ) && deleteFunction(); 
     ref.current?.remove()
   }
   return (
