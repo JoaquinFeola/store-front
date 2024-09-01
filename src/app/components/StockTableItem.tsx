@@ -12,14 +12,17 @@ interface StockTableItemProps {
 }
 
 
-const ModalFormInput = ({ state }: { state: number}) => {
+const ModalFormInput = ({ state }: { state: number }) => {
     return (
         <>
-            <InputLabel labelText="Cantidad" min={0}  type="number" defaultValue={state} name="quantity"  />
+            <InputLabel labelText="Cantidad" min={0} type="number" defaultValue={state} name="quantity" />
+            <div className="flex gap-4 mt-3">
                 <h3 className="font-medium">Positivo</h3>
                 <input type="radio" name="incrementOrDecrement" value={1} defaultChecked />
                 <h3 className="font-medium">Negativo</h3>
                 <input type="radio" name="incrementOrDecrement" value={2} />
+
+            </div>
 
         </>
     )
@@ -27,8 +30,8 @@ const ModalFormInput = ({ state }: { state: number}) => {
 export const StockTableItem = ({ stock }: StockTableItemProps) => {
     const { newModal } = useContext(ModalsContext)
     const { adjustStock } = useContext(StockContext)
-    
-    
+
+
     const onFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -37,20 +40,20 @@ export const StockTableItem = ({ stock }: StockTableItemProps) => {
 
 
         if (newQuatity!.length <= 0 || newQuatity === undefined) return;
-        adjustStock({ 
-            quantity: parseFloat(newQuatity), 
-            stockAdjustmentEnum: parseInt(incrementOrDecrement!) as 1 | 2, 
-            stockId: stock.id 
-        })      
+        adjustStock({
+            quantity: parseFloat(newQuatity),
+            stockAdjustmentEnum: parseInt(incrementOrDecrement!) as 1 | 2,
+            stockId: stock.id
+        })
     };
-    
+
 
     const handleEditModal = () => {
         newModal({
             title: 'Ajustar el stock',
             submitFunc: onFormSubmit,
             confirmLabel: 'Guardar',
-            content: <ModalFormInput  state={stock.quantity} />
+            content: <ModalFormInput state={stock.quantity} />
         })
     }
 

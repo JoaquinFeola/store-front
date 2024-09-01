@@ -11,7 +11,7 @@ export const AdjustmentStockView = () => {
   const [stockExcelImported, setStockExcelImported] = useState<BulkCreateStock[]>([]);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [errorslist, setErrorsList] = useState<string[]>([])
-  const [onFormSubmit, setOnFormSubmit] = useState(false);
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
   const handleDownloadStockTemplate = () => {
     excel.exportAsExcelWithJsonData<StockImportTemplate>([{ cantidad: '', idStock: '' }], "Plantilla para ajustar stock")
   };
@@ -39,8 +39,8 @@ export const AdjustmentStockView = () => {
     reader.readAsArrayBuffer(file);
   };
   const onImportStock = async () => {
-    setOnFormSubmit(true);
-    if (stockExcelImported.length === 0) return  setOnFormSubmit(false);
+    setIsFormSubmitting(true);
+    if (stockExcelImported.length === 0) return setIsFormSubmitting(false);
     await bulkCreateStock(
       stockExcelImported,
       (errl) => {
@@ -50,7 +50,7 @@ export const AdjustmentStockView = () => {
         setErrorsList(errl)
       })
     scrollTo({ top: 0 })
-    setOnFormSubmit(false);
+    setIsFormSubmitting(false);
   }
 
   return (
@@ -78,6 +78,7 @@ export const AdjustmentStockView = () => {
 
       <ListAdjustment setErrorsList={setErrorsList} setStockExcelImported={setStockExcelImported} stockImported={stockExcelImported} errorsList={errorslist} />
       <Button
+        isButtonLoading={isFormSubmitting}
         onClick={onImportStock}
         disabled={stockExcelImported.length === 0}
         className="rounded-md mt-8 disabled:bg-blue-500/70">Ajustar stock</Button>

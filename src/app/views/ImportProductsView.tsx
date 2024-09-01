@@ -11,7 +11,7 @@ export const ImportProductsView = () => {
     const { bulkCreateProducts } = useContext(ProductsContext)
     const [productsImported, setProductsImported] = useState<ProductToImport[]>([])
     const [errorslist, setErrorsList] = useState<string[]>([])
-
+    const [ isFormSubmitting, setIsFormSubmitting] = useState(false);
 
 
     const inputFileRef = useRef<HTMLInputElement>(null);
@@ -63,22 +63,22 @@ export const ImportProductsView = () => {
 
 
     const onImportProducts = async () => {
-        if (productsImported.length === 0) return;
+        setIsFormSubmitting(true)
+        if (productsImported.length === 0) return setIsFormSubmitting(false);
         const response =   await bulkCreateProducts(productsImported)
         scrollTo({ top: 0 })
         if ( response.hasError ) {
             setErrorsList(response.errors!);
-            return;
         };
-        
+        setIsFormSubmitting(false)
     }
     return (
         <div>
-            {
+            {/* {
                 errorslist.map(err => (
                     <span className="bg-red-400 text-white">{err}</span>
                 ))
-            }
+            } */}
             <div className="flex items-center mb-10">
                 <Tooltip title="Volver a productos" position={{ horizontal: 'right', vertical: 'middle' }}>
                     <Link to="/products" className=" bg-transparent hover:bg-slate-100 transition-colors duration-200 text-gray-800 text-3xl rounded-full"><i className="bi bi-arrow-left"></i></Link>
@@ -105,8 +105,8 @@ export const ImportProductsView = () => {
                 accept=".xls,.xlsx,.xlsm,.xlsb,.xlt,.xltx,.xltm,.csv,.xml,.xlam"
                 className=" hidden opacity-0 "
             />
-            <ListImportedProducts errorsList={errorslist} productsImported={productsImported} />
-            <Button isButtonLoading={false} className="rounded-md mt-5 disabled:bg-blue-500/50"  disabled={productsImported.length === 0} onClick={onImportProducts}>Importar</Button>
+            <ListImportedProducts setErrorsList={setErrorsList} setProductsExcelImported={setProductsImported} errorsList={errorslist} productsImported={productsImported} />
+            <Button isButtonLoading={isFormSubmitting} className="rounded-md mt-5 disabled:bg-blue-500/50"  disabled={productsImported.length === 0} onClick={onImportProducts}>Importar</Button>
         </div>
     )
 }

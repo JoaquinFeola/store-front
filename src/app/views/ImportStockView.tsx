@@ -17,7 +17,7 @@ export const ImportStockView = () => {
   const [stockExcelImported, setStockExcelImported] = useState<BulkCreateStock[]>([]);
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [errorslist, setErrorsList] = useState<string[]>([])
-  const [onFormSubmit, setOnFormSubmit] = useState(false);
+  const [isFormSubmitting, setIsFormSubmitting] = useState(false);
 
   const handleDownloadStockTemplate = () => {
     excel.exportAsExcelWithJsonData<StockImportTemplate>([{ cantidad: '', productoId: '' }], "Plantilla para importar stock")
@@ -49,8 +49,8 @@ export const ImportStockView = () => {
 
 
   const onImportStock = async () => {
-    setOnFormSubmit(true)
-    if (stockExcelImported.length === 0) return setOnFormSubmit(false);
+    setIsFormSubmitting(true)
+    if (stockExcelImported.length === 0) return setIsFormSubmitting(false);
     await bulkCreateStock(
       stockExcelImported,
       (errl) => {
@@ -63,7 +63,7 @@ export const ImportStockView = () => {
 
     scrollTo({ top: 0 })
 
-    setOnFormSubmit(false);
+    setIsFormSubmitting(false);
   }
 
 
@@ -106,7 +106,7 @@ export const ImportStockView = () => {
         stockImported={stockExcelImported}
       />
       <Button
-        isButtonLoading={onFormSubmit}
+        isButtonLoading={isFormSubmitting}
         onClick={onImportStock}
         disabled={stockExcelImported.length === 0}
         className="rounded-md mt-8 disabled:bg-blue-500/70">Importar stock</Button>
