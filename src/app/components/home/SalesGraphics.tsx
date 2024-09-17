@@ -1,19 +1,19 @@
-import { MouseEvent, useState } from "react";
+// import { MouseEvent, useState } from "react";
 import { TwoDaySalesGraphic } from "./TwoDaySalesGraphic"
-export enum SalesHomePageTabs {
-    TODAY_YERSTERDAY = 1,
-    WEEK = 2,
-    MONTH = 3
-  }
+// export enum SalesHomePageTabs {
+//     TODAY_YERSTERDAY = 1,
+//     WEEK = 2,
+//     MONTH = 3
+//   }
 export const SalesGraphics = () => {
 
-  const [salesTab, setSalesTab] = useState(SalesHomePageTabs.TODAY_YERSTERDAY);
+  // const [salesTab, setSalesTab] = useState(SalesHomePageTabs.TODAY_YERSTERDAY);
 
-  const handleChangeTab = (e: MouseEvent<HTMLButtonElement>) => {
-    const tabIndicator = parseInt(e.currentTarget.dataset.tab!);
-    if (tabIndicator && tabIndicator == salesTab) return;
-    setSalesTab(tabIndicator)
-  }
+  // const handleChangeTab = (e: MouseEvent<HTMLButtonElement>) => {
+  //   const tabIndicator = parseInt(e.currentTarget.dataset.tab!);
+  //   if (tabIndicator && tabIndicator == salesTab) return;
+  //   setSalesTab(tabIndicator)
+  // }
 
   return (
     <div className="flex flex-col items-center ">

@@ -1,14 +1,13 @@
 import { useContext, useEffect, useState } from "react";
 import { BarChart } from "../BarChart"
 import { SalesContext } from "../../../context/SalesContext";
-import { SaleForHome } from "../../../interfaces";
 import { ChartData } from "chart.js";
 
 
 
 export const TwoDaySalesGraphic = () => {
   const { getSalesForHome } = useContext(SalesContext);
-  const [hasError, setError] = useState('')
+  const [_, setError] = useState('')
 
   const [salesData, setSalesData] = useState<ChartData<"bar">>({
     labels: ['Ayer', 'Hoy'],

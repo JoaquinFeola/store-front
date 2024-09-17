@@ -8,7 +8,7 @@ import { SalesContext } from '../../../context/SalesContext';
 export const YearSalesGraphic = () => {
     
     const { getSalesForHomeYear } = useContext(SalesContext);
-    const [hasError, setError ] = useState('')
+    const [_, setError ] = useState('')
 
     const [salesData, setSalesData] = useState<ChartData<"line">>({
         labels: ['Ayer', 'Hoy'],
