@@ -81,11 +81,13 @@ export const useSales = () => {
         }
     };
 
-    const getSaleById = (id: number) => {
+    const getSaleById = async (id: number) => {
         try {
-            return 
-        } catch (error) {
+            const resp: ApiResponse<Sale> = await httpClient.get(`sale/${id}`)
             
+            return resp.data.data
+        } catch (error) {
+            return null
         }
     };
     const createSale = async (sale: SaleRequest) => {
@@ -160,7 +162,8 @@ export const useSales = () => {
         isSalesLoading,
         salesPagination,
         getSalesForHome,
-        getSalesForHomeYear
+        getSalesForHomeYear,
+        getSaleById
 
     }
 

@@ -25,7 +25,8 @@ interface SalesContextProps {
         totalSize: number;
     },
     getSalesForHome: () => Promise<ApiResponseBody<SaleForHome> | null>;
-    getSalesForHomeYear: () => Promise<SaleForHomeYear | null>
+    getSalesForHomeYear: () => Promise<SaleForHomeYear | null>;
+    getSaleById: (id: number) => Promise<Sale | null>
 }
 
 export const SalesContext = createContext({} as SalesContextProps);

@@ -93,7 +93,7 @@ export const AppRoutes = () => {
             </Suspense>
           }
           />
-          <Route path="sale/:saleId" element={<SaleInfoView />} />
+          <Route path="list/:saleId" element={<SaleInfoView />} />
           <Route path="list" element={
             <Suspense fallback={<LoadingInfo />}>
               <ListSalesView />

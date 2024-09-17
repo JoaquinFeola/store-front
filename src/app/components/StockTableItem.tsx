@@ -12,10 +12,10 @@ interface StockTableItemProps {
 }
 
 
-const ModalFormInput = ({ state }: { state: number }) => {
+const ModalFormInput = () => {
     return (
         <>
-            <InputLabel labelText="Cantidad" min={0} type="number" defaultValue={state} name="quantity" />
+            <InputLabel labelText="Cantidad" min={0} type="number" placeholder="Ajusta la cantidad aqui..."  name="quantity" />
             <div className="flex gap-4 mt-3">
                 <h3 className="font-medium">Positivo</h3>
                 <input type="radio" name="incrementOrDecrement" value={1} defaultChecked />
@@ -53,7 +53,7 @@ export const StockTableItem = ({ stock }: StockTableItemProps) => {
             title: 'Ajustar el stock',
             submitFunc: onFormSubmit,
             confirmLabel: 'Guardar',
-            content: <ModalFormInput state={stock.quantity} />
+            content: <ModalFormInput />
         })
     }
 

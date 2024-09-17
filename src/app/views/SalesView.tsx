@@ -72,7 +72,7 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
     )
 }
 
- const SalesView = React.memo(() => {
+const SalesView = React.memo(() => {
 
 
     const { getProductsForSale, scanProductCodebar, createSale } = useContext(SalesContext);
@@ -193,7 +193,7 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
             )
             setIsProductFound(true)
         }
-        resetFormValues();
+        assignAllNewValues({ search: '' });
     };
 
     const calculateTotal = (products: ProdcutInCart[]) => {
@@ -212,7 +212,7 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
     };
 
     const totalCashChange = calculateTotalCashChange()
-    
+
     const fetchPaidMethods = async () => {
         try {
             const { data } = await httpClient.get<ApiResponseBody<{ name: string, id: number; }[]>>('payment-type/all');
@@ -232,17 +232,14 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
     }
     useEffect(() => {
 
-        const fetchData = async() => {
+        const fetchData = async () => {
             await Promise.all([
                 getProductsForSale(),
                 fetchPaidMethods(),
-                
+
             ])
         }
-
-        fetchData()
-        // getProductsForSale();
-        // fetchPaidMethods();
+        fetchData();
     }, []);
 
 
@@ -273,16 +270,19 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
     const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (productsFound.length === 0) return;
-        const response = await buildSaleTemplate();
         newModal({
-            submitFunc: (ev) => {
+            submitFunc: async (ev) => {
+                await buildSaleTemplate();
+                ev.preventDefault()
                 handleResetForm()
+
+                assignAllNewValues({ paymentMethod: 1 })
                 ev.currentTarget.remove();
 
             },
             confirmLabel: 'Iniciar nueva venta',
-            title: !response.hasErrors ? response.message : 'Ocurrió un error inesperado',
         });
+
 
     }
 
@@ -325,10 +325,11 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
                         onChange={handleSelectPaymentMethod}
                         className="border-2 px-2 py-1 rounded-md"
                         name="paymentMethod"
+                        value={formState.paymentMethod.toString()}
                         id="">
                         {
                             paidMethods.map((paidMethod) => (
-                                <option key={paidMethod.id} value={paidMethod.id}>
+                                <option  key={paidMethod.id} value={paidMethod.id}>
                                     {paidMethod.title}
                                 </option>
                             ))

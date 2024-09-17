@@ -1,16 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { IModal } from "../../../interfaces";
 import { Button } from "../button";
 
 
 export const Modal = ({ content, submitFunc, cancelFunc, confirmLabel, title }: IModal) => {
+   const formRef = useRef<HTMLFormElement>(null);
+   
+
     useEffect(() => {
         document.body.style.overflow = 'hidden';
         const activeElement = document.activeElement as HTMLElement;
         activeElement.blur();
+        const keydownListener = (ev: globalThis.KeyboardEvent) => {
+            if ( ev.key === 'Enter' ) {
+                ev.preventDefault()
+                if ( formRef.current !== null && submitFunc !== undefined ) {
+                    formRef.current.requestSubmit()
+                }
+            }
+        }
+        document.addEventListener('keydown', keydownListener )
+
         return () => {
             document.body.style.overflow = 'auto';
-
+            document.removeEventListener('keydown', keydownListener)
         }
     }, []);
 
@@ -22,7 +35,7 @@ export const Modal = ({ content, submitFunc, cancelFunc, confirmLabel, title }: 
                 <div className="">
                     <h3 className="font-medium text-3xl text-center break-words">{title}</h3>
                 </div>
-                <form accessKey="s" onSubmit={submitFunc}>
+                <form ref={formRef} onSubmit={submitFunc}>
                     <div className="my-4">
                         {content}
                     </div>
