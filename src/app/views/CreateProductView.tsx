@@ -286,7 +286,7 @@ export const CreateProductView = () => {
                                 name="inputCodeBar"
                                 placeholder="Código de barras"
                                 value={formState.inputCodeBar}
-                                onChange={onInputWrite}
+                                onChange={(e) => onInputWrite(e, 20)}
                             />
                             <Button type="button" className="rounded-md py-[5px] " onClick={addProductCodeBars}>Agregar</Button>
                         </div>

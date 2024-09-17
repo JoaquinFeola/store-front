@@ -108,13 +108,13 @@ export const ProductView = () => {
                     <h4 className="font-medium text-xl">Precio de venta: <span className="font-normal">{formatCurrency(product.salePrice, 'ARS')}</span></h4>
                     <h4 className="font-medium text-xl">Precio de compra: <span className="font-normal">{formatCurrency(product.purchasePrice, 'ARS')}</span></h4>
                     <h4 className="font-medium text-xl">Ganancia: <span className="font-normal">{formatCurrency(product.salePrice - product.purchasePrice, 'ARS')}</span></h4>
-                    <h4 className="font-medium text-xl">Fecha de caducidad: <span className="font-normal">{ product.expirationDate || 'Sin fecha de caducidad' }</span></h4>                    
+                    <h4 className="font-medium text-xl">Fecha de caducidad: <span className="font-normal">{product.expirationDate || 'Sin fecha de caducidad'}</span></h4>
                     <div>
                         <h4 className="font-medium text-2xl">Códigos de barras</h4>
                         <div className="flex flex-wrap gap-4 mt-4">
                             {
                                 product.barCodes?.map((bc, i) => (
-                                    <TextBadge text={bc.code} key={bc.code+i.toString()} />
+                                    <TextBadge text={bc.code} key={bc.code + i.toString()} />
                                 ))
                             }
                         </div>
@@ -124,13 +124,13 @@ export const ProductView = () => {
                         <div className="flex flex-wrap gap-4 mt-4">
                             {
                                 product.productCategories?.map((pc, i) => (
-                                    <TextBadge text={pc.category.name!} key={pc.category.name+i.toString()} />
+                                    <TextBadge text={pc.category.name!} key={pc.category.name + i.toString()} />
                                 ))
                             }
-                            
+
                         </div>
                     </div>
-                
+
                 </div>
             </div>
 

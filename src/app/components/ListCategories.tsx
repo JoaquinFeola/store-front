@@ -24,11 +24,14 @@ export const ListCategories = () => {
                         <TableCell className="w-0" align="left">
                             #
                         </TableCell>
-                        <TableCell align="left">
+                        <TableCell align="center">
                             Categoría
                         </TableCell>
                         <TableCell align="center">
                             Acciones
+                        </TableCell>
+                        <TableCell align="center">
+                            Estado
                         </TableCell>
                     </TableRow>
                 </TableHead>

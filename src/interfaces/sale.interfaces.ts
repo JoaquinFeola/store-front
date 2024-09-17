@@ -12,6 +12,21 @@ export interface SaleRequest {
 }
 
 
+
+export interface SaleForHomeYear {
+    salesMonth: [number, number, number, number, number, number, number, number, number, number, number, number]
+}
+
+export interface SaleForHome {
+    salesFromYesterday: SaleFromHomeDetail
+    salesFromToday: SaleFromHomeDetail
+}
+
+interface SaleFromHomeDetail {
+    totalSales: number;
+    totalAmount: number;
+}
+
 export interface Sale {
     id: number;
     paymentTypeId: number;
@@ -20,7 +35,7 @@ export interface Sale {
     amountPaid: 0,
     changeReturned: 0,
     note: "",
-    salesDetail: SaleInSaleDetail[]; 
+    salesDetail: SaleInSaleDetail[];
 }
 
 export interface SaleInSaleDetail {

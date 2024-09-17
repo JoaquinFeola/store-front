@@ -21,6 +21,7 @@ export interface Product {
     expirationDate?: string | null;
     created: Date;
     updated?: Date | null;
+    isActive?: boolean;
 }
 
 export interface ProductRequestDTO {

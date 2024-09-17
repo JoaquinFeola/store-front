@@ -110,6 +110,10 @@ export const ProductsTableItem = React.memo(({ product }: ProductsTableItemProps
                     }
                 </div>
             </TableCell>
+            <TableCell align="center" >
+                <span className={`${product.isActive ? 'text-green-600' : 'text-red-600'}`}>{product.isActive ? 'Activo' : 'Inactivo'}</span>
+                {/* <div className={`${category.isActive ? 'bg-green-400' : 'bg-red-400'} w-[15px] shadow-md h-[15px] rounded-full `}></div> */}
+            </TableCell>
             <TableCell align="left">
                 <Link to={`/products/edit/${product.id}`} >
                     <Button className="rounded-sm">

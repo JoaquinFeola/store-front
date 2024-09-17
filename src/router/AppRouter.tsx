@@ -11,6 +11,7 @@ export const AppRouter = () => {
 
       <Routes>
         <Route
+  
           path="/auth/*"
           element={
             <PublicRoutes>

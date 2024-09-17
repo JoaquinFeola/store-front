@@ -17,7 +17,7 @@ export const AdjustmentStockView = () => {
   };
 
   const readFileOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length === 0) return console.log('File doesnt exists');
+    if (e.target.files?.length === 0) return ;
 
     const file = e.target.files![0];
     const reader = new FileReader();

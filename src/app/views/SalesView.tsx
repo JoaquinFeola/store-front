@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from "react"
+import React, { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from "react"
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 import { InputLabel } from "../../ui/components/inputs/InputLabel"
 import { ProdcutInCart } from "../../interfaces/product.interfaces";
@@ -9,11 +9,10 @@ import { ModalsContext } from "../../context";
 import { formatCurrency, formatToDecimal, parseFormattedValue } from "../../utils/currency.util";
 import { SalesContext } from "../../context/SalesContext";
 
-
 const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProductQuantity }: { products: ProdcutInCart[]; aumentOrDecrementProductQuantity: (id: number, isDecrementing?: boolean) => void; handleRetireProduct: (id: number) => void }) => {
 
     return (
-        <div className="h-[300px]"> 
+        <div className="h-[300px]">
 
             <Table className="text-black">
                 <TableHead>
@@ -45,11 +44,11 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
                                     <TableCell>
                                         {product.description}
                                     </TableCell>
-                                    <TableCell> 
+                                    <TableCell>
                                         {formatCurrency(product.salePrice, 'ARS')}
                                     </TableCell>
                                     <TableCell className="">
-                                        <Button onClick={(e) => aumentOrDecrementProductQuantity(product.id, true)} type="button" className="bg-transparent hover:bg-slate-100 rounded-full mr-1 " style={{ color: 'black' }}>-</Button>
+                                        <Button onClick={() => aumentOrDecrementProductQuantity(product.id, true)} type="button" className="bg-transparent hover:bg-slate-100 rounded-full mr-1 " style={{ color: 'black' }}>-</Button>
                                         {product.quantity}
                                         <Button onClick={() => aumentOrDecrementProductQuantity(product.id)} style={{ color: 'black' }} type="button" className="ml-1 rounded-full hover:bg-slate-100 bg-transparent">+</Button>
                                     </TableCell>
@@ -73,8 +72,7 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
     )
 }
 
-
-export const SalesView = () => {
+ const SalesView = React.memo(() => {
 
 
     const { getProductsForSale, scanProductCodebar, createSale } = useContext(SalesContext);
@@ -118,16 +116,16 @@ export const SalesView = () => {
     const aumentOrDecrementProductQuantity = (id: number, isDecrementing: boolean = false) => {
         const productFound = productsFound.findIndex(product => product.id === id);
 
-        if ( productsFound[productFound].quantity <= 1 && isDecrementing ) return;
+        if (productsFound[productFound].quantity <= 1 && isDecrementing) return;
 
-        ( isDecrementing )
+        (isDecrementing)
             ? setProductsFound(
                 productsFound.map((product) => {
                     return {
                         ...product,
                         quantity: product.quantity - 1
                     }
-                }) 
+                })
             )
             : setProductsFound(
                 productsFound.map((product) => {
@@ -214,29 +212,37 @@ export const SalesView = () => {
     };
 
     const totalCashChange = calculateTotalCashChange()
+    
+    const fetchPaidMethods = async () => {
+        try {
+            const { data } = await httpClient.get<ApiResponseBody<{ name: string, id: number; }[]>>('payment-type/all');
 
+
+
+            let mappedPaymentMethods: { title: string, img?: string; id: number; }[] = [];
+            for (let paymentMethod of data.data) {
+                mappedPaymentMethods.push({ id: paymentMethod.id, title: paymentMethod.name })
+            };
+
+            setPaidMethods(mappedPaymentMethods);
+        }
+        catch (error) {
+            setPaidMethods([]);
+        }
+    }
     useEffect(() => {
 
-        const fetchPaidMethods = async () => {
-            try {
-                const { data } = await httpClient.get<ApiResponseBody<{ name: string, id: number; }[]>>('payment-type/all');
-
-
-
-                let mappedPaymentMethods: { title: string, img?: string; id: number; }[] = [];
-                for (let paymentMethod of data.data) {
-                    mappedPaymentMethods.push({ id: paymentMethod.id, title: paymentMethod.name })
-                };
-
-                setPaidMethods(mappedPaymentMethods);
-            }
-            catch (error) {
-                setPaidMethods([]);
-            }
+        const fetchData = async() => {
+            await Promise.all([
+                getProductsForSale(),
+                fetchPaidMethods(),
+                
+            ])
         }
 
-        getProductsForSale();
-        fetchPaidMethods();
+        fetchData()
+        // getProductsForSale();
+        // fetchPaidMethods();
     }, []);
 
 
@@ -266,7 +272,6 @@ export const SalesView = () => {
 
     const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(productsFound, 'ha llegado aqui')
         if (productsFound.length === 0) return;
         const response = await buildSaleTemplate();
         newModal({
@@ -305,7 +310,7 @@ export const SalesView = () => {
                         (!isProductFound && formState.search !== '')
                         && (
                             <span className="text-red-600 absolute -bottom-5 text-sm leading-none text-nowrap seect-none pointer-events-none">
-                                Producto no encontrado con ese codigo de barras o SKU           
+                                Producto no encontrado con ese codigo de barras o SKU
                             </span>
                         )
                     }
@@ -324,7 +329,7 @@ export const SalesView = () => {
                         {
                             paidMethods.map((paidMethod) => (
                                 <option key={paidMethod.id} value={paidMethod.id}>
-                                    {paidMethod.title}{paidMethod.id}
+                                    {paidMethod.title}
                                 </option>
                             ))
                         }
@@ -370,11 +375,13 @@ export const SalesView = () => {
                 </div>
                 <div className="  pt-2">
                     <Button type="submit" className="rounded-md bg-green-700 hover:bg-green-800">
-                        Cobrar (enter)
+                        Guardar venta
                     </Button>
                 </div>
             </div>
 
         </form>
     )
-}
+})
+
+export default SalesView

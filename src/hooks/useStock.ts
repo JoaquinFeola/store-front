@@ -37,8 +37,8 @@ export const useStock = () => {
     const handleSearch = (filters: typeof searchPagination.filters) => {
         setSearchPagination({
             filters: filters
-        })
-
+        });
+        setStockPageIndexInternal(1);
     }
 
 
@@ -81,7 +81,6 @@ export const useStock = () => {
                 type: 'success'
             })
 
-            if (response.data.errors?.length! > 0) {
                 // const errors = response.data.errors as string[];
                 // addAlert({
                 //     duration: 10000,
@@ -90,7 +89,6 @@ export const useStock = () => {
                 // })
                 cb(response.data?.errors!)
 
-            }
         }
         catch (error) {
             const err = error as AxiosError<ApiResponseBody>

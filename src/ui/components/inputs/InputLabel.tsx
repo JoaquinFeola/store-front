@@ -1,11 +1,11 @@
-import { InputHTMLAttributes } from "react"
+import React, { InputHTMLAttributes } from "react"
 
 interface InputLabelProps extends InputHTMLAttributes<HTMLInputElement> {
   labelText: string;
 };
 
 
-export const InputLabel = ({ labelText, className, ...attr }: InputLabelProps) => {
+export const InputLabel = React.memo(({ labelText, className, ...attr }: InputLabelProps) => {
   return (
     <label htmlFor={attr.name || ''} className={`grid gap-2 mt-3`}>
       <span className={`font-medium text-lg ${attr.required == true ? "after:content-['*'] after:text-red-500 after:ml-1" : ""}`}>{labelText}</span>
@@ -17,4 +17,4 @@ export const InputLabel = ({ labelText, className, ...attr }: InputLabelProps) =
       />
     </label>
   )
-}
+})

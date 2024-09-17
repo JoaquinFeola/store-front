@@ -7,7 +7,7 @@ import { formatDate } from "../../plugins/momentFormat.plugin";
 import { Tooltip } from "../../ui/components/tooltip/Tooltip";
 import { ListProducts } from "../components/ListProducts";
 
-export const ListProductsView = () => {
+const ListProductsView = () => {
     const { getAllProducts, isProductsLoading, products } = useContext(ProductsContext)
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
@@ -28,9 +28,9 @@ export const ListProductsView = () => {
                 fechaExpiracion: formatDate(product.expirationDate!, 'DD-MM-YYYY'),
                 precioCompra: product.purchasePrice,
                 precioVenta: product.salePrice,
-                fechaCreacion: formatDate(product.created.toString(), 'DD-MM-YYYY hh:mm'),
-                fechaActualizacion: formatDate(product.updated!.toString(), 'DD-MM-YYYY hh:mm'),
-            } 
+                fechaCreacion: formatDate(String(product.created), 'DD-MM-YYYY hh:mm'),
+                fechaActualizacion: formatDate(product.updated ? String(product.updated) : null, 'DD-MM-YYYY hh:mm'),
+            }
         });
         await excel.exportAsExcelWithJsonData(
             productsMapped,
@@ -52,16 +52,16 @@ export const ListProductsView = () => {
                     </Button>
                 </div>
                 <div className="flex gap-2 items-center">
-                    <Tooltip title={isFiltersOpen ? 'Cerrar filtros' : 'Desplegar filtros'} position={{horizontal: 'left', vertical: 'middle'}} >
-                        <Button 
-                        disabled={isProductsLoading === false && products.length === 0} 
-                        onClick={handleToggleFiltersOpen} 
-                        className="bg-slate-100 text-black text-2xl hover:shadow-inner  hover:bg-slate-200 rounded-full px-3"
+                    <Tooltip title={isFiltersOpen ? 'Cerrar filtros' : 'Desplegar filtros'} position={{ horizontal: 'left', vertical: 'middle' }} >
+                        <Button
+                            disabled={isProductsLoading === false && products.length === 0}
+                            onClick={handleToggleFiltersOpen}
+                            className="bg-slate-100 text-black text-2xl hover:shadow-inner  hover:bg-slate-200 rounded-full px-3"
                         >
                             <i className="bi bi-filter text-black"></i>
                         </Button>
                     </Tooltip>
-                    <Tooltip title="Exportar a excel" position={{horizontal: 'left', vertical: 'middle'}} >
+                    <Tooltip title="Exportar a excel" position={{ horizontal: 'left', vertical: 'middle' }} >
                         <Button isButtonLoading={isLoading} disabled={isProductsLoading === false && products.length === 0 || isLoading} onClick={handleExportToExcel} className="disabled:bg-green-700/50 rounded-md px-3 hover:bg-green-800 bg-excelGreen">
                             <i className="bi bi-download"></i>
                         </Button>
@@ -72,3 +72,6 @@ export const ListProductsView = () => {
         </div>
     )
 }
+
+
+export default ListProductsView

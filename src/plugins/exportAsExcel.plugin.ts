@@ -46,7 +46,6 @@ const worksheetToJson = <T extends Object,>(worksheet: excelJs.Worksheet) => {
 
     });
 
-    console.log(json);
     
     return json
 
@@ -68,7 +67,7 @@ export const excel = {
             worksheet.columns = columns;
             worksheet.addRows(jsonData);
 
-            const maxColumnWidths = columns.map((column, colIndex) => {
+            const maxColumnWidths = columns.map((column) => {
                 const columnData = jsonData.map(row => row[column.key]);
                 const maxLength = columnData.reduce((max, cell) => {
                     const cellLength = String(cell).length;
@@ -87,7 +86,6 @@ export const excel = {
             await saveAs(blobFile, `${filename}.xlsx`)
         }
         catch (error) {
-            console.log('error', error);
 
         }
 

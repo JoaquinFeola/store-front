@@ -90,8 +90,8 @@ export const StockTableItem = ({ stock }: StockTableItemProps) => {
                 {stock.quantity}
             </TableCell>
             <TableCell align="left">
-                <Button className="rounded-sm" onClick={handleEditModal}>
-                    <i className="bi bi-pencil-square"></i>
+                <Button className="rounded-full bg-transparent hover:bg-slate-100" onClick={handleEditModal}>
+                    <i className="bi bi-wrench text-slate-800 text-2xl "></i>
                 </Button>
 
             </TableCell>

@@ -1,3 +1,4 @@
+import React from "react";
 import { Tooltip } from "../../ui/components/tooltip/Tooltip";
 
 
@@ -6,7 +7,7 @@ interface FullScreenImageProps {
     closeBtn: () => void
 };
 
-export const FullScreenImage = ({ src, closeBtn  }: FullScreenImageProps) => {
+export const FullScreenImage = React.memo(({ src, closeBtn  }: FullScreenImageProps) => {
   return (
     <div className="flex flex-col  w-full h-dvh bg-black/50 fixed top-0 left-0 z-[2000]">
         <div className="mb-2 z-[300] absolute top-2 right-2">
@@ -18,11 +19,11 @@ export const FullScreenImage = ({ src, closeBtn  }: FullScreenImageProps) => {
             </Tooltip>
         </div>
         <div className=" flex-grow  flex items-center justify-center ">
-            <img className="fadeInUp w-72 min-w-72 min-h-72  h-72 max-w-[300px] max-h-[300px] rounded-md" src={src} alt="imagen" />
+            <img className="fadeInUp min-w-72 min-h-72   object-contain max-w-[60%] rounded-md" src={src} alt={"Imagen"} />
 
         </div>
 
 
     </div>
   )
-}
+})

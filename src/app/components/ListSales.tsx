@@ -1,4 +1,4 @@
-import { useContext } from "react"
+import React, { useContext } from "react"
 import { Sale } from "../../interfaces"
 import { Button, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 import { SalesContext } from "../../context/SalesContext"
@@ -10,7 +10,7 @@ interface ListSalesProps {
     sales: Sale[]
 };
 
-export const ListSales = ({ sales }: ListSalesProps) => {
+export const ListSales = React.memo(({ sales }: ListSalesProps) => {
     const { isSalesLoading, salesPagination, handleNextPage, handlePreviousPage} = useContext(SalesContext);
     return (
         <div className="mt-6 fadeInUp">
@@ -78,4 +78,4 @@ export const ListSales = ({ sales }: ListSalesProps) => {
             </div>
         </div>
     )
-}
+})

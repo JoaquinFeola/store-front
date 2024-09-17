@@ -6,5 +6,6 @@ export interface Category {
     user?: string;
     created: Date;
     updated?: Date ;
+    isActive?: boolean;
 };
 

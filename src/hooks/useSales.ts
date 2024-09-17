@@ -1,9 +1,8 @@
 import { useState } from "react"
 import { ProductForSale } from "../interfaces/product.interfaces"
 import { httpClient } from "../api/axios-config";
-import { ApiResponse, ApiResponseBody, Sale, SaleRequest, SalesParamsRequest } from "../interfaces";
+import { ApiResponse, ApiResponseBody, Sale, SaleForHome, SaleForHomeYear, SaleRequest, SalesParamsRequest } from "../interfaces";
 import { AxiosError } from "axios";
-
 
 
 
@@ -29,6 +28,24 @@ export const useSales = () => {
     const [sales, setSalesPaginated] = useState<Sale[]>([]);
     const [salesPageIndexInternal, setSalesPageIndexInternal] = useState(1);
 
+
+    const getSalesForHomeYear = async () => {
+        try {
+            const response: ApiResponse<SaleForHomeYear> = await httpClient.get('/sale/for-home/all-year')
+            return response.data.data
+        } catch (error) {
+            return null
+        }
+    }
+    const getSalesForHome = async () => {
+        try {
+            const response: ApiResponse<SaleForHome> = await httpClient.get('/sale/for-home');
+
+            return response.data;
+        } catch (error) {
+            return null;
+        }
+    }
 
     const handleNextPage = async () => {
         if (salesPagination.pageIndex >= salesPagination.totalPages) return;
@@ -64,7 +81,13 @@ export const useSales = () => {
         }
     };
 
-
+    const getSaleById = (id: number) => {
+        try {
+            return 
+        } catch (error) {
+            
+        }
+    };
     const createSale = async (sale: SaleRequest) => {
         try {
             const newSale: ApiResponse = await httpClient.post('/sale/create', sale);
@@ -135,7 +158,9 @@ export const useSales = () => {
         handlePreviousPage,
         sales,
         isSalesLoading,
-        salesPagination
+        salesPagination,
+        getSalesForHome,
+        getSalesForHomeYear
 
     }
 

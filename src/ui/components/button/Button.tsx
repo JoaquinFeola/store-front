@@ -1,11 +1,11 @@
-import React, { ButtonHTMLAttributes } from "react"
+import React, { ButtonHTMLAttributes, forwardRef } from "react"
 
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isButtonLoading?: boolean;
 }
 
-export const Button = React.forwardRef(({ className, isButtonLoading, ...btnAttributtes }: ButtonProps, ref) => {
+export const Button = React.memo(forwardRef(({ className, isButtonLoading, ...btnAttributtes }: ButtonProps, ref) => {
 
   return (
     <button
@@ -29,4 +29,4 @@ export const Button = React.forwardRef(({ className, isButtonLoading, ...btnAttr
     </button>
 
   )
-})
+})) 

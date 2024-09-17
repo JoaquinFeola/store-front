@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { Sale, SaleRequest } from "../interfaces";
+import { ApiResponseBody, Sale, SaleForHome, SaleForHomeYear, SaleRequest } from "../interfaces";
 import { ProductForSale } from "../interfaces/product.interfaces";
 import { AxiosError } from "axios";
 
@@ -23,7 +23,9 @@ interface SalesContextProps {
         pageSize: number;
         totalPages: number;
         totalSize: number;
-    }
+    },
+    getSalesForHome: () => Promise<ApiResponseBody<SaleForHome> | null>;
+    getSalesForHomeYear: () => Promise<SaleForHomeYear | null>
 }
 
 export const SalesContext = createContext({} as SalesContextProps);

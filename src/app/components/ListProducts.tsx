@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useEffect, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 import { CategoriesContext, ProductsContext, SuppliersContext } from "../../context";
 import { ProductsTableItem } from "./ProductsTableItem";
@@ -12,7 +12,7 @@ interface ListProductsProps {
 }
 
 
-export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
+export const ListProducts = React.memo(({ isFiltersOpen }: ListProductsProps) => {
     const {
         products,
         productsPagination,
@@ -85,7 +85,6 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
 
     };
     const filterCategory = (id: number) => {
-        console.log(id, formState);
 
         if (formState.categoryId === id) {
             assignAllNewValues({
@@ -212,6 +211,7 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
                         <TableCell align="left">
                             Códigos de barras
                         </TableCell>
+                        <TableCell align="center">Estado</TableCell>
                         <TableCell align="left">
                             Acciones
                         </TableCell>
@@ -258,4 +258,4 @@ export const ListProducts = ({ isFiltersOpen }: ListProductsProps) => {
         </div>
 
     )
-}
+})

@@ -165,7 +165,6 @@ export const useProducts = () => {
                 type: 'success'
             });
             navigate('/products')
-            console.log({data,  newProduct});
             
             setSearchPagination({
                 filters: initialSearchPagination

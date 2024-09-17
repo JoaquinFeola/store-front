@@ -1,4 +1,4 @@
-import { FormEvent, useContext, useEffect, useState } from "react";
+import React, { FormEvent, useContext, useEffect, useState } from "react";
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 import { ProductsContext, StockContext } from "../../context";
 import { useForm } from "../../hooks/useForm";
@@ -12,7 +12,7 @@ interface ListStockProps {
 }
 
 
-export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
+export const ListStock = React.memo(({ isFiltersOpen }: ListStockProps) => {
     
     const { getAllProducts } = useContext(ProductsContext);
     
@@ -98,7 +98,6 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
 
     useEffect(() => {
         getStockPaginated();
-        console.log(searchPagination)
 
     }, [searchPagination.filters]);
 
@@ -200,4 +199,4 @@ export const ListStock = ({ isFiltersOpen }: ListStockProps) => {
         </div>
 
     )
-}
+})

@@ -27,7 +27,7 @@ export const EditSuppliersView = () => {
 
     const { onInputWrite, onInputLoadFile, assignAllNewValues, formState } = useForm({
         name: '',
-        file: { name: '', base64Image: '' },
+        image: '',
         email: '',
         telephone: '',
         businessName: ''
@@ -42,7 +42,7 @@ export const EditSuppliersView = () => {
         await updateSupplier({
             busisnessName: formState.businessName === '' ? null : formState.businessName,
             email: formState.email === '' ? null : formState.email,
-            image: formState.file.base64Image === supplier.image ? null : formState.file.base64Image.split(',')[1],
+            image: formState.image === supplier.image ? null : formState.image.split(',')[1],
             telephone: formState.telephone === '' ? null : formState.telephone,
             name: formState.name,
         }, parseInt(supplierId));
@@ -74,7 +74,7 @@ export const EditSuppliersView = () => {
             businessName: supplier.busisnessName!,
             email: supplier.email!,
             name: supplier.name,
-            file: { base64Image: supplier.image!, name: '' },
+            image: formState.image,
             telephone: supplier.telephone!
         })
     }, [supplier])
@@ -151,9 +151,10 @@ export const EditSuppliersView = () => {
                     </div>
                     <div className="mb-10 ">
                         <ImageInput
+                            
                             onLoadFile={onInputLoadFile}
-                            src={formState.file.base64Image}
-                            inputName="file"
+                            src={formState.image}
+                            inputName="image"
                         />
                     </div>
                     <Button disabled={isSubmitting} className="disabled:bg-blue-500/40 rounded-md" type="submit">Editar proveedor</Button>

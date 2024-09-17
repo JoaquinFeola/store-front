@@ -24,7 +24,7 @@ export const ImportStockView = () => {
   };
 
   const readFileOnChange = (e: ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.length === 0) return console.log('File doesnt exists');
+    if (e.target.files?.length === 0) return;
 
     const file = e.target.files![0];
     const reader = new FileReader();
@@ -54,9 +54,7 @@ export const ImportStockView = () => {
     await bulkCreateStock(
       stockExcelImported,
       (errl) => {
-        if ( errl.length === 0 ) {
-          setStockExcelImported([])
-        }
+        if (errl.length === 0) return setStockExcelImported([]);
         setErrorsList(errl)
       })
 

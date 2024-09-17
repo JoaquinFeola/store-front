@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react"
+import React, { ReactNode, useState } from "react"
 import { drawerService } from "./drawer-data";
 import { DrawerLink } from "./DrawerLink";
 import { DrawerProfileCircle } from "./DrawerProfileCircle";
@@ -17,7 +17,7 @@ interface DrawerProps {
 }
 
 
-export const Drawer = ({ children }: DrawerProps) => {
+export const Drawer = React.memo(({ children }: DrawerProps) => {
     const { drawerLinks } = drawerService;
     const [isDrawerOpen, setDrawerOpen] = useState(false);
 
@@ -61,4 +61,4 @@ export const Drawer = ({ children }: DrawerProps) => {
             </div>
         </div>
     )
-}
+})

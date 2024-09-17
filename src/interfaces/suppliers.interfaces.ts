@@ -10,4 +10,5 @@ export interface Supplier {
     image?: string | null;
     created?: Date;
     updated?: Date;
+    isActive?: boolean;
 }

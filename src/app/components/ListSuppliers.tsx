@@ -1,9 +1,9 @@
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 import { SuppliersContext } from "../../context";
 import { SuppliersTableItem } from "./SuppliersTableItem";
 
-export const ListSuppliers = () => {
+export const ListSuppliers = React.memo(() => {
     const { 
         suppliers, 
         suppliersPagination, 
@@ -46,6 +46,7 @@ export const ListSuppliers = () => {
                         <TableCell align="center">
                             Correo electrónico
                         </TableCell>
+                        <TableCell align="center">Estado</TableCell>
                         <TableCell align="center">
                             Acciones
                         </TableCell>
@@ -91,4 +92,4 @@ export const ListSuppliers = () => {
         </div>
 
     )
-}
+})

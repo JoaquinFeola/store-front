@@ -5,7 +5,7 @@ import { SalesContext } from "../../context/SalesContext";
 
 
 
-export const ListSalesView = () => {
+ const ListSalesView = () => {
     const {getSalesPaginated, sales,} = useContext(SalesContext);
 
 
@@ -20,3 +20,6 @@ export const ListSalesView = () => {
         </div>
     )
 }
+
+
+export default ListSalesView
