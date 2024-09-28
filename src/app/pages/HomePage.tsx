@@ -1,6 +1,7 @@
 
 import { IncommingMoneyGraphics } from "../components/home/IncommingMoneyGraphics";
 import { SalesGraphics } from "../components/home/SalesGraphics";
+// import { SalesGraphics } from "../components/home/SalesGraphics";
 
 
 

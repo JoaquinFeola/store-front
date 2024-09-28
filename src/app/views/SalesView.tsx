@@ -12,11 +12,11 @@ import { SalesContext } from "../../context/SalesContext";
 const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProductQuantity }: { products: ProdcutInCart[]; aumentOrDecrementProductQuantity: (id: number, isDecrementing?: boolean) => void; handleRetireProduct: (id: number) => void }) => {
 
     return (
-        <div className="h-[300px]">
+        <div className="h-[300px] overflow-auto">
 
-            <Table className="text-black">
-                <TableHead>
-                    <TableRow>
+            <Table className="text-black overflow-auto">
+                <TableHead >
+                    <TableRow >
                         <TableCell>SKU</TableCell>
                         <TableCell>Imagen</TableCell>
                         <TableCell>Item</TableCell>
@@ -80,9 +80,10 @@ const SalesView = React.memo(() => {
     const { newModal } = useContext(ModalsContext)
     const [paidMethods, setPaidMethods] = useState<{ title: string, img?: string; id: number; }[]>([]);
     const inputCashRef = useRef<HTMLInputElement>(null);
-
+    const [isModalOpen, setIsModalOpen] = useState(false);
     const [productsFound, setProductsFound] = useState<ProdcutInCart[]>([]);
 
+    const formRef = useRef<HTMLFormElement>(null);
 
     const { formState, onInputWrite, resetFormValues, assignAllNewValues } = useForm({
         search: '',
@@ -95,9 +96,9 @@ const SalesView = React.memo(() => {
     const handleWriteChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         const cursorPosition = e.target.selectionStart;
-
         const formatted = formatToDecimal(value);
         const numeric = parseFormattedValue(formatted);
+        if ( value === '') return;
 
         assignAllNewValues({
             cash: formatted,
@@ -168,7 +169,7 @@ const SalesView = React.memo(() => {
         if (productFound == null) {
             setIsProductFound(false)
             return;
-        };
+        }
 
 
 
@@ -219,10 +220,10 @@ const SalesView = React.memo(() => {
 
 
 
-            let mappedPaymentMethods: { title: string, img?: string; id: number; }[] = [];
-            for (let paymentMethod of data.data) {
+            const mappedPaymentMethods: { title: string, img?: string; id: number; }[] = [];
+            for (const paymentMethod of data.data) {
                 mappedPaymentMethods.push({ id: paymentMethod.id, title: paymentMethod.name })
-            };
+            }
 
             setPaidMethods(mappedPaymentMethods);
         }
@@ -270,26 +271,46 @@ const SalesView = React.memo(() => {
     const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (productsFound.length === 0) return;
+        setIsModalOpen(true)
         newModal({
             submitFunc: async (ev) => {
                 await buildSaleTemplate();
                 ev.preventDefault()
                 handleResetForm()
 
-                assignAllNewValues({ paymentMethod: 1 })
-                ev.currentTarget.remove();
-
+                setIsModalOpen(false);
             },
             confirmLabel: 'Iniciar nueva venta',
         });
-
-
     }
 
+   
 
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        const activeElement = document.activeElement as HTMLElement;
+        activeElement.blur();
+        const keydownListener = (ev: globalThis.KeyboardEvent) => {
+            if ( ev.key === 'Enter' ) {
+                ev.preventDefault()
+                if ( formRef.current !== null && !isModalOpen ) {
+                    formRef.current.requestSubmit()
+                }
+            }
+        }
+        document.addEventListener('keydown', keydownListener )
+
+        return () => {
+            document.body.style.overflow = 'auto';
+            document.removeEventListener('keydown', keydownListener)
+        }
+    }, [isModalOpen]);
+
+    console.log();
+    
 
     return (
-        <form onSubmit={onFormSubmit} className="">
+        <form ref={formRef} onSubmit={onFormSubmit} className="">
 
             <div className="flex  gap-x-2 items-end flex-wrap ">
                 <div className="relative">
