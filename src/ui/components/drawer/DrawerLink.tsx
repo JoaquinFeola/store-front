@@ -26,7 +26,7 @@ export const DrawerLink = React.memo(({ link, className, isDrawerOpen, setIsDraw
             setDropdownOpen(!isDropdownOpen);
             setIsDrawerOpen(true);
             return;
-        };
+        }
 
         navigate(link.path)
     }
@@ -71,7 +71,7 @@ export const DrawerLink = React.memo(({ link, className, isDrawerOpen, setIsDraw
                         (link.children)
                         && (
                             <Button className=" bg-transparent hover:bg-transparent">
-                                <div className={`w-full  ${isDropdownOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
+                                <div className={`w-full  ${!isDropdownOpen ? 'rotate-180' : 'rotate-0'} transition-all duration-200`}>
                                     <i className={`bi bi-caret-up-fill`}></i>
                                 </div>
                             </Button>

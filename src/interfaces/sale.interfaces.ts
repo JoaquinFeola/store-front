@@ -35,6 +35,8 @@ export interface Sale {
     amountPaid: 0,
     changeReturned: 0,
     note: "",
+    created: string;
+    isActive?: boolean;
     salesDetail: SaleInSaleDetail[];
 }
 

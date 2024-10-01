@@ -8,7 +8,7 @@ import { SaleTableItem } from "./SaleTableItem";
 
 interface ListSalesProps {
     sales: Sale[]
-};
+}
 
 export const ListSales = React.memo(({ sales }: ListSalesProps) => {
     const { isSalesLoading, salesPagination, handleNextPage, handlePreviousPage} = useContext(SalesContext);
@@ -31,6 +31,9 @@ export const ListSales = React.memo(({ sales }: ListSalesProps) => {
                         </TableCell>
                         <TableCell className="w-0" align="center">
                             Metodo de pago
+                        </TableCell>
+                        <TableCell className="w-0" align="center">
+                            Estado
                         </TableCell>
                         <TableCell className="w-0" align="center">
                             Acciones

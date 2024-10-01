@@ -29,12 +29,17 @@ export const Drawer = React.memo(({ children }: DrawerProps) => {
         <div className="flex ">
             <header className="w-full h-14 fixed top-0 left-0 bg-blue-500  z-[400] shadow-sm" >
                 <nav className="w-full  h-full relative flex justify-between px-3 items-center" >
-                    <button name="navbarbtn" className=" *:min-w-2 *:w-6 *:transition-all *:duration-100 *:ease-in-out *:max-w-8  *:h-[3px] overflow-hidden *:bg-white *:rounded-lg h-10 w-10 flex flex-col gap-[5px] items-center justify-center" onClick={toggleDrawerOpen}>
-                        <div className={`${isDrawerOpen ? '-rotate-45 translate-y-2' : ''} `}></div>
-                        <div className={`${isDrawerOpen ? '-translate-x-[150%]' : ''} `}></div>
-                        <div className={`${isDrawerOpen ? 'rotate-45 w-7 -translate-y-2' : ''}`}></div>
-                    </button>
+                    <div className="flex items-center gap-4">
+                        <button name="navbarbtn" className=" *:min-w-2 *:w-6 *:transition-all *:duration-100 *:ease-in-out *:max-w-8  *:h-[3px] overflow-hidden *:bg-white *:rounded-lg h-10 w-10 flex flex-col gap-[5px] items-center justify-center" onClick={toggleDrawerOpen}>
+                            <div className={`${isDrawerOpen ? '-rotate-45 translate-y-2' : ''} `}></div>
+                            <div className={`${isDrawerOpen ? '-translate-x-[150%]' : ''} `}></div>
+                            <div className={`${isDrawerOpen ? 'rotate-45 w-7 -translate-y-2' : ''}`}></div>
+                        </button>
+                        <h4 className="text-white font-medium text-xl">StoreUi <span className="text-[12px] mx-1 bg-white text-black rounded-md p-1">v1.0.0</span></h4>
+                    </div>
+                    
                     <DrawerProfileCircle />
+            
                 </nav>
             </header>
             <div

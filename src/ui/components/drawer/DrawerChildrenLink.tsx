@@ -17,7 +17,7 @@ export const DrawerChildrenLink = ({ link, className, isDrawerOpen, setIsDrawerO
     const navigate = useNavigate()
 
     const navigateToRoute = () => {
-        if (link.children && link.children.length > 0) { };
+        if (link.children && link.children.length > 0) {};
         setIsDrawerOpen(true)
         navigate(link.path)
     }

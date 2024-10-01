@@ -287,7 +287,6 @@ const SalesView = React.memo(() => {
    
 
     useEffect(() => {
-        document.body.style.overflow = 'hidden';
         const activeElement = document.activeElement as HTMLElement;
         activeElement.blur();
         const keydownListener = (ev: globalThis.KeyboardEvent) => {

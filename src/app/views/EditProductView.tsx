@@ -25,8 +25,7 @@ export const EditProductView = () => {
   const [isLoading, setIsLoading] = useState(false);
 
 
-  if (productId === undefined) return <h3>Ocurrió un error, por favor vuelve atrás e intentalo nuevamente</h3>
-
+  
 
   useEffect(() => {
     const getProductOnLoad = async () => {
@@ -165,12 +164,12 @@ export const EditProductView = () => {
       expirationDate: formState.expirationDate === '' ? null : formState.expirationDate,
       categoriesIds: formState.productCategories,
       providerId: formState.providerId
-    }, parseInt(productId))
+    }, parseInt(productId!))
     
     if (productResponse !== null) {
-      setFormErrors(productResponse.response?.data.errors!);
+      setFormErrors(productResponse.response?.data.errors || []);
       scrollTo({ top: 0 })
-    };
+    }
 
     setIsSubmitting(false)
 
