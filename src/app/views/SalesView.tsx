@@ -280,34 +280,53 @@ const SalesView = React.memo(() => {
 
                 setIsModalOpen(false);
             },
-            confirmLabel: 'Iniciar nueva venta',
+            cancelFunc: () => {
+                setIsModalOpen(false)
+            },
+            title: '¿Confirmar Venta?',
+            confirmLabel: 'Confirmar',
         });
     }
 
    
 
+    // useEffect(() => {
+    //     const activeElement = document.activeElement as HTMLElement;
+    //     activeElement.blur();
+    //     const keydownListener = (ev: globalThis.KeyboardEvent) => {
+    //         if ( ev.key === 'Enter' ) {
+    //             ev.preventDefault()
+    //             if ( formRef.current !== null && !isModalOpen ) {
+    //                 formRef.current.requestSubmit()
+    //             }
+    //         }
+    //     }
+    //     document.addEventListener('keydown', keydownListener )
+
+    //     return () => {
+    //         document.body.style.overflow = 'auto';
+    //         document.removeEventListener('keydown', keydownListener)
+    //     }
+    // }, [isModalOpen]);
+
     useEffect(() => {
-        const activeElement = document.activeElement as HTMLElement;
-        activeElement.blur();
-        const keydownListener = (ev: globalThis.KeyboardEvent) => {
-            if ( ev.key === 'Enter' ) {
-                ev.preventDefault()
-                if ( formRef.current !== null && !isModalOpen ) {
-                    formRef.current.requestSubmit()
+        const handleKeyPress = (event: KeyboardEvent) => {
+            if (event.key === "Enter") {
+                event.preventDefault(); // Previene el comportamiento por defecto
+                if (formRef.current !== null && !isModalOpen) {
+                    formRef.current.requestSubmit(); // Envía el formulario si el modal no está abierto
                 }
             }
-        }
-        document.addEventListener('keydown', keydownListener )
-
-        return () => {
-            document.body.style.overflow = 'auto';
-            document.removeEventListener('keydown', keydownListener)
-        }
-    }, [isModalOpen]);
-
-    console.log();
+        };
     
-
+        // Adjunta el evento de teclado
+        document.addEventListener("keydown", handleKeyPress);
+    
+        // Limpia el evento cuando el componente se desmonta
+        return () => {
+            document.removeEventListener("keydown", handleKeyPress);
+        };
+    }, [isModalOpen]); 
     return (
         <form ref={formRef} onSubmit={onFormSubmit} className="">
 
@@ -324,7 +343,7 @@ const SalesView = React.memo(() => {
                         onChange={handleScanProduct}
                         value={formState.search}
                         className="min-w-[300px]"
-                        placeholder="Escaneá o ingresá para buscar..."
+                        placeholder="Búsqueda por Código de Barra o SKU"
                     />
                     {
                         (!isProductFound && formState.search !== '')

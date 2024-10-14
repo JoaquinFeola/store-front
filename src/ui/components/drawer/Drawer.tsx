@@ -2,7 +2,7 @@ import React, { ReactNode, useState } from "react"
 import { drawerService } from "./drawer-data";
 import { DrawerLink } from "./DrawerLink";
 import { DrawerProfileCircle } from "./DrawerProfileCircle";
-
+import { drawer_title, app_version } from '../../../page.data.json'
 
 
 
@@ -35,11 +35,11 @@ export const Drawer = React.memo(({ children }: DrawerProps) => {
                             <div className={`${isDrawerOpen ? '-translate-x-[150%]' : ''} `}></div>
                             <div className={`${isDrawerOpen ? 'rotate-45 w-7 -translate-y-2' : ''}`}></div>
                         </button>
-                        <h4 className="text-white font-medium text-xl">StoreUi <span className="text-[12px] mx-1 bg-white text-black rounded-md p-1">v1.0.0</span></h4>
+                        <h4 className="text-white font-medium text-xl">{drawer_title} <span className="text-[12px] mx-1 bg-white text-black rounded-md p-1">{app_version}</span></h4>
                     </div>
-                    
+
                     <DrawerProfileCircle />
-            
+
                 </nav>
             </header>
             <div
@@ -52,8 +52,8 @@ export const Drawer = React.memo(({ children }: DrawerProps) => {
                     <ul className="*:list-none bg-blue-800   ">
                         {
                             drawerLinks.map((link) => (
-                                    <DrawerLink
-                                        isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setDrawerOpen} key={link.id} link={link} />
+                                <DrawerLink
+                                    isDrawerOpen={isDrawerOpen} setIsDrawerOpen={setDrawerOpen} key={link.id} link={link} />
                             ))
                         }
                     </ul>

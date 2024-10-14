@@ -15,7 +15,7 @@ export const ModalsProvider = ({ children }: { children: ReactNode }) => {
 
 
 
-  const newModal = ({ content, submitFunc, confirmLabel, title }: IModalCreate) => {
+  const newModal = ({ content, submitFunc, confirmLabel, title, cancelFunc }: IModalCreate) => {
     const modalId = new Date().getTime();
     modalsDispatch({
       type: MODAL_TYPES.CREATE,
@@ -29,7 +29,10 @@ export const ModalsProvider = ({ children }: { children: ReactNode }) => {
         },
         confirmLabel: confirmLabel,
         title: title,
-        cancelFunc: () => modalsDispatch({ type: MODAL_TYPES.DELETE, payload: {} as IModal })
+        cancelFunc: () => {
+          if (cancelFunc) cancelFunc();
+          modalsDispatch({ type: MODAL_TYPES.DELETE, payload: {} as IModal })
+        }
       }
     })
 

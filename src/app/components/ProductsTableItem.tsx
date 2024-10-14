@@ -115,6 +115,11 @@ export const ProductsTableItem = React.memo(({ product }: ProductsTableItemProps
                 {/* <div className={`${category.isActive ? 'bg-green-400' : 'bg-red-400'} w-[15px] shadow-md h-[15px] rounded-full `}></div> */}
             </TableCell>
             <TableCell align="left">
+                <Link to={`${product.id}`} className="mr-3">
+                    <Button className="ml-3 rounded-sm bg-transparent hover:bg-slate-300 hover:shadow-sm ">
+                        <i className="bi bi-search text-black text-md"></i>
+                    </Button>
+                </Link>
                 <Link to={`/products/edit/${product.id}`} >
                     <Button className="rounded-sm">
                         <i className="bi bi-pencil-square"></i>
@@ -123,11 +128,6 @@ export const ProductsTableItem = React.memo(({ product }: ProductsTableItemProps
                 <Button onClick={openDeleteModal} className="bg-red-500 ml-3 rounded-sm hover:bg-red-600 transition-colors duration-150">
                     <i className="bi bi-trash3"></i>
                 </Button>
-                <Link to={`${product.id}`}>
-                    <Button className="ml-3 rounded-sm bg-transparent hover:bg-slate-300 hover:shadow-sm ">
-                        <i className="bi bi-search text-black text-lg"></i>
-                    </Button>
-                </Link>
             </TableCell>
         </TableRow >
     )
