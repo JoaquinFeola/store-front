@@ -21,7 +21,7 @@ export const useConfigureInterceptors = () => {
             logout();
             
             return config
-        };
+        }
 
         if (isTokenExpired(tokenInfo.expiration)) {
             logout();
@@ -32,7 +32,7 @@ export const useConfigureInterceptors = () => {
                 id: new Date().getTime().toString() 
             })
             return config;
-        };
+        }
             
         
         
