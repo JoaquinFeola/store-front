@@ -136,11 +136,11 @@ export const ListStock = React.memo(({ isFiltersOpen }: ListStockProps) => {
                     <TableRow className="sticky top-0 z-[100]  bg-white shadow-sm ">
 
                         <TableCell className="w-0" align="left">
-                            Id Stock
+                            #
                         </TableCell>
 
                         <TableCell align="left">
-                            Id del producto
+                            IdProducto
                         </TableCell>
                         <TableCell align="left">
                             SKU 
