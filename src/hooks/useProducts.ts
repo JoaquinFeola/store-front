@@ -21,7 +21,7 @@ interface ProductsPaginateResponse {
 const initialSearchPagination = {
     sku: '',
     barcode: '',
-    providerId: 0,
+    supplierId: 0,
     categoryId: 0,
 }
 
@@ -53,12 +53,12 @@ export const useProducts = () => {
     const navigate = useNavigate();
 
 
-    const updateSalePriceForSupplierId = async (body: { percentageToUp: number; providerId: number }) => {
-        if (body.percentageToUp === 0 || body.providerId === 0) return;
+    const updateSalePriceForSupplierId = async (body: { percentageToUp: number; supplierId: number }) => {
+        if (body.percentageToUp === 0 || body.supplierId === 0) return;
         try {
             const params: ProductPriceBySupplierRequestDTO = {
                 PercentageToUp: body.percentageToUp,
-                ProviderId: body.providerId
+                supplierId: body.supplierId
             }
 
             const response: ApiResponse = await httpClient.put('/product/update-purchase-price', {}, { params });
@@ -229,7 +229,7 @@ export const useProducts = () => {
                 CategoryId: searchPagination.filters.categoryId,
                 BarCode: searchPagination.filters.barcode,
                 SKU: searchPagination.filters.sku,
-                ProviderId: searchPagination.filters.providerId,
+                SupplierId: searchPagination.filters.supplierId,
             };
 
             const { data }: ApiResponse<ProductsPaginateResponse> = await httpClient.get(`/product/paginate`, { params });
@@ -247,7 +247,7 @@ export const useProducts = () => {
             })
         }
         catch (error) {
-
+            console.error(error)
         }
         finally {
             setIsProductsLoading(false)

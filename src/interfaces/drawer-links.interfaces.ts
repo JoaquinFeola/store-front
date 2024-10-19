@@ -6,9 +6,9 @@ export interface IDrawerLink {
     children?: IDrawerLink[]
 }
 
-export interface ICreateDrawerLink {
+export interface ICreatedAtrawerLink {
     path: string;
     title: string;
     icon: string;
-    children?: ICreateDrawerLink[];
+    children?: ICreatedAtrawerLink[];
 }

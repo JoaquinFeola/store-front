@@ -5,11 +5,11 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   isButtonLoading?: boolean;
 }
 
-export const Button = React.memo(forwardRef(({ className, isButtonLoading, ...btnAttributtes }: ButtonProps, ref) => {
+export const Button = React.memo(forwardRef<HTMLButtonElement, ButtonProps>(({ className, isButtonLoading, ...btnAttributtes }: ButtonProps, ref) => {
 
   return (
     <button
-      {...ref && ref}
+      ref={ref}
       {
       ...isButtonLoading ? { disabled: true } : { disabled: false }
       }

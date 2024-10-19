@@ -58,8 +58,8 @@ export const SuppliersTableItem = React.memo(({ supplier }: SuppliersTableItemPr
             <TableCell align="center">{supplier.telephone}</TableCell>
             <TableCell align="center">{supplier.email}</TableCell>
             <TableCell align="center" >
-                <span className={`${supplier.isActive ? 'text-green-600' : 'text-red-600'}`}>{supplier.isActive ? 'Activo' : 'Inactivo'}</span>
-                {/* <div className={`${category.isActive ? 'bg-green-400' : 'bg-red-400'} w-[15px] shadow-md h-[15px] rounded-full `}></div> */}
+                <span className={`${!supplier.isDeleted ? 'text-green-600' : 'text-red-600'}`}>{!supplier.isDeleted ? 'Activo' : 'Inactivo'}</span>
+                {/* <div className={`${category.isDeleted ? 'bg-green-400' : 'bg-red-400'} w-[15px] shadow-md h-[15px] rounded-full `}></div> */}
             </TableCell>
             <TableCell align="center">
                 <Link to={`edit/${supplier.id}`}>

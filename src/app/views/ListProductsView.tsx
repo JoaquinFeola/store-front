@@ -28,8 +28,8 @@ const ListProductsView = () => {
                 fechaExpiracion: formatDate(product.expirationDate!, 'DD-MM-YYYY'),
                 precioCompra: product.purchasePrice,
                 precioVenta: product.salePrice,
-                fechaCreacion: formatDate(String(product.created), 'DD-MM-YYYY hh:mm'),
-                fechaActualizacion: formatDate(product.updated ? String(product.updated) : null, 'DD-MM-YYYY hh:mm'),
+                fechaCreacion: formatDate(String(product.CreatedAt), 'DD-MM-YYYY hh:mm'),
+                fechaActualizacion: formatDate(product.UpdatedAt ? String(product.UpdatedAt) : null, 'DD-MM-YYYY hh:mm'),
             }
         });
         await excel.exportAsExcelWithJsonData(

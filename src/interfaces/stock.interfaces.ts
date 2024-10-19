@@ -5,8 +5,8 @@ export interface Stock {
     id: number;
     productId: number;
     quantity: never;
-    created: Date;
-    updated: Date;
+    CreatedAt: Date;
+    UpdatedAt: Date;
     product: Product
 }
 

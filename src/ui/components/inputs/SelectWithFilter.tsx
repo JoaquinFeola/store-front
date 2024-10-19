@@ -66,7 +66,7 @@ export const SelectWithFilter = ({ items, select, selectionArr, labelText }: Sel
               </div>
             )
         }
-        
+
       </div>
       <ul className={`bg-slate-100 py-2 px-2 z-[200] absolute w-full   max-h-36 overflow-auto scale-0 ${isOpen ? 'scale-100' : 'scale-0'} transition-all duration-150`}>
         {
@@ -84,6 +84,8 @@ export const SelectWithFilter = ({ items, select, selectionArr, labelText }: Sel
                         selectionArr?.indexOf(item.id) !== -1 ? true : false
                       }
                     />
+                   
+                    
                     {item.title}
                   </div>
                 </li>

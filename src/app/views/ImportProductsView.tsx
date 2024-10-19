@@ -49,7 +49,7 @@ export const ImportProductsView = () => {
                     description: productsToMap.descripcion.toString(),
                     expirationDate: productsToMap.fechaExpiracion || null,
                     percentageProfit: parseFloat(productsToMap.porcentajeGanancia),
-                    providerId: parseInt(productsToMap.proveedorId),
+                    supplierId: parseInt(productsToMap.proveedorId),
                     purchasePrice: parseFloat(productsToMap.precioCompra),
                     sku: productsToMap.sku.toString()
                 } as ProductToImport

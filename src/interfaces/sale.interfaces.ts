@@ -35,8 +35,8 @@ export interface Sale {
     amountPaid: 0,
     changeReturned: 0,
     note: "",
-    created: string;
-    isActive?: boolean;
+    CreatedAt: string;
+    isDeleted?: boolean;
     salesDetail: SaleInSaleDetail[];
 }
 
@@ -48,7 +48,7 @@ export interface SaleInSaleDetail {
     quantity: number;
     salePrice: number;
     totalPerLine: number;
-    created: string
+    CreatedAt: string
 }
 
 export interface SalesParamsRequest {

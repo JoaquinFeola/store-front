@@ -15,9 +15,9 @@ export const suppliersReducer = <T extends Supplier>(state: T[], action: Action<
             return [action.payload as T, ...state];
 
         case SUPPLIERS_TYPES.UPDATE: {
-            const updatedSupplier = action.payload as Supplier;
+            const UpdatedAtSupplier = action.payload as Supplier;
             const suppliersMutable = structuredClone(state);
-            const indexOfUpdateSupplier = suppliersMutable.findIndex((supplier) => supplier.id === updatedSupplier.id);
+            const indexOfUpdateSupplier = suppliersMutable.findIndex((supplier) => supplier.id === UpdatedAtSupplier.id);
 
             suppliersMutable[indexOfUpdateSupplier] = {
                 ...suppliersMutable[indexOfUpdateSupplier],

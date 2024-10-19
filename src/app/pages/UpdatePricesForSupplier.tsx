@@ -11,10 +11,10 @@ export const UpdatePricesForSupplier = () => {
     const { updateSalePriceForSupplierId } = useContext(ProductsContext);
     const { formState, onInputWrite, assignAllNewValues, formValidation, resetFormValues } = useForm({
         percentageToUp: '0',
-        providerId: 0
+        supplierId: 0
     }, {
         percentageToUp: [(value) => value === '0', 'El valor no puede ser 0'],
-        providerId: [(value) => value === 0, '¡El campo de proveedores es requerido!']
+        supplierId: [(value) => value === 0, '¡El campo de proveedores es requerido!']
     })
     const [suppliers, setSuppliers] = useState<{ title: string, id: number, img?: string }[]>([]);
     const [isSubmitting, setSubmittingState] = useState(false);
@@ -22,15 +22,15 @@ export const UpdatePricesForSupplier = () => {
 
     const addProductSupplier = (id: number) => {
 
-        if (formState.providerId === id) {
+        if (formState.supplierId === id) {
             assignAllNewValues({
-                providerId: 0
+                supplierId: 0
             });
         };
 
-        if (formState.providerId !== id) {
+        if (formState.supplierId !== id) {
             assignAllNewValues({
-                providerId: id
+                supplierId: id
             });
         };
     };
@@ -55,12 +55,12 @@ export const UpdatePricesForSupplier = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (formValidation.isProviderIdValid !== null || formValidation.isPercentageToUpValid !== null) return setIsSubmit(true);
+        if (formValidation.issupplierIdValid !== null || formValidation.isPercentageToUpValid !== null) return setIsSubmit(true);
         setSubmittingState(true);
 
         await updateSalePriceForSupplierId({
             percentageToUp: parseFloat(formState.percentageToUp),
-            providerId: formState.providerId
+            supplierId: formState.supplierId
         });
         setIsSubmit(false)
         resetFormValues()
@@ -81,15 +81,15 @@ export const UpdatePricesForSupplier = () => {
                         <SelectWithFilter
                             items={suppliers}
                             select={addProductSupplier}
-                            selectionArr={formState.providerId !== 0 ? [formState.providerId] : []}
+                            selectionArr={formState.supplierId !== 0 ? [formState.supplierId] : []}
 
                         />
                     </div>
                     {
-                        (formValidation.isProviderIdValid !== null && isSubmit)
+                        (formValidation.issupplierIdValid !== null && isSubmit)
                         && (
                             <p className="relative  text-red-500">
-                                {formValidation.isProviderIdValid}
+                                {formValidation.issupplierIdValid}
                             </p>
                         )
                     }

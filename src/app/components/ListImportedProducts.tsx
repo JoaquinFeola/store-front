@@ -44,7 +44,7 @@ const ImportedproductkTableItem = ({ product, hasRowError = false, handleDeleteR
                 {product.barCode}
             </TableCell>
             <TableCell>
-                {product.providerId}
+                {product.supplierId}
             </TableCell>
             <TableCell>
                 {product.categoryId}

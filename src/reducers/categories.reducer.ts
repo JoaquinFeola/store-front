@@ -11,13 +11,13 @@ export const categoriesReducer = <T extends Category>(state: Category[], action:
             return [action.payload, ...state ] as Category[]
         }
         case CATEGORIES_TYPES.UPDATE: {
-            const updatedCategory = action.payload as Category;
+            const UpdatedAtCategory = action.payload as Category;
             const categoriesMutable = structuredClone(state);
-            const indexOfUpdateCategory = categoriesMutable.findIndex((category) => category.id === updatedCategory.id);
+            const indexOfUpdateCategory = categoriesMutable.findIndex((category) => category.id === UpdatedAtCategory.id);
 
             if ( indexOfUpdateCategory === -1 ) return state;
 
-            categoriesMutable[indexOfUpdateCategory].name = updatedCategory.name;
+            categoriesMutable[indexOfUpdateCategory].name = UpdatedAtCategory.name;
 
             
             return categoriesMutable as Category[]

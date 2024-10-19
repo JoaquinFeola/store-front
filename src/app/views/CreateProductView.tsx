@@ -54,7 +54,7 @@ export const CreateProductView = () => {
         sku: '',
         description: '',
         categoriesIds: [] as number[],
-        providerId: 0,
+        supplierId: 0,
         barCodes: [] as string[],
         purchasePrice: '0',
         percentageProfit: '0',
@@ -64,7 +64,7 @@ export const CreateProductView = () => {
         expirationDate: '',
     }, {
         categoriesIds: [(value) => value.length <= 0, 'El campo es requerido'],
-        providerId: [(value) => value === 0, 'El campo es requerido'],
+        supplierId: [(value) => value === 0, 'El campo es requerido'],
         sku: [(value) => value.length === 0, ''],
         description: [(value) => value.length === 0, ''],
         barCodes: [(value) => value.length === 0, 'error'],
@@ -112,15 +112,15 @@ export const CreateProductView = () => {
     }
     const addProductSupplier = (id: number) => {
 
-        if ( formState.providerId === id ) {
+        if ( formState.supplierId === id ) {
             assignAllNewValues({
-                providerId: 0
+                supplierId: 0
             })
             return;
         }
-        if (formState.providerId !== id ) {
+        if (formState.supplierId !== id ) {
             assignAllNewValues({
-                providerId:  id
+                supplierId:  id
             })
         } 
     };
@@ -170,7 +170,7 @@ export const CreateProductView = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         if (formValidation.isCategoriesIdsValid !== null) return;
-        if (formValidation.isProviderIdValid !== null) return;
+        if (formValidation.isSupplierIdValid !== null) return;
         setIsSubmitting(true);
         const productResponse = await createProduct({
                 sku: formState.sku,
@@ -181,11 +181,11 @@ export const CreateProductView = () => {
                 barCodes: formState.barCodes.length === 0 ? [] : formState.barCodes,
                 expirationDate: formState.expirationDate === '' ? null : formState.expirationDate,
                 categoriesIds: formState.categoriesIds,
-                providerId: formState.providerId
+                supplierId: formState.supplierId
             })
         
             if ( productResponse !== null ) {
-                setFormErrors(productResponse.response?.data.errors!);
+                setFormErrors(productResponse.response?.data.errors as string[]);
                 scrollTo({ top: 0 })
             }
         
@@ -329,15 +329,15 @@ export const CreateProductView = () => {
                             <h3 className="font-medium text-lg mt-2 mb-2 after:content-['*'] after:text-red-500 after:ml-1">Proveedores del producto</h3>
                             <SelectWithFilter
                                 items={suppliers}
-                                selectionArr={(formState.providerId == 0) ? [] : [ formState.providerId ]}
+                                selectionArr={(formState.supplierId == 0) ? [] : [ formState.supplierId ]}
                                 select={addProductSupplier}
 
                             />
                             {
-                                formValidation.isProviderIdValid !== null && isSubmitting
+                                formValidation.isSupplierIdValid !== null && isSubmitting
                                 && (
                                     <p className="text-red-500">
-                                        {formValidation.isProviderIdValid}
+                                        {formValidation.isSupplierIdValid}
                                     </p>
                                 )
                             }

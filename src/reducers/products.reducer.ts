@@ -16,9 +16,9 @@ export const productsReducer = <T extends Product>(state: T[], action: Action<T 
             return [action.payload as T, ...state];
 
         case PRODUCTS_TYPES.UPDATE: {
-            const updatedProduct = action.payload as Product;
+            const UpdatedAtProduct = action.payload as Product;
             const productsMutable = structuredClone(state);
-            const indexOfUpdateProduct = productsMutable.findIndex((product) => product.id === updatedProduct.id);
+            const indexOfUpdateProduct = productsMutable.findIndex((product) => product.id === UpdatedAtProduct.id);
 
             productsMutable[indexOfUpdateProduct] = {
                 ...productsMutable[indexOfUpdateProduct],

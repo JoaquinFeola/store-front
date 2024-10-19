@@ -49,7 +49,7 @@ export const useSuppliers = () => {
 
     const deleteSupplier = async (id: number) => {
         try {
-            const { data }: ApiResponse<Supplier> = await httpClient.delete(`/provider/${id}`)
+            const { data }: ApiResponse<Supplier> = await httpClient.delete(`/supplier/${id}`)
             suppliersDispatch({
                 type: SUPPLIERS_TYPES.DELETE,
                 payload: { id: id } as Supplier
@@ -76,7 +76,7 @@ export const useSuppliers = () => {
 
     const updateSupplier = async (newSupplier: Partial<Supplier>, id: number) => {
         try {
-            const { data }: ApiResponse<Supplier> = await httpClient.put(`/provider/${id}`, newSupplier)
+            const { data }: ApiResponse<Supplier> = await httpClient.put(`/supplier/${id}`, newSupplier)
             const newSupplierResponse = data.data;
             suppliersDispatch({
                 type: SUPPLIERS_TYPES.UPDATE,
@@ -105,7 +105,7 @@ export const useSuppliers = () => {
     const createSupplier = async (newSupplier: Partial<Supplier>) => {
         
         try {
-            const { data }: ApiResponse<Supplier> = await httpClient.post(`/provider`, newSupplier)
+            const { data }: ApiResponse<Supplier> = await httpClient.post(`/supplier`, newSupplier)
             const newSupplierResponse = data.data;
             suppliersDispatch({
                 type: SUPPLIERS_TYPES.CREATE,
@@ -133,7 +133,7 @@ export const useSuppliers = () => {
         setIsSuppliersLoading(true)
         try {
 
-            const { data }: ApiResponse<SuppliersPaginateResponse> = await httpClient.get(`/provider/paginate`, {
+            const { data }: ApiResponse<SuppliersPaginateResponse> = await httpClient.get(`/supplier/paginate`, {
                 params: {
                     pageSize: 10,
                     pageIndex: suppliersPageIndexInternal
@@ -153,7 +153,8 @@ export const useSuppliers = () => {
             })
         }
         catch (error) {
-
+            console.error(error);
+            
         }
         finally {
             setIsSuppliersLoading(false)
@@ -163,7 +164,7 @@ export const useSuppliers = () => {
     const getAllSuppliers = async () => {
         try {
 
-            const { data }: ApiResponse<Supplier[]> = await httpClient.get(`/provider/all`);
+            const { data }: ApiResponse<Supplier[]> = await httpClient.get(`/supplier/all`);
             return data.data;
         }
         catch (error) {
@@ -173,7 +174,7 @@ export const useSuppliers = () => {
 
     const getSupplierById = async(id: number | string) => {
         try {
-            const { data }: ApiResponse<Supplier> = await httpClient.get(`/provider/${id}`);    
+            const { data }: ApiResponse<Supplier> = await httpClient.get(`/supplier/${id}`);    
     
             return data.data
         } 

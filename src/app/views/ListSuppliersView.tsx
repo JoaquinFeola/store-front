@@ -23,8 +23,8 @@ import { Tooltip } from "../../ui/components/tooltip/Tooltip";
                 nombreEmpresa: supplier.busisnessName,
                 telefono: supplier.telephone,
                 email: supplier.email,
-                fechaCreacion: formatDate(String(supplier.created)!, 'DD-MM-YYYY HH:mm'),
-                fechaActualizacion: formatDate(supplier.updated ? String(supplier.updated) : null, 'DD-MM-YYYY HH:mm')
+                fechaCreacion: formatDate(String(supplier.CreatedAt)!, 'DD-MM-YYYY HH:mm'),
+                fechaActualizacion: formatDate(supplier.UpdatedAt ? String(supplier.UpdatedAt) : null, 'DD-MM-YYYY HH:mm')
             }
         });
         await excel.exportAsExcelWithJsonData(

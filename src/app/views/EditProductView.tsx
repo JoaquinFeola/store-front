@@ -49,7 +49,7 @@ export const EditProductView = () => {
     sku: '',
     description: '',
     productCategories: [] as number[],
-    providerId: 0,
+    supplierId: 0,
     barCodes: [] as string[],
     purchasePrice: '0',
     percentageProfit: '0',
@@ -82,20 +82,20 @@ export const EditProductView = () => {
   }
   const addProductSupplier = (id: number) => {
 
-    if (formState.providerId === id) {
+    if (formState.supplierId === id) {
       assignAllNewValues({
-        providerId: 0
+        supplierId: 0
       })
       return;
     }
 
-    if (formState.providerId !== id && formState.providerId === 0) {
+    if (formState.supplierId !== id && formState.supplierId === 0) {
       assignAllNewValues({
-        providerId: id
+        supplierId: id
       })
     } else {
       assignAllNewValues({
-        providerId: id
+        supplierId: id
       })
     }
 
@@ -163,7 +163,7 @@ export const EditProductView = () => {
       barCodes: formState.barCodes.length === 0 ? [] : formState.barCodes,
       expirationDate: formState.expirationDate === '' ? null : formState.expirationDate,
       categoriesIds: formState.productCategories,
-      providerId: formState.providerId
+      supplierId: formState.supplierId
     }, parseInt(productId!))
     
     if (productResponse !== null) {
@@ -185,7 +185,7 @@ export const EditProductView = () => {
       sku: product.sku,
       description: product.description,
       productCategories: productsCategories,
-      providerId: product.providerId,
+      supplierId: product.supplierId,
       barCodes: barcodes,
       purchasePrice: (product.purchasePrice !== undefined) ? product.purchasePrice.toString() : '0',
       percentageProfit: (product.percentageProfit !== undefined) ? product.percentageProfit.toString() : '0',
@@ -315,7 +315,7 @@ export const EditProductView = () => {
               <h3 className="font-medium text-lg mt-2 mb-2 ">Proveedores del producto</h3>
               <SelectWithFilter
                 items={suppliers}
-                selectionArr={(formState.providerId === 0) ? [] : [formState.providerId]}
+                selectionArr={(formState.supplierId === 0) ? [] : [formState.supplierId]}
                 select={addProductSupplier}
 
               />

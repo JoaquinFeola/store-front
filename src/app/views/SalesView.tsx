@@ -8,67 +8,67 @@ import { ApiResponseBody, SaleDetail } from "../../interfaces";
 import { ModalsContext } from "../../context";
 import { formatCurrency, formatToDecimal, parseFormattedValue } from "../../utils/currency.util";
 import { SalesContext } from "../../context/SalesContext";
+import { AdvancedSearchSales } from "../components/AdvancedSearchSales";
 
 const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProductQuantity }: { products: ProdcutInCart[]; aumentOrDecrementProductQuantity: (id: number, isDecrementing?: boolean) => void; handleRetireProduct: (id: number) => void }) => {
 
     return (
-        <div className="h-[300px] overflow-auto">
 
-            <Table className="text-black overflow-auto">
-                <TableHead >
-                    <TableRow >
-                        <TableCell>SKU</TableCell>
-                        <TableCell>Imagen</TableCell>
-                        <TableCell>Item</TableCell>
-                        <TableCell>Precio</TableCell>
-                        <TableCell>Cantidad</TableCell>
-                        <TableCell>Total</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        (products.length == 0)
-                            ? <NoRegistries />
-                            : products.map(product => (
-                                <TableRow key={product.id} size="little" >
-                                    <TableCell>
-                                        {product.sku}
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            (product.image)
-                                                ? <img width={50} className="" src={product.image} />
-                                                : <span>Sin imagen</span>
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        {product.description}
-                                    </TableCell>
-                                    <TableCell>
-                                        {formatCurrency(product.salePrice, 'ARS')}
-                                    </TableCell>
-                                    <TableCell className="">
-                                        <Button onClick={() => aumentOrDecrementProductQuantity(product.id, true)} type="button" className="bg-transparent hover:bg-slate-100 rounded-full mr-1 " style={{ color: 'black' }}>-</Button>
-                                        {product.quantity}
-                                        <Button onClick={() => aumentOrDecrementProductQuantity(product.id)} style={{ color: 'black' }} type="button" className="ml-1 rounded-full hover:bg-slate-100 bg-transparent">+</Button>
-                                    </TableCell>
-                                    <TableCell>
-                                        {
-                                            formatCurrency(parseFloat((product.salePrice * product.quantity).toFixed(2)), 'ARS')
-                                        }
-                                    </TableCell>
-                                    <TableCell>
-                                        <Button type="button" style={{ color: 'black' }} className="bg-transparent text-black hover:bg-slate-100 rounded-full" onClick={() => handleRetireProduct(product.id)}>
-                                            <i className="bi bi-trash text-red-600"></i>
-                                        </Button>
 
-                                    </TableCell>
-                                </TableRow>
-                            ))
-                    }
-                </TableBody>
-            </Table>
-        </div>
+        <Table className=" text-black overflow-auto h-[500px]" autoHeight={false}>
+            <TableHead >
+                <TableRow >
+                    <TableCell>SKU</TableCell>
+                    <TableCell>Imagen</TableCell>
+                    <TableCell>Item</TableCell>
+                    <TableCell>Precio</TableCell>
+                    <TableCell>Cantidad</TableCell>
+                    <TableCell>Total</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody className="">
+                {
+                    (products.length == 0)
+                        ? <NoRegistries />
+                        : products.map(product => (
+                            <TableRow key={product.id} size="little" >
+                                <TableCell>
+                                    {product.sku}
+                                </TableCell>
+                                <TableCell>
+                                    {
+                                        (product.image)
+                                            ? <img width={50} className="" src={product.image} />
+                                            : <span>Sin imagen</span>
+                                    }
+                                </TableCell>
+                                <TableCell>
+                                    {product.description}
+                                </TableCell>
+                                <TableCell>
+                                    {formatCurrency(product.salePrice, 'ARS')}
+                                </TableCell>
+                                <TableCell className="">
+                                    <Button onClick={() => aumentOrDecrementProductQuantity(product.id, true)} type="button" className="bg-transparent hover:bg-slate-100 rounded-full mr-1 " style={{ color: 'black' }}>-</Button>
+                                    {product.quantity}
+                                    <Button onClick={() => aumentOrDecrementProductQuantity(product.id)} style={{ color: 'black' }} type="button" className="ml-1 rounded-full hover:bg-slate-100 bg-transparent">+</Button>
+                                </TableCell>
+                                <TableCell>
+                                    {
+                                        formatCurrency(parseFloat((product.salePrice * product.quantity).toFixed(2)), 'ARS')
+                                    }
+                                </TableCell>
+                                <TableCell>
+                                    <Button type="button" style={{ color: 'black' }} className="bg-transparent text-black hover:bg-slate-100 rounded-full" onClick={() => handleRetireProduct(product.id)}>
+                                        <i className="bi bi-trash text-red-600"></i>
+                                    </Button>
+
+                                </TableCell>
+                            </TableRow>
+                        ))
+                }
+            </TableBody>
+        </Table>
     )
 }
 
@@ -82,6 +82,7 @@ const SalesView = React.memo(() => {
     const inputCashRef = useRef<HTMLInputElement>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [productsFound, setProductsFound] = useState<ProdcutInCart[]>([]);
+
 
     const formRef = useRef<HTMLFormElement>(null);
 
@@ -98,7 +99,7 @@ const SalesView = React.memo(() => {
         const cursorPosition = e.target.selectionStart;
         const formatted = formatToDecimal(value);
         const numeric = parseFormattedValue(formatted);
-        if ( value === '') return;
+        if (value === '') return;
 
         assignAllNewValues({
             cash: formatted,
@@ -288,26 +289,7 @@ const SalesView = React.memo(() => {
         });
     }
 
-   
 
-    // useEffect(() => {
-    //     const activeElement = document.activeElement as HTMLElement;
-    //     activeElement.blur();
-    //     const keydownListener = (ev: globalThis.KeyboardEvent) => {
-    //         if ( ev.key === 'Enter' ) {
-    //             ev.preventDefault()
-    //             if ( formRef.current !== null && !isModalOpen ) {
-    //                 formRef.current.requestSubmit()
-    //             }
-    //         }
-    //     }
-    //     document.addEventListener('keydown', keydownListener )
-
-    //     return () => {
-    //         document.body.style.overflow = 'auto';
-    //         document.removeEventListener('keydown', keydownListener)
-    //     }
-    // }, [isModalOpen]);
 
     useEffect(() => {
         const handleKeyPress = (event: KeyboardEvent) => {
@@ -318,15 +300,19 @@ const SalesView = React.memo(() => {
                 }
             }
         };
-    
+
         // Adjunta el evento de teclado
         document.addEventListener("keydown", handleKeyPress);
-    
+
         // Limpia el evento cuando el componente se desmonta
         return () => {
             document.removeEventListener("keydown", handleKeyPress);
         };
-    }, [isModalOpen]); 
+    }, [isModalOpen]);
+
+
+
+
     return (
         <form ref={formRef} onSubmit={onFormSubmit} className="">
 
@@ -368,7 +354,7 @@ const SalesView = React.memo(() => {
                         id="">
                         {
                             paidMethods.map((paidMethod) => (
-                                <option  key={paidMethod.id} value={paidMethod.id}>
+                                <option key={paidMethod.id} value={paidMethod.id}>
                                     {paidMethod.title}
                                 </option>
                             ))
@@ -376,10 +362,13 @@ const SalesView = React.memo(() => {
                     </select>
 
                 </div>
+                <div className="relative">
+                    <AdvancedSearchSales />
+                </div>
             </div>
 
             <div className=" mt-6 grid grid-cols-1 md:grid-cols-12 ">
-                <div className="border-[1px] col-span-9 rounded-md text-white">
+                <div className="border-[1px] col-span-9 rounded-md text-white ">
                     <ListSaleProducts aumentOrDecrementProductQuantity={aumentOrDecrementProductQuantity} products={productsFound} handleRetireProduct={handleDeleteProduct} />
                 </div>
                 <div className="border-[1px] flex-wrap flex  col-span-3 ">

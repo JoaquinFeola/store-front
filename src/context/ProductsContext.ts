@@ -32,7 +32,7 @@ interface ProductsContextProps {
     handleSearch: (filters: {
         sku: string;
         barcode: string;
-        providerId: number;
+        supplierId: number;
         categoryId: number;
     }) => void;
     isProductsLoading: boolean;
@@ -41,12 +41,12 @@ interface ProductsContextProps {
         filters: {
             sku: string;
             barcode: string;
-            providerId: number;
+            supplierId: number;
             categoryId: number;
         };
     };
     bulkCreateProducts: (products: ProductToImport[]) => Promise<ApiResponseBody<null>>;
-    updateSalePriceForSupplierId: (body: { providerId: number; percentageToUp: number }) => Promise<void>;
+    updateSalePriceForSupplierId: (body: { supplierId: number; percentageToUp: number }) => Promise<void>;
     productPageIndexInternal: number;
 }
 

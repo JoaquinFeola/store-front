@@ -74,8 +74,8 @@ export const CategoriesTableItem = React.memo(({ category } : CategoriesTableIte
             <TableCell className="font-medium" align="left">{ category?.id }</TableCell>
             <TableCell align="center">{ category?.name }</TableCell>
             <TableCell align="center" >
-                <span className={`${category.isActive ? 'text-green-600' : 'text-red-600'}`}>{category.isActive ? 'Activo' : 'Inactivo'}</span>
-                {/* <div className={`${category.isActive ? 'bg-green-400' : 'bg-red-400'} w-[15px] shadow-md h-[15px] rounded-full `}></div> */}
+                <span className={`${!category.isDeleted ? 'text-green-600' : 'text-red-600'}`}>{!category.isDeleted ? 'Activo' : 'Inactivo'}</span>
+                {/* <div className={`${category.isDeleted ? 'bg-green-400' : 'bg-red-400'} w-[15px] shadow-md h-[15px] rounded-full `}></div> */}
             </TableCell>
             <TableCell align="right" style={{width: 0}}>
                 <Button className="rounded-sm shadow-md" onClick={openUpdateModal}>

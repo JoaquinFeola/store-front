@@ -13,22 +13,22 @@ export interface Product {
     purchasePrice: number;
     percentageProfit: number;
     productCategories?: { category: Category }[],
-    providerId?: number;
-    provider?: Supplier;
+    supplierId?: number;
+    supplier?: Supplier;
     salePrice: number;
     image?: string;
     barCodes?: { code: string }[],
     expirationDate?: string | null;
-    created: Date;
-    updated?: Date | null;
-    isActive?: boolean;
+    CreatedAt: Date;
+    UpdatedAt?: Date | null;
+    isDeleted?: boolean;
 }
 
 export interface ProductRequestDTO {
     pageSize: number;
     pageIndex: number;
     SKU?: string;
-    ProviderId: number;
+    SupplierId: number;
     CategoryId: number;
     BarCode?: string;
 }
@@ -61,7 +61,7 @@ export interface ProductToImport {
     productId: number;
     sku: string;
     description: string;
-    providerId: number;
+    supplierId: number;
     categoryId: number;
     barCode: string;
     purchasePrice: number;
@@ -71,7 +71,7 @@ export interface ProductToImport {
 
 
 export interface ProductPriceBySupplierRequestDTO {
-    ProviderId: number;
+    supplierId: number;
     PercentageToUp: number;
 }
 
@@ -81,7 +81,7 @@ export interface ProductDTO {
     purchasePrice: number;
     percentageProfit: number;
     image?: string | null,
-    providerId?: number,
+    supplierId?: number,
     categoriesIds?: number[] | null,
     barCodes?: string[] | null,
     expirationDate?: string | null,

@@ -64,12 +64,13 @@ export const useSales = () => {
     const scanProductCodebar = (search: string): null | ProductForSale => {
         if (obtainedProducts.length === 0) return null;
         try {
+            const searchText = search.trim()
             const foundProduct = obtainedProducts.find(product => {
-                const barcodesFound = product.barCodes.find(bc => bc.code === search);
+                const barcodesFound = product.barCodes.find(bc => bc.code === searchText);
 
                 if (barcodesFound) return barcodesFound;
 
-                return product.sku === search
+                return product.sku === searchText
             });
 
             if (foundProduct === undefined) return null;
@@ -142,7 +143,7 @@ export const useSales = () => {
 
         }
         catch (error) {
-
+            console.log(error)
         }
         finally {
             setIsSalesLoading(false)

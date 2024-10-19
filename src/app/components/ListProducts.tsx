@@ -32,7 +32,7 @@ export const ListProducts = React.memo(({ isFiltersOpen }: ListProductsProps) =>
 
     } = useForm({
         sku: '',
-        providerId: 0,
+        supplierId: 0,
         categoryId: 0,
         barCode: '',
     })
@@ -48,7 +48,7 @@ export const ListProducts = React.memo(({ isFiltersOpen }: ListProductsProps) =>
         handleSearch({
             barcode: '',
             categoryId: 0,
-            providerId: 0,
+            supplierId: 0,
             sku: ''
         })
     }
@@ -59,26 +59,26 @@ export const ListProducts = React.memo(({ isFiltersOpen }: ListProductsProps) =>
         handleSearch({
             barcode: formState.barCode,
             categoryId: formState.categoryId,
-            providerId: formState.providerId,
+            supplierId: formState.supplierId,
             sku: formState.sku
         })
     }
     const filterSupplier = (id: number) => {
 
 
-        if (formState.providerId === id) {
+        if (formState.supplierId === id) {
             assignAllNewValues({
-                providerId: 0
+                supplierId: 0
             })
             return;
         }
-        if (formState.providerId !== id && formState.providerId === 0) {
+        if (formState.supplierId !== id && formState.supplierId === 0) {
             assignAllNewValues({
-                providerId: id
+                supplierId: id
             })
         } else {
             assignAllNewValues({
-                providerId: id
+                supplierId: id
             })
         }
 
@@ -168,7 +168,7 @@ export const ListProducts = React.memo(({ isFiltersOpen }: ListProductsProps) =>
                             labelText="Proveedores"
                             items={suppliers}
                             select={filterSupplier}
-                            selectionArr={formState.providerId === 0 ? [] : [formState.providerId]}
+                            selectionArr={formState.supplierId === 0 ? [] : [formState.supplierId]}
                         />
                         <Button type="submit"><i className="bi bi-search"></i> Buscar</Button>
                         <Button type="button" onClick={handleResetFiltersAndSearch} ><i className="bi bi-arrow-clockwise"></i> Reiniciar filtros</Button>

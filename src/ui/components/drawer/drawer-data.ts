@@ -1,8 +1,8 @@
-import { ICreateDrawerLink, IDrawerLink } from "../../../interfaces";
+import { ICreatedAtrawerLink, IDrawerLink } from "../../../interfaces";
 
 
 
-const assignIdPerLink = (links: ICreateDrawerLink[]): ICreateDrawerLink[] => {
+const assignIdPerLink = (links: ICreatedAtrawerLink[]): ICreatedAtrawerLink[] => {
     return links.map((link, index) => {
         // Procesa los children recursivamente si existen
         const newChildren = link.children ? assignIdPerLink(link.children) : undefined;
@@ -22,7 +22,7 @@ class DrawerService {
     private asideLinks: IDrawerLink[] = []
 
     constructor(
-        private leftNavbarLinks: ICreateDrawerLink[]
+        private leftNavbarLinks: ICreatedAtrawerLink[]
     ) {
 
         this.asideLinks = assignIdPerLink(this.leftNavbarLinks) as IDrawerLink[];
@@ -36,7 +36,7 @@ class DrawerService {
     }
 }
 
-const drawerLinks: ICreateDrawerLink[] = [
+const drawerLinks: ICreatedAtrawerLink[] = [
     {
         title: 'Inicio',
         icon: 'house-fill',
