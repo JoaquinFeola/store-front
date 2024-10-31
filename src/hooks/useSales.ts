@@ -60,7 +60,13 @@ export const useSales = () => {
 
     }
 
+    const getProductForSaleById =  (id: number) => {
+        if (obtainedProducts.length === 0) return null;
+        const foundProduct = obtainedProducts.find(product => product.id === id);
+        if (foundProduct == undefined) return null;
 
+        return foundProduct;
+    }
     const scanProductCodebar = (search: string): null | ProductForSale => {
         if (obtainedProducts.length === 0) return null;
         try {
@@ -85,7 +91,7 @@ export const useSales = () => {
     const getSaleById = async (id: number) => {
         try {
             const resp: ApiResponse<Sale> = await httpClient.get(`sale/${id}`)
-            
+
             return resp.data.data
         } catch (error) {
             return null
@@ -164,7 +170,8 @@ export const useSales = () => {
         salesPagination,
         getSalesForHome,
         getSalesForHomeYear,
-        getSaleById
+        getSaleById,
+        getProductForSaleById
 
     }
 

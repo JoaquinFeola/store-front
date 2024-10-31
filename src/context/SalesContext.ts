@@ -5,7 +5,7 @@ import { AxiosError } from "axios";
 
 
 interface SalesContextProps {
-    getProductsForSale: () => Promise<AxiosError<unknown, any> | undefined>;
+    getProductsForSale: () => Promise<AxiosError | undefined>;
     scanProductCodebar: (search: string) => null | ProductForSale;
     obtainedProducts: ProductForSale[];
     createSale: (sale: SaleRequest) => Promise<{
@@ -24,6 +24,7 @@ interface SalesContextProps {
         totalPages: number;
         totalSize: number;
     },
+    getProductForSaleById: (id: number) => ProductForSale | null;
     getSalesForHome: () => Promise<ApiResponseBody<SaleForHome> | null>;
     getSalesForHomeYear: () => Promise<SaleForHomeYear | null>;
     getSaleById: (id: number) => Promise<Sale | null>

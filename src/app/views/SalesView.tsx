@@ -1,7 +1,7 @@
 import React, { ChangeEvent, FormEvent, useContext, useEffect, useRef, useState } from "react"
 import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 import { InputLabel } from "../../ui/components/inputs/InputLabel"
-import { ProdcutInCart } from "../../interfaces/product.interfaces";
+import { ProductInCart } from "../../interfaces/product.interfaces";
 import { useForm } from "../../hooks/useForm";
 import { httpClient } from "../../api/axios-config";
 import { ApiResponseBody, SaleDetail } from "../../interfaces";
@@ -10,7 +10,7 @@ import { formatCurrency, formatToDecimal, parseFormattedValue } from "../../util
 import { SalesContext } from "../../context/SalesContext";
 import { AdvancedSearchSales } from "../components/AdvancedSearchSales";
 
-const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProductQuantity }: { products: ProdcutInCart[]; aumentOrDecrementProductQuantity: (id: number, isDecrementing?: boolean) => void; handleRetireProduct: (id: number) => void }) => {
+const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProductQuantity }: { products: ProductInCart[]; aumentOrDecrementProductQuantity: (id: number, isDecrementing?: boolean) => void; handleRetireProduct: (id: number) => void }) => {
 
     return (
 
@@ -75,13 +75,13 @@ const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProd
 const SalesView = React.memo(() => {
 
 
-    const { getProductsForSale, scanProductCodebar, createSale } = useContext(SalesContext);
+    const { getProductsForSale, scanProductCodebar, createSale, getProductForSaleById } = useContext(SalesContext);
     const [isProductFound, setIsProductFound] = useState(false);
     const { newModal } = useContext(ModalsContext)
     const [paidMethods, setPaidMethods] = useState<{ title: string, img?: string; id: number; }[]>([]);
     const inputCashRef = useRef<HTMLInputElement>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [productsFound, setProductsFound] = useState<ProdcutInCart[]>([]);
+    const [productsFound, setProductsFound] = useState<ProductInCart[]>([]);
 
 
     const formRef = useRef<HTMLFormElement>(null);
@@ -157,7 +157,27 @@ const SalesView = React.memo(() => {
         setProductsFound(productsFound.filter(product => product.id !== id))
     };
 
+    const handleAddProduct = (id: number) => {
+        const productFound = getProductForSaleById(id);
+        if (productsFound === null) return;
+        if (productsFound.findIndex(product => product.id === id) !== -1) {
+            setProductsFound((prev) => prev.map((product) => {
+                if (product.id !== id) return product;
 
+                return {
+                    ...product,
+                    quantity: product.quantity + 1
+                };
+            }));
+
+        }
+        else {
+
+            setProductsFound([...productsFound, { ...productFound, quantity: 1 } as ProductInCart]);
+        }
+
+
+    }
 
     const handleScanProduct = (e: ChangeEvent<HTMLInputElement>) => {
         const newEventValues = e
@@ -198,7 +218,7 @@ const SalesView = React.memo(() => {
         assignAllNewValues({ search: '' });
     };
 
-    const calculateTotal = (products: ProdcutInCart[]) => {
+    const calculateTotal = (products: ProductInCart[]) => {
         return products.reduce((prev, current) => {
             return current.salePrice * current.quantity + prev
         }, 0);
@@ -363,7 +383,7 @@ const SalesView = React.memo(() => {
 
                 </div>
                 <div className="relative">
-                    <AdvancedSearchSales />
+                    <AdvancedSearchSales handleAddProduct={handleAddProduct} />
                 </div>
             </div>
 

@@ -23,6 +23,7 @@ import {
 } from "../views/"
 import { lazy, Suspense } from "react"
 import { LoadingInfo } from "../../ui/components/loadings/LoadingInfo"
+import { ListAdjustmentStockView } from "../views/ListAdjustmentStockView"
 
 const HomePage = lazy(() => import('../pages/HomePage'))
 const ListProductsView = lazy(() => import('../views/ListProductsView'))
@@ -84,6 +85,7 @@ export const AppRoutes = () => {
           <Route index element={<ListStockView />} />
           <Route path="import" element={<ImportStockView />} />
           <Route path="adjustment" element={<AdjustmentStockView />} />
+          <Route path="adjustment-list" element={<ListAdjustmentStockView />} />
 
         </Route>
         <Route path="/sales" element={<SalesPage />}>

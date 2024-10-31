@@ -33,7 +33,7 @@ export interface ProductRequestDTO {
     BarCode?: string;
 }
 
-export interface ProdcutInCart extends ProductForSale {
+export interface ProductInCart extends ProductForSale {
     quantity: number;
 }
 

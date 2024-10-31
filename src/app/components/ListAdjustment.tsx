@@ -1,67 +1,27 @@
-import { BulkCreateStock } from "../../interfaces/stock.interfaces"
-import { Button, NoRegistries, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
-
-interface ListImportedStockProps {
-    stockImported: BulkCreateStock[];
-    errorsList: string[];
-    setErrorsList: React.Dispatch<React.SetStateAction<string[]>>;
-    setStockExcelImported: React.Dispatch<React.SetStateAction<BulkCreateStock[]>>
-}
-
-interface ImportedStockTableItemProps {
-    stock: BulkCreateStock;
-    hasRowError: boolean;
-    handleDeleteRow: (index: number, isErrorRow: boolean) => void;
-    index: number;
-}
-
-const ImportedStockTableItem = ({ stock, hasRowError = false, handleDeleteRow, index }: ImportedStockTableItemProps) => {
-    return (
-        <TableRow style={{
-            ...hasRowError
-                ? {
-                    backgroundColor: '#f87171',
-                    color: '#fff'
-                }
-                : {}
-        }}>
-            <TableCell>
-                {stock.stockId}
-            </TableCell>
-            <TableCell>
-                {stock.quantity}
-            </TableCell>
-            <TableCell>
-                <Button onClick={() => handleDeleteRow(index, hasRowError)} type="button" className="hover:bg-red-600 bg-red-500 rounded-sm"><i className="bi bi-trash"></i></Button>
-            </TableCell>
-        </TableRow>
-    )
-}
-
-
-export const ListAdjustment = ({ stockImported, errorsList, setErrorsList, setStockExcelImported }: ListImportedStockProps) => {
-
-
-    const errorsListMapped = errorsList.map(value => {
-        return value.match(/\d+/g)
-    })
+import { useEffect } from "react";
+import { useAdjustmenStock } from "../../hooks/useAdjustmenStock"
+import {  Button, Table, TableBody, TableCell, TableHead, TableRow } from "../../ui/components"
 
 
 
 
+export const ListAdjustment = () => {
 
-    const handleDeleteRow = (index: number, isErrorRow: boolean) => {
+    const {  
+        adjustmentStockPagination, 
+        handleNextPage, 
+        handlePreviousPage, 
+        isLoading,
+        adjustmentStock,
+        getAdjustmentStockPaginated
+    } = useAdjustmenStock();
+    
 
-        if (isErrorRow) {
-            const errorIndex = errorsListMapped.indexOf(errorsListMapped[index]);
-            setErrorsList(errorsList.toSpliced(errorIndex, 1))
-        }
-
-        setStockExcelImported(
-            stockImported.toSpliced(index, 1)
-        )
-    }
-
+    
+    useEffect(() => {
+        getAdjustmentStockPaginated()
+    }, [])
+    
     return (
         <div className="mt-6    ">
             <Table className=" border-[2px]">
@@ -70,10 +30,19 @@ export const ListAdjustment = ({ stockImported, errorsList, setErrorsList, setSt
                     <TableRow className="sticky top-0 z-[100]  bg-white shadow-sm ">
 
                         <TableCell align="left">
-                            Id del stock
+                            #
+                        </TableCell>
+                        <TableCell align="left">
+                            ProductoId
+                        </TableCell>
+                        <TableCell align="left">
+                            Tipo de ajuste
                         </TableCell>
                         <TableCell align="left">
                             Cantidad
+                        </TableCell>
+                        <TableCell align="left">
+                            Motivo
                         </TableCell>
                         <TableCell align="left">
                             Acciones
@@ -82,20 +51,50 @@ export const ListAdjustment = ({ stockImported, errorsList, setErrorsList, setSt
                 </TableHead>
                 <TableBody>
                     {
-                        (stockImported.length === 0)
-                            ? <NoRegistries />
-                            : stockImported.map((stock, index) => (
-                                <ImportedStockTableItem
-                                    index={index}
-                                    handleDeleteRow={handleDeleteRow}
-                                    hasRowError={errorsListMapped.findIndex(val => parseInt(val![0]) == index + 1 && parseInt(val![1]) == stock.productId) !== -1 ? true : false}
-                                    stock={stock}
-                                    key={`${stock.productId}${index + 1}`}
-                                />))
+                        adjustmentStock.map((stock, index) => (
+                            <TableRow key={index} className="border-b-[1px] border-gray-200 ">
+                                <TableCell align="left">
+                                    {index + 1}
+                                </TableCell>
+                                <TableCell align="left">
+                                    {stock.productId}
+                                </TableCell>
+                                <TableCell align="left">
+                                    {stock.quantity}
+                                </TableCell>
+                                <TableCell align="left">
+                                    <Button
+                                        isButtonLoading={isLoading}
+                                        className="bi bi-pencil-square bg-transparent rounded-full hover:bg-slate-100 transition-all duration-200">
+                                    </Button>
+                                </TableCell>
+                            </TableRow>
+                        ))
                     }
-
                 </TableBody>
             </Table>
+            <div className="px-4 py-4 border-[1px]">
+                <div className="flex justify-end items-center gap-4 *:text-gray-800">
+                    <div className="flex gap-10">
+                        <p>Elementos por pagina: {adjustmentStock.length}</p>
+                        <p>Página {adjustmentStockPagination.pageIndex} de {adjustmentStockPagination.totalPages === 0 ? 1 : adjustmentStockPagination.totalPages} </p>
+                    </div>
+                    
+                    <Button
+                        disabled={adjustmentStockPagination.pageIndex <= 1 ? true : false}
+                        isButtonLoading={isLoading}
+
+                        onClick={handlePreviousPage}
+                        className="disabled:bg-slate-100 bi bi-chevron-left bg-transparent transition-all duration-200  rounded-full hover:bg-slate-100">
+                    </Button>
+                    <Button
+                        disabled={adjustmentStockPagination.pageIndex < adjustmentStockPagination.totalPages ? false : true}
+                        isButtonLoading={isLoading}
+                        onClick={handleNextPage}
+                        className="disabled:bg-slate-100 bi bi-chevron-right bg-transparent  transition-all duration-200  rounded-full hover:bg-slate-100 ">
+                    </Button>
+                </div>
+            </div>
         </div>
     )
 }
