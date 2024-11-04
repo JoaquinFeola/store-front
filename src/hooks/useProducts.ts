@@ -97,10 +97,9 @@ export const useProducts = () => {
 
     const bulkCreateProducts = async (products: ProductToImport[]): Promise<ApiResponseBody<null>> => {
         try {
-            const response: ApiResponse = await httpClient.post('product/import', products);
-
-            if (response.data.errors) throw new Error();
-
+            const response: ApiResponse = await httpClient.post('/product/import', products);
+            if (response.data.errors?.length! > 0) throw new Error();
+            
             addAlert({
                 duration: 4000,
                 message: response.data.message,
@@ -110,7 +109,7 @@ export const useProducts = () => {
             return response.data
         }
         catch (error) {
-
+            
             const err = error as AxiosError<ApiResponseBody>;
             addAlert({
                 duration: 4000,

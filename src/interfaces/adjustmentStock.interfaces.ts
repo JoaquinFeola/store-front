@@ -12,7 +12,7 @@ export interface PaginateResponse {
     message: string;
     statusCode: number;
     errors: null | string[];
-    
+
 }
 
 
@@ -22,19 +22,24 @@ export interface PaginateRequest {
     pageSize: number;
 }
 
-    export interface AdjustmentStock {
+export interface AdjustmentStock {
     id: number;
     productId: number,
     product: Product;
     stockAdjustmentTypeId: StockAdjustmentTypeId;
-    stockAdjustmentType: string;
+    stockAdjustmentType: StockAdjustmentType;
     quantity: number;
     motive: string;
     createdAt: Date;
 
 }
 
+export interface StockAdjustmentType {
+    id: number;
+    description: string;
+}
+
 export enum StockAdjustmentTypeId {
-    Increase = 1,
-    Decrease = 2
+    Positivo = 1,
+    Negativo = 2
 }

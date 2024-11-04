@@ -1,5 +1,4 @@
-import { Button } from "../../ui/components";
-import { Tooltip } from "../../ui/components/tooltip/Tooltip";
+import { Button, Tooltip } from "@/ui/components";
 
 
 interface BarcodesListProps {

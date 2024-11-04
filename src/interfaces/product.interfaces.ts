@@ -58,7 +58,7 @@ export interface ImportProductTemplate {
     fechaExpiracion: string;
 }
 export interface ProductToImport {
-    productId: number;
+    productId?: number;
     sku: string;
     description: string;
     supplierId: number;

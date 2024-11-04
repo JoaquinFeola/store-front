@@ -4,6 +4,7 @@ import { AUTH_STATE } from "../consts";
 import { Navigate, useLocation } from "react-router-dom";
 import { setItemToLocalStorage } from "../utils/localstorage.util";
 import { SuppliersProvider } from "../context/providers/SuppliersProvider";
+import { AdjustmentStockProvider } from "@/context/providers/AdjustmentStockProvider";
 
 
 
@@ -27,9 +28,11 @@ export const PrivateRoutes = ({ children }: { children: ReactNode }) => {
                     <SuppliersProvider>
                         <ProductsProvider>
                             <StockProvider>
-                                <SalesProvider>
-                                    {children}
-                                </SalesProvider>
+                                <AdjustmentStockProvider >
+                                    <SalesProvider>
+                                        {children}
+                                    </SalesProvider>
+                                </AdjustmentStockProvider>
                             </StockProvider>
                         </ProductsProvider>
                     </SuppliersProvider>

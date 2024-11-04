@@ -1,14 +1,15 @@
-import { LineChart } from '../LineChart'
-import { months } from '../../../consts/datetimes-consts'
-import { useContext, useEffect, useState } from 'react';
-import { ChartData } from 'chart.js';
-import { SalesContext } from '../../../context/SalesContext';
+import { months } from "@/consts/datetimes-consts";
+import { SalesContext } from "@/context/SalesContext";
+import { LineChart } from "@/ui/components";
+import { ChartData } from "chart.js";
+import { useContext, useState, useEffect } from "react";
+
 
 
 export const YearSalesGraphic = () => {
     
     const { getSalesForHomeYear } = useContext(SalesContext);
-    const [_, setError ] = useState('')
+    const [, setError ] = useState('')
 
     const [salesData, setSalesData] = useState<ChartData<"line">>({
         labels: ['Ayer', 'Hoy'],

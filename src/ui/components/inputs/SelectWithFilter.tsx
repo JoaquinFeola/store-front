@@ -57,7 +57,7 @@ export const SelectWithFilter = ({ items, select, selectionArr, labelText }: Sel
 
               >
                 {
-                  (selectionArr?.length == 0)
+                  (selectionArr?.length == 0 || selectionArr![0] === 0) 
                     ? 'Sin elementos'
                     : items.filter(item => item.id == selectionArr?.find(el => el == item.id))
                       .map(item => item.title)

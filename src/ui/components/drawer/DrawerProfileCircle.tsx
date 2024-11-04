@@ -1,6 +1,6 @@
 import { useContext, useEffect, useRef, useState } from "react"
 import { AuthContext } from "../../../context";
-import { ProfileOptions } from "../../../app/components/ProfileOptions";
+import { ProfileOptions } from "./ProfileOptions";
 import { Tooltip } from "../tooltip/Tooltip";
 
 

@@ -26,13 +26,13 @@ export const UpdatePricesForSupplier = () => {
             assignAllNewValues({
                 supplierId: 0
             });
-        };
+        }
 
         if (formState.supplierId !== id) {
             assignAllNewValues({
                 supplierId: id
             });
-        };
+        }
     };
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export const UpdatePricesForSupplier = () => {
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (formValidation.issupplierIdValid !== null || formValidation.isPercentageToUpValid !== null) return setIsSubmit(true);
+        if (formValidation.isSupplierIdValid !== null || formValidation.isPercentageToUpValid !== null) return setIsSubmit(true);
         setSubmittingState(true);
 
         await updateSalePriceForSupplierId({
@@ -86,10 +86,10 @@ export const UpdatePricesForSupplier = () => {
                         />
                     </div>
                     {
-                        (formValidation.issupplierIdValid !== null && isSubmit)
+                        (formValidation.isSupplierIdValid !== null && isSubmit)
                         && (
                             <p className="relative  text-red-500">
-                                {formValidation.issupplierIdValid}
+                                {formValidation.isSupplierIdValid}
                             </p>
                         )
                     }

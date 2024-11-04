@@ -30,11 +30,11 @@ export const SelectFilter = <T extends { id: number },>({
   }
   const itemsFiltered = useMemo(() => searchValidator(items, search), [search])
 
+
   return (
-    <div className="  bg-white shadow-md min-w-[330px] max-w-[330px]">
+    <div className=" overflow-auto max-h-[250px] bg-white shadow-md min-w-[330px] max-w-[330px]">
       <div>
         <InputLabel
-        
           id="search_products_selectfilter"
           autoComplete="off"
           value={search}

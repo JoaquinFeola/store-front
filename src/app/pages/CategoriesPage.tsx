@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useState } from "react"
 import { Button } from "../../ui/components"
-import { ListCategories } from "../components/ListCategories"
+import { ListCategories } from "../components/categories/ListCategories"
 import { CategoriesContext, ModalsContext } from "../../context"
 import { excel } from "../../plugins/exportAsExcel.plugin";
 import { Tooltip } from "../../ui/components/tooltip/Tooltip";

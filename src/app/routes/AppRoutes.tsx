@@ -19,17 +19,18 @@ import {
   EditSuppliersView,
   CreateSuppliersView,
   AdjustmentStockView,
-  ProductView
+  ProductView,
+  CreateAdjustmentStockView
 } from "../views/"
 import { lazy, Suspense } from "react"
 import { LoadingInfo } from "../../ui/components/loadings/LoadingInfo"
-import { ListAdjustmentStockView } from "../views/ListAdjustmentStockView"
+import { ListAdjustmentStockView } from "../views/stock/ListAdjustmentStockView"
 
 const HomePage = lazy(() => import('../pages/HomePage'))
-const ListProductsView = lazy(() => import('../views/ListProductsView'))
-const ListSalesView = lazy(() => import('../views/ListSalesView'));
-const SalesView = lazy(() => import('../views/SalesView'));
-const ListSuppliersView = lazy(() => import('../views/ListSuppliersView'));
+const ListProductsView = lazy(() => import('../views/products/ListProductsView'))
+const ListSalesView = lazy(() => import('../views/sales/ListSalesView'));
+const SalesView = lazy(() => import('../views/sales/SalesView'));
+const ListSuppliersView = lazy(() => import('../views/suppliers/ListSuppliersView'));
 
 export const AppRoutes = () => {
   return (
@@ -85,6 +86,7 @@ export const AppRoutes = () => {
           <Route index element={<ListStockView />} />
           <Route path="import" element={<ImportStockView />} />
           <Route path="adjustment" element={<AdjustmentStockView />} />
+          <Route path="adjustment/create" element={<CreateAdjustmentStockView />} />
           <Route path="adjustment-list" element={<ListAdjustmentStockView />} />
 
         </Route>

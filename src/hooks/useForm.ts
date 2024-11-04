@@ -48,7 +48,7 @@ export const useForm = <T>(initialForm: T, formValidations: FormValidation<T> = 
 
         
         reader.onload = function(e) {
-           let base64Image = e.target?.result;
+           const base64Image = e.target?.result;
            if ( base64Image === null || base64Image === undefined ) return;
             
             setFormState({
