@@ -3,7 +3,7 @@ import { ModalsContext, SalesContext } from "@/context";
 import { ProductInCart, ApiResponseBody, SaleDetail } from "@/interfaces";
 import { ChangeEvent, FormEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "../store/useForm";
-import { formatToInteger } from "@/utils/currency.util";
+import { formatToInteger, parseFormattedValue } from "@/utils/currency.util";
 
 export const useSale = () => {
     const { getProductsForSale, scanProductCodebar, createSale, getProductForSaleById } = useContext(SalesContext);
@@ -26,17 +26,18 @@ export const useSale = () => {
     });
 
 
+    // cash input
 
     const handleWriteChange = (e: ChangeEvent<HTMLInputElement>) => {
-      
-        const value = e.target.value;
-        const valueFormatted = formatToInteger(value)
-        if (value === '') return assignAllNewValues({cash: '0', cashToPost: 0});
-        
+
+        const inputValue = e.target.value;
+        const formattedValue = formatToInteger(inputValue);
+        const numericValue = parseFormattedValue(formattedValue);
+
         assignAllNewValues({
-            cash: valueFormatted.formatted,
-            cashToPost: valueFormatted.numericValue
-        })
+            cash: formattedValue,
+            cashToPost: numericValue || 0
+        });
     }
 
     const aumentOrDecrementProductQuantity = useCallback((id: number, isDecrementing: boolean = false) => {
@@ -255,6 +256,7 @@ export const useSale = () => {
             document.removeEventListener("keydown", handleKeyPress);
         };
     }, [isModalOpen]);
+
 
     return {
         handleSelectPaymentMethod,

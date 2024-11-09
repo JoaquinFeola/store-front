@@ -5,15 +5,20 @@ export const formatCurrency = (value: number, currency: string) => {
 	}).format(value);
 }
 
-export const formatToInteger = (value: string) => {
-	const cleanedValue = value.replace(/[^\d]/g, '');
-	const number = parseFloat(cleanedValue);
+export const formatToInteger = (value: string): string => {
+	const cleanedValue = value.replace(/[^\d,]/g, '');
 
-	return {
-		formatted: new Intl.NumberFormat('de-DE').format(number),
-		numericValue: number
-	}
+	const [integerPart, decimalPart] = cleanedValue.split(',');
+
+	const formattedIntegerPart = integerPart
+		? integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.')
+		: '';
+
+	return decimalPart !== undefined
+		? `${formattedIntegerPart},${decimalPart.slice(0,2)}`
+		: formattedIntegerPart;
 }
+
 
 export const formatToDecimal = (value: string): string => {
 	const cleanedValue = value.replace(/[^\d]/g, '');
