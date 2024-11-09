@@ -23,8 +23,9 @@ export const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrem
                 {
                     (products.length == 0)
                         ? <NoRegistries />
-                        : products.map(product => (
+                        : products.map((product, i) => (
                             <ProductSaleTableItem
+                                key={i}
                                 aumentOrDecrementProductQuantity={aumentOrDecrementProductQuantity}
                                 handleRetireProduct={handleRetireProduct}
                                 product={product}

@@ -87,11 +87,25 @@ export const SalesView = () => {
 
             <div className=" mt-6 grid grid-cols-1 md:grid-cols-12 ">
                 <div className="border-[1px] col-span-9 rounded-md text-white ">
-                    <ListSaleProducts aumentOrDecrementProductQuantity={aumentOrDecrementProductQuantity} products={productsFound} handleRetireProduct={handleDeleteProduct} />
+                    <ListSaleProducts
+                        aumentOrDecrementProductQuantity={aumentOrDecrementProductQuantity}
+                        products={productsFound}
+                        handleRetireProduct={handleDeleteProduct}
+                    />
                 </div>
                 <div className="border-[1px] flex-wrap flex  col-span-3 ">
                     <div className="w-full p-2">
                         <h2 className="font-medium text-xl mb-2">Abonado</h2>
+                        {/* <input
+                            className="w-full  border-2 px-4 py-1 rounded-md"
+                            disabled={formState.paymentMethod !== 1 || productsFound.length === 0}
+                            type="text"
+                            value={formState.cash}
+                            onChange={handleWriteChange}
+                            autoComplete="off"
+                            name="cash"
+                            ref={inputCashRef}
+                        /> */}
                         <input
                             className="w-full  border-2 px-4 py-1 rounded-md"
                             disabled={formState.paymentMethod !== 1 || productsFound.length === 0}

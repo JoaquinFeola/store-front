@@ -1,9 +1,9 @@
 import { httpClient } from "@/api/axios-config";
 import { ModalsContext, SalesContext } from "@/context";
 import { ProductInCart, ApiResponseBody, SaleDetail } from "@/interfaces";
-import { formatCurrency, formatToDecimal, parseFormattedValue } from "@/utils/currency.util";
 import { ChangeEvent, FormEvent, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useForm } from "../store/useForm";
+import { formatToInteger } from "@/utils/currency.util";
 
 export const useSale = () => {
     const { getProductsForSale, scanProductCodebar, createSale, getProductForSaleById } = useContext(SalesContext);
@@ -25,25 +25,18 @@ export const useSale = () => {
         cashToPost: 0
     });
 
+
+
     const handleWriteChange = (e: ChangeEvent<HTMLInputElement>) => {
+      
         const value = e.target.value;
-        const cursorPosition = e.target.selectionStart;
-        const formatted = formatToDecimal(value);
-        const numeric = parseFormattedValue(formatted);
-        if (value === '') return;
-
+        const valueFormatted = formatToInteger(value)
+        if (value === '') return assignAllNewValues({cash: '0', cashToPost: 0});
+        
         assignAllNewValues({
-            cash: formatted,
-            cashToPost: numeric!
+            cash: valueFormatted.formatted,
+            cashToPost: valueFormatted.numericValue
         })
-
-        if (inputCashRef.current && cursorPosition !== null) {
-            setTimeout(() => {
-                const position = Math.min(cursorPosition, formatted.length);
-                inputCashRef.current?.setSelectionRange(position, position);
-            }, 0);
-        }
-
     }
 
     const aumentOrDecrementProductQuantity = useCallback((id: number, isDecrementing: boolean = false) => {
@@ -110,7 +103,7 @@ export const useSale = () => {
         }
 
 
-    }, [productsFound])
+    }, [productsFound, getProductForSaleById])
 
     const handleScanProduct = (e: ChangeEvent<HTMLInputElement>) => {
         const newEventValues = e
