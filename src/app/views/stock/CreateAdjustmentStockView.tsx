@@ -1,6 +1,6 @@
 import { ProductsContext } from "@/context";
 import { AdjustmentStockContext } from "@/context/AdjustmentStockContext";
-import { useForm } from "@/hooks/useForm";
+import { useForm } from "@/hooks/store/useForm";
 import { Product } from "@/interfaces/product.interfaces";
 import { LoadingInfo, SelectWithFilter, Select, InputLabel, Button } from "@/ui/components";
 import { Alert } from "@/ui/components/alerts/Alert";
@@ -19,7 +19,7 @@ export const CreateAdjustmentStockView = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const { formState, onInputWrite, assignAllNewValues, } = useForm({
+	const { formState, onInputWrite, assignAllNewValues, resetFormValues } = useForm({
 		selectedProductId: 0,
 		selectedAdjustmentStockTypeId: 0,
 		quantity: 0,
@@ -42,12 +42,16 @@ export const CreateAdjustmentStockView = () => {
 		});
 		if (resp !== null) {
 			setErrors(resp.response?.data.errors || ['Ocurrió un error inesperado']);
+			setIsSubmitting(false);
+			return;
 		}
+		resetFormValues()
+
 		setIsSubmitting(false);
 
 	}
 
-	
+
 	const selectProduct = (id: number) => {
 		if (formState.selectedProductId === id) {
 			assignAllNewValues({ selectedProductId: 0 });
@@ -82,14 +86,14 @@ export const CreateAdjustmentStockView = () => {
 			<div>
 				{
 					(errors.length > 0)
-						&& errors.map((err) => (
-							<Alert
-								key={err}
-								message={err}
-								type="error"
-								deleteFunction={() => setErrors(errors.filter(err => err !== err))}
-							/>
-						))
+					&& errors.map((err) => (
+						<Alert
+							key={err}
+							message={err}
+							type="error"
+							deleteFunction={() => setErrors(errors.filter(err => err !== err))}
+						/>
+					))
 				}
 
 			</div>

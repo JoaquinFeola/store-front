@@ -1,5 +1,5 @@
 import { ProductsContext, StockContext } from "@/context";
-import { useForm } from "@/hooks/useForm";
+import { useForm } from "@/hooks/store/useForm";
 import { InputLabel, SelectWithFilter, Button, Table, TableHead, TableRow, TableCell, TableBody, NoRegistries } from "@/ui/components";
 import React, { useContext, useState, FormEvent, useEffect } from "react";
 import { StockTableItem } from "./StockTableItem";

@@ -1,5 +1,5 @@
-import { SUPPLIERS_TYPES } from "../consts";
-import { Action, Supplier } from "../interfaces";
+import { SUPPLIERS_TYPES } from "@/consts";
+import { Action, Supplier } from "@/interfaces";
 
 
 

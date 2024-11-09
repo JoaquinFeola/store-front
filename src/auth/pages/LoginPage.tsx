@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useState } from "react"
 import { AuthContext } from "../../context";
-import { FormValidation, useForm } from "../../hooks/useForm";
+import { FormValidation, useForm } from "../../hooks/store/useForm";
 import { emailValidationFormat } from "../../validators/input.validators";
 
 

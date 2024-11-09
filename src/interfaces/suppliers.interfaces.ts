@@ -8,7 +8,7 @@ export interface Supplier {
     telephone?: string | null;
     email?: string | null;
     image?: string | null;
-    CreatedAt?: Date;
-    UpdatedAt?: Date;
+    createdAt?: Date;
+    updatedAt?: Date;
     isDeleted?: boolean;
 }

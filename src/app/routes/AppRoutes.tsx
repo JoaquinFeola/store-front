@@ -1,48 +1,40 @@
 import { Route, Routes } from "react-router-dom"
-import { Drawer } from "../../ui/components/drawer/Drawer"
+import { Drawer } from "@/ui/components/drawer/"
 import {
+  HomePage,
   CategoriesPage,
-  ProductsPage,
   SuppliersPage,
-  StockPage,
-  SalesPage,
+  ProductsPage,
   UpdatePricesForSupplier,
+  StockPage,
+  SalesPage
+} from "@/app/pages";
 
-} from "../pages/"
 import {
-  SaleInfoView,
+  ListSuppliersView,
+  CreateSuppliersView,
+  EditSuppliersView,
+  ListProductsView,
+  CreateProductView,
+  ProductView,
+  EditProductView,
+  ImportProductsView,
   ListStockView,
   ImportStockView,
-  ImportProductsView,
-  EditProductView,
-  CreateProductView,
-  EditSuppliersView,
-  CreateSuppliersView,
   AdjustmentStockView,
-  ProductView,
-  CreateAdjustmentStockView
-} from "../views/"
-import { lazy, Suspense } from "react"
-import { LoadingInfo } from "../../ui/components/loadings/LoadingInfo"
-import { ListAdjustmentStockView } from "../views/stock/ListAdjustmentStockView"
+  CreateAdjustmentStockView,
+  SalesView,
+  SaleInfoView,
+  ListSalesView
+} from "@/app/views";
 
-const HomePage = lazy(() => import('../pages/HomePage'))
-const ListProductsView = lazy(() => import('../views/products/ListProductsView'))
-const ListSalesView = lazy(() => import('../views/sales/ListSalesView'));
-const SalesView = lazy(() => import('../views/sales/SalesView'));
-const ListSuppliersView = lazy(() => import('../views/suppliers/ListSuppliersView'));
+
 
 export const AppRoutes = () => {
   return (
     <Drawer>
       <Routes>
-        <Route path="/" element={
-
-          <Suspense fallback={<LoadingInfo />}>
-            <HomePage />
-          </Suspense>
-        }
-        />
+        <Route path="/" element={<HomePage />} />
         <Route
           path="/categories"
           element={<CategoriesPage />}
@@ -53,12 +45,7 @@ export const AppRoutes = () => {
             <SuppliersPage />
           }
         >
-          <Route index element={
-            <Suspense fallback={<LoadingInfo />}>
-
-              <ListSuppliersView />
-            </Suspense>
-          }
+          <Route index element={<ListSuppliersView />}
           />
           <Route path="create" element={<CreateSuppliersView />} />
           <Route path="edit/:supplierId" element={<EditSuppliersView />} />
@@ -69,11 +56,7 @@ export const AppRoutes = () => {
         >
           <Route
             index
-            element={
-              <Suspense fallback={<LoadingInfo />}>
-                <ListProductsView />
-              </Suspense>
-            }
+            element={<ListProductsView />}
           />
           <Route path="create" element={<CreateProductView />} />
           <Route path=":productId" element={<ProductView />} />
@@ -87,22 +70,13 @@ export const AppRoutes = () => {
           <Route path="import" element={<ImportStockView />} />
           <Route path="adjustment" element={<AdjustmentStockView />} />
           <Route path="adjustment/create" element={<CreateAdjustmentStockView />} />
-          <Route path="adjustment-list" element={<ListAdjustmentStockView />} />
 
         </Route>
         <Route path="/sales" element={<SalesPage />}>
-          <Route index element={
-            <Suspense fallback={<LoadingInfo />}>
-              <SalesView />
-            </Suspense>
-          }
+          <Route index element={<SalesView />}
           />
           <Route path="list/:saleId" element={<SaleInfoView />} />
-          <Route path="list" element={
-            <Suspense fallback={<LoadingInfo />}>
-              <ListSalesView />
-            </Suspense>
-          }
+          <Route path="list" element={<ListSalesView />}
           />
         </Route>
 

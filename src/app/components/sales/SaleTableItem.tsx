@@ -13,7 +13,7 @@ export const SaleTableItem = ({ sale }: { sale: Sale }) => {
     return (
         <TableRow className="border-b-[1px] last:border-b-transparent">
             <TableCell className="font-medium" align="left">{sale?.id}</TableCell>
-            <TableCell align="center">{formatDate(sale.CreatedAt, 'DD-MM-YYYY hh:mm')}</TableCell>
+            <TableCell align="center">{formatDate(sale.createdAt, 'DD-MM-YYYY hh:mm')}</TableCell>
             <TableCell align="center">{formatCurrency(sale.total, 'ARS')}</TableCell>
             <TableCell align="center">{sale?.paymentType.name}</TableCell>
             <TableCell align="center" >

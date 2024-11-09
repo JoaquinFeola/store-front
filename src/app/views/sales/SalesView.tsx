@@ -1,333 +1,32 @@
-import { httpClient } from "@/api/axios-config";
 import { AdvancedSearchSales } from "@/app/components/sales/AdvancedSearchSales";
-import { SalesContext, ModalsContext } from "@/context";
-import { useForm } from "@/hooks/useForm";
-import { ProductInCart, ApiResponseBody, SaleDetail } from "@/interfaces";
-import { Table, TableHead, TableRow, TableCell, TableBody, NoRegistries, Button, InputLabel } from "@/ui/components";
-import { formatCurrency, formatToDecimal, parseFormattedValue } from "@/utils/currency.util";
-import React, { useContext, useState, useRef, ChangeEvent, useEffect, FormEvent } from "react";
+import { ListSaleProducts } from "@/app/components/sales/ListSaleProducts";
+import { useSale } from "@/hooks/sales/useSale";
+import { Button, InputLabel } from "@/ui/components";
+import { formatCurrency } from "@/utils/currency.util";
+
+
+
+export const SalesView = () => {
+
+    const {
+        aumentOrDecrementProductQuantity,
+        formRef,
+        formState,
+        handleAddProduct,
+        handleDeleteProduct,
+        handleScanProduct,
+        handleSelectPaymentMethod,
+        handleWriteChange,
+        inputCashRef,
+        isProductFound,
+        onFormSubmit,
+        onInputWrite,
+        paidMethods,
+        total,
+        totalCashChange,
+        productsFound
+    } = useSale();
 
-const ListSaleProducts = ({ products, handleRetireProduct, aumentOrDecrementProductQuantity }: { products: ProductInCart[]; aumentOrDecrementProductQuantity: (id: number, isDecrementing?: boolean) => void; handleRetireProduct: (id: number) => void }) => {
-
-    return (
-
-
-        <Table className=" text-black overflow-auto h-[500px]" autoHeight={false}>
-            <TableHead >
-                <TableRow >
-                    <TableCell>SKU</TableCell>
-                    <TableCell>Imagen</TableCell>
-                    <TableCell>Item</TableCell>
-                    <TableCell>Precio</TableCell>
-                    <TableCell>Cantidad</TableCell>
-                    <TableCell>Total</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody className="">
-                {
-                    (products.length == 0)
-                        ? <NoRegistries />
-                        : products.map(product => (
-                            <TableRow key={product.id} size="little" >
-                                <TableCell>
-                                    {product.sku}
-                                </TableCell>
-                                <TableCell>
-                                    {
-                                        (product.image)
-                                            ? <img width={50} className="" src={product.image} />
-                                            : <span>Sin imagen</span>
-                                    }
-                                </TableCell>
-                                <TableCell>
-                                    {product.description}
-                                </TableCell>
-                                <TableCell>
-                                    {formatCurrency(product.salePrice, 'ARS')}
-                                </TableCell>
-                                <TableCell className="">
-                                    <Button onClick={() => aumentOrDecrementProductQuantity(product.id, true)} type="button" className="bg-transparent hover:bg-slate-100 rounded-full mr-1 " style={{ color: 'black' }}>-</Button>
-                                    {product.quantity}
-                                    <Button onClick={() => aumentOrDecrementProductQuantity(product.id)} style={{ color: 'black' }} type="button" className="ml-1 rounded-full hover:bg-slate-100 bg-transparent">+</Button>
-                                </TableCell>
-                                <TableCell>
-                                    {
-                                        formatCurrency(parseFloat((product.salePrice * product.quantity).toFixed(2)), 'ARS')
-                                    }
-                                </TableCell>
-                                <TableCell>
-                                    <Button type="button" style={{ color: 'black' }} className="bg-transparent text-black hover:bg-slate-100 rounded-full" onClick={() => handleRetireProduct(product.id)}>
-                                        <i className="bi bi-trash text-red-600"></i>
-                                    </Button>
-
-                                </TableCell>
-                            </TableRow>
-                        ))
-                }
-            </TableBody>
-        </Table>
-    )
-}
-
-const SalesView = React.memo(() => {
-
-
-    const { getProductsForSale, scanProductCodebar, createSale, getProductForSaleById } = useContext(SalesContext);
-    const [isProductFound, setIsProductFound] = useState(false);
-    const { newModal } = useContext(ModalsContext)
-    const [paidMethods, setPaidMethods] = useState<{ title: string, img?: string; id: number; }[]>([]);
-    const inputCashRef = useRef<HTMLInputElement>(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [productsFound, setProductsFound] = useState<ProductInCart[]>([]);
-
-
-    const formRef = useRef<HTMLFormElement>(null);
-
-    const { formState, onInputWrite, resetFormValues, assignAllNewValues } = useForm({
-        search: '',
-        note: '',
-        paymentMethod: 1,
-        cash: '0',
-        cashToPost: 0
-    });
-
-    const handleWriteChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value;
-        const cursorPosition = e.target.selectionStart;
-        const formatted = formatToDecimal(value);
-        const numeric = parseFormattedValue(formatted);
-        if (value === '') return;
-
-        assignAllNewValues({
-            cash: formatted,
-            cashToPost: numeric!
-        })
-
-        if (inputCashRef.current && cursorPosition !== null) {
-            setTimeout(() => {
-                const position = Math.min(cursorPosition, formatted.length);
-                inputCashRef.current?.setSelectionRange(position, position);
-            }, 0);
-        }
-
-    }
-
-    const aumentOrDecrementProductQuantity = (id: number, isDecrementing: boolean = false) => {
-        const productFound = productsFound.findIndex(product => product.id === id);
-
-        if (productsFound[productFound].quantity <= 1 && isDecrementing) return;
-
-        (isDecrementing)
-            ? setProductsFound(
-                productsFound.map((product) => {
-                    if ( product.id !== id ) return product;
-                    return {
-                        ...product,
-                        quantity: product.quantity - 1
-                    }
-                })
-            )
-            : setProductsFound(
-                productsFound.map((product) => {
-                    if ( product.id !== id ) return product;
-                    return {
-                        ...product,
-                        quantity: product.quantity + 1
-                    }
-                })
-            )
-    }
-
-    const handleSelectPaymentMethod = (e: ChangeEvent<HTMLSelectElement>) => {
-        if (parseInt(e.target.value) != 1) {
-            assignAllNewValues({ cash: '0', paymentMethod: parseInt(e.target.value) })
-            return;
-        }
-
-        assignAllNewValues({ paymentMethod: parseInt(e.target.value) })
-
-    }
-
-    const handleResetForm = () => {
-        resetFormValues();
-        setProductsFound([])
-    }
-    const handleDeleteProduct = (id: number) => {
-        setProductsFound(productsFound.filter(product => product.id !== id))
-    };
-
-    const handleAddProduct = (id: number) => {
-        const productFound = getProductForSaleById(id);
-        if (productsFound === null) return;
-        if (productsFound.findIndex(product => product.id === id) !== -1) {
-            setProductsFound((prev) => prev.map((product) => {
-                if (product.id !== id) return product;
-
-                return {
-                    ...product,
-                    quantity: product.quantity + 1
-                };
-            }));
-
-        }
-        else {
-
-            setProductsFound([...productsFound, { ...productFound, quantity: 1 } as ProductInCart]);
-        }
-
-
-    }
-
-    const handleScanProduct = (e: ChangeEvent<HTMLInputElement>) => {
-        const newEventValues = e
-        newEventValues.target.value = e.target.value.trim()
-        onInputWrite(newEventValues);
-
-
-        if (e.target.value === '') return;
-        const productFound = scanProductCodebar(e.target.value.trim());
-        if (productFound == null) {
-            setIsProductFound(false)
-            return;
-        }
-
-
-
-        const isProductExists = productsFound.findIndex((product) => product.id == productFound.id);
-        if (isProductExists === -1) {
-            setProductsFound([{ ...productFound, quantity: 1 }, ...productsFound]);
-
-            setIsProductFound(true)
-        }
-        else {
-
-            setProductsFound(
-                productsFound.map((product) => {
-                    if (product.id == productFound.id) {
-                        return {
-                            ...product,
-                            quantity: product.quantity += 1
-                        }
-                    }
-                    return { ...product }
-                })
-            )
-            setIsProductFound(true)
-        }
-        assignAllNewValues({ search: '' });
-    };
-
-    const calculateTotal = (products: ProductInCart[]) => {
-        return products.reduce((prev, current) => {
-            return current.salePrice * current.quantity + prev
-        }, 0);
-    };
-
-    const total = calculateTotal(productsFound);
-
-
-    const calculateTotalCashChange = () => {
-        const change = formState.cashToPost - total;
-
-        return (formState.cashToPost == 0) ? 0 : change
-    };
-
-    const totalCashChange = calculateTotalCashChange()
-
-    const fetchPaidMethods = async () => {
-        try {
-            const { data } = await httpClient.get<ApiResponseBody<{ name: string, id: number; }[]>>('payment-type/all'); 
-
-
-
-            const mappedPaymentMethods: { title: string, img?: string; id: number; }[] = [];
-            for (const paymentMethod of data.data) {
-                mappedPaymentMethods.push({ id: paymentMethod.id, title: paymentMethod.name })
-            }
-
-            setPaidMethods(mappedPaymentMethods);
-        }
-        catch (error) {
-            setPaidMethods([]);
-        }
-    }
-    useEffect(() => {
-
-        const fetchData = async () => {
-            await Promise.all([
-                getProductsForSale(),
-                fetchPaidMethods(),
-
-            ])
-        }
-        fetchData();
-    }, []);
-
-
-    const buildSaleTemplate = async () => {
-        const salesDetail: SaleDetail[] = [];
-
-
-        for (const product of productsFound) {
-            salesDetail.push({
-                productId: product.id,
-                quantity: product.quantity,
-                salePrice: product.salePrice
-            })
-        }
-
-
-
-        return await createSale({
-            amountPaid: (formState.paymentMethod === 1) ? formState.cashToPost : total,
-            changeReturned: (formState.paymentMethod === 1) ? formState.cashToPost : 0,
-            note: formState.note,
-            paymentTypeId: formState.paymentMethod,
-            salesDetail: salesDetail
-        })
-
-    }
-
-    const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (productsFound.length === 0) return;
-        setIsModalOpen(true)
-        newModal({
-            submitFunc: async (ev) => {
-                await buildSaleTemplate();
-                ev.preventDefault()
-                handleResetForm()
-
-                setIsModalOpen(false);
-            },
-            cancelFunc: () => {
-                setIsModalOpen(false)
-            },
-            title: '¿Confirmar Venta?',
-            confirmLabel: 'Confirmar',
-        });
-    }
-
-
-
-    useEffect(() => {
-        const handleKeyPress = (event: KeyboardEvent) => {
-            if (event.key === "Enter") {
-                event.preventDefault(); // Previene el comportamiento por defecto
-                if (formRef.current !== null && !isModalOpen) {
-                    formRef.current.requestSubmit(); // Envía el formulario si el modal no está abierto
-                }
-            }
-        };
-
-        // Adjunta el evento de teclado
-        document.addEventListener("keydown", handleKeyPress);
-
-        // Limpia el evento cuando el componente se desmonta
-        return () => {
-            document.removeEventListener("keydown", handleKeyPress);
-        };
-    }, [isModalOpen]);
 
 
 
@@ -430,6 +129,4 @@ const SalesView = React.memo(() => {
 
         </form>
     )
-})
-
-export default SalesView
+}

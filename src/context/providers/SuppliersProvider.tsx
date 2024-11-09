@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import { SuppliersContext } from "../SuppliersContext"
-import { useSuppliers } from "../../hooks/useSuppliers"
+import { useSuppliers } from "../../hooks/store/useSuppliers"
 
 
 

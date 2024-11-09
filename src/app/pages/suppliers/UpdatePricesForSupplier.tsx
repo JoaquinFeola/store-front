@@ -1,9 +1,8 @@
+import { SuppliersContext, ProductsContext } from "@/context";
+import { useForm } from "@/hooks/store/useForm";
+import { SelectWithFilter, InputLabel, Button } from "@/ui/components";
 import { FormEvent, useContext, useEffect, useState } from "react"
-import { InputLabel } from "../../ui/components/inputs/InputLabel"
-import { SelectWithFilter } from "../../ui/components/inputs/SelectWithFilter"
-import { ProductsContext, SuppliersContext } from "../../context"
-import { useForm } from "../../hooks/useForm"
-import { Button } from "../../ui/components"
+
 
 export const UpdatePricesForSupplier = () => {
 

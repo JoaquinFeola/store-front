@@ -1,6 +1,5 @@
-import { PRODUCTS_TYPES } from "../consts";
-import { Action } from "../interfaces";
-import { Product } from "../interfaces/product.interfaces";
+import { PRODUCTS_TYPES } from "@/consts";
+import { Action, Product } from "@/interfaces";
 
 
 

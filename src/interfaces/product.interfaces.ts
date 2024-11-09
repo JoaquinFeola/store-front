@@ -19,7 +19,7 @@ export interface Product {
     image?: string;
     barCodes?: { code: string }[],
     expirationDate?: string | null;
-    CreatedAt: Date;
+    createdAt: Date;
     UpdatedAt?: Date | null;
     isDeleted?: boolean;
 }

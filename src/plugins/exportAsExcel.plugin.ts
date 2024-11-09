@@ -4,32 +4,9 @@
 import excelJs from 'exceljs';
 import { saveAs } from 'file-saver';
 
-// export const excel = {
-//     exportAsExcelWithJsonData: async <T extends Object>(jsonData: T[], filename: string) => {
-//         const workbook = excelXlsx.utils.book_new();
-//         const worksheet = excelXlsx.utils.json_to_sheet(jsonData);
-//         excelXlsx.utils.book_append_sheet(workbook, worksheet);
-
-//         const sheet = workbook.
-//         await excelXlsx.writeFile(workbook, `${filename}.xlsx`);
-
-//     },
-//     readExcel: async<T>(data?: T) => {
-//         const workbook =  excelXlsx.read(data, { type: 'array' });
-
-//         const sheetName = workbook.SheetNames[0];
-//         const worksheet = workbook.Sheets[sheetName];
-//         const jsonData = excelXlsx.utils.sheet_to_json(worksheet);
-
-//         return jsonData
-//     }
-// }
-
-const worksheetToJson = <T extends Object,>(worksheet: excelJs.Worksheet) => {
+const worksheetToJson = <T extends object,>(worksheet: excelJs.Worksheet) => {
     const json: T[] = [];
     let headers: string[] = [];
-
-
 
     worksheet.eachRow({ includeEmpty: false }, (row, rowNumber) => {
         if (rowNumber === 1) {
@@ -53,7 +30,7 @@ const worksheetToJson = <T extends Object,>(worksheet: excelJs.Worksheet) => {
 
 
 export const excel = {
-    exportAsExcelWithJsonData: async <T extends Object>(jsonData: T[], filename: string) => {
+    exportAsExcelWithJsonData: async <T extends object>(jsonData: T[], filename: string) => {
         try {
             const workbook = new excelJs.Workbook();
             const worksheet = workbook.addWorksheet('Hoja 1');
@@ -86,11 +63,11 @@ export const excel = {
             await saveAs(blobFile, `${filename}.xlsx`)
         }
         catch (error) {
-
+            console.error(error)
         }
 
     },
-    readExcel: async<T extends Uint8Array>(file: T,) => {
+    readExcel: async<T extends Uint8Array >(file: T,) => {
 
         const workbook = new excelJs.Workbook();
         await workbook.xlsx.load(file);

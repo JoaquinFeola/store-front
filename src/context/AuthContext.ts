@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { AuthState } from "../hooks/useAuth";
+import { AuthState } from "../hooks/store/useAuth";
 import { UserCredentials } from "../interfaces";
 
 

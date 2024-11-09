@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { ProductForSale } from "../interfaces/product.interfaces"
-import { httpClient } from "../api/axios-config";
-import { ApiResponse, ApiResponseBody, Sale, SaleForHome, SaleForHomeYear, SaleRequest, SalesParamsRequest } from "../interfaces";
+import { ProductForSale } from "../../interfaces/product.interfaces"
+import { httpClient } from "../../api/axios-config";
+import { ApiResponse, ApiResponseBody, Sale, SaleForHome, SaleForHomeYear, SaleRequest, SalesParamsRequest } from "../../interfaces";
 import { AxiosError } from "axios";
 
 

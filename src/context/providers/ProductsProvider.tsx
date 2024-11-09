@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import { ProductsContext } from "../ProductsContext"
-import { useProducts } from "../../hooks/useProducts"
+import { useProducts } from "../../hooks/store/useProducts"
 
 export const ProductsProvider = ({ children }: {children: ReactNode}) => {
 

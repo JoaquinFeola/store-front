@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect, FormEvent } from "react";
 import { Link } from "react-router-dom"
 import { CategoriesContext, SuppliersContext, ProductsContext } from "../../../context";
-import { useForm } from "../../../hooks/useForm";
+import { useForm } from "../../../hooks/store/useForm";
 import { Button } from "../../../ui/components";
 import { Alert } from "../../../ui/components/alerts/Alert";
 import { Checkbox } from "../../../ui/components/inputs/Checkbox";

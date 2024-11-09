@@ -1,4 +1,4 @@
-import { useAdjustmenStock } from "@/hooks/useAdjustmenStock";
+import { useAdjustmenStock } from "@/hooks/store/useAdjustmenStock";
 import { Table, TableHead, TableRow, TableCell, TableBody, Button } from "@/ui/components";
 import { useEffect } from "react";
 import { AdjustmentStockTableItem } from "./table/AdjustmentStockTableItem";
@@ -45,9 +45,7 @@ export const ListAdjustment = () => {
                         <TableCell align="left">
                             Motivo
                         </TableCell>
-                        <TableCell align="left">
-                            Acciones
-                        </TableCell>
+                        
                     </TableRow>
                 </TableHead>
                 <TableBody>

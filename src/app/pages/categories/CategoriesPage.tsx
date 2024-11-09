@@ -1,10 +1,11 @@
-import { FormEvent, useContext, useState } from "react"
-import { Button } from "../../ui/components"
-import { ListCategories } from "../components/categories/ListCategories"
-import { CategoriesContext, ModalsContext } from "../../context"
-import { excel } from "../../plugins/exportAsExcel.plugin";
-import { Tooltip } from "../../ui/components/tooltip/Tooltip";
-import { formatDate } from "../../plugins/momentFormat.plugin";
+import { ListCategories } from "@/app/components/categories/ListCategories";
+import { ModalsContext, CategoriesContext } from "@/context";
+import { excel } from "@/plugins/exportAsExcel.plugin";
+import { formatDate } from "@/plugins/momentFormat.plugin";
+import { Button } from "@/ui/components";
+import { Tooltip } from "@/ui/components";
+import { useContext, useState, FormEvent } from "react";
+
 
 
 const CreateCategoriesForm = () => {
@@ -59,7 +60,7 @@ export const CategoriesPage = () => {
       return {
         id: category.id,
         nombre: category.name,
-        fechaCreacion: formatDate(String(category.CreatedAt) , 'DD-MM-YYYY HH:mm'),
+        fechaCreacion: formatDate(String(category.createdAt) , 'DD-MM-YYYY HH:mm'),
         fechaModificacion: (category.UpdatedAt === null)
           ? 'Sin modificación'
           : formatDate(String(category.UpdatedAt)!, 'DD-MM-YYYY HH:mm')

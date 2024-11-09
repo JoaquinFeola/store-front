@@ -1,15 +1,14 @@
+import { ListProducts } from "@/app/components/products/ListProducts";
+import { ProductsContext } from "@/context";
+import { excel } from "@/plugins/exportAsExcel.plugin";
+import { formatDate } from "@/plugins/momentFormat.plugin";
+import { Button, Tooltip } from "@/ui/components";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { Tooltip } from "../../../ui/components/tooltip/Tooltip";
-import { useContext, useState } from "react";
-import { ProductsContext } from "../../../context";
-import { excel } from "../../../plugins/exportAsExcel.plugin";
-import { formatDate } from "../../../plugins/momentFormat.plugin";
-import { Button } from "../../../ui/components";
-import { ListProducts } from "../../components/products/ListProducts";
 
 
-const ListProductsView = () => {
+export const ListProductsView = () => {
     const { getAllProducts, isProductsLoading, products } = useContext(ProductsContext)
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
@@ -30,7 +29,7 @@ const ListProductsView = () => {
                 fechaExpiracion: formatDate(product.expirationDate!, 'DD-MM-YYYY'),
                 precioCompra: product.purchasePrice,
                 precioVenta: product.salePrice,
-                fechaCreacion: formatDate(String(product.CreatedAt), 'DD-MM-YYYY hh:mm'),
+                fechaCreacion: formatDate(String(product.createdAt), 'DD-MM-YYYY hh:mm'),
                 fechaActualizacion: formatDate(product.UpdatedAt ? String(product.UpdatedAt) : null, 'DD-MM-YYYY hh:mm'),
             }
         });
@@ -75,5 +74,3 @@ const ListProductsView = () => {
     )
 }
 
-
-export default ListProductsView

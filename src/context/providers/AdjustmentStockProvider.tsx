@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import { AdjustmentStockContext } from "../AdjustmentStockContext"
-import { useAdjustmenStock } from "@/hooks/useAdjustmenStock"
+import { useAdjustmenStock } from "@/hooks/store/useAdjustmenStock"
 
 interface Props {
     children: ReactNode

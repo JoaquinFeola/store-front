@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import { StockContext } from "../StockContext"
-import { useStock } from "../../hooks/useStock"
+import { useStock } from "../../hooks/store/useStock"
 
 export const StockProvider = ({ children }: { children: ReactNode }) => {
     

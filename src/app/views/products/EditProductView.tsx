@@ -1,7 +1,7 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom"
 import { ProductsContext, CategoriesContext, SuppliersContext } from "../../../context";
-import { useForm } from "../../../hooks/useForm";
+import { useForm } from "../../../hooks/store/useForm";
 import { Product } from "../../../interfaces/product.interfaces";
 import { Button } from "../../../ui/components";
 import { Alert } from "../../../ui/components/alerts/Alert";

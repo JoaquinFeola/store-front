@@ -4,7 +4,7 @@ export interface Category {
     id?: number;
     name?: string;
     user?: string;
-    CreatedAt: Date;
+    createdAt: Date;
     UpdatedAt?: Date ;
     isDeleted?: boolean;
 }

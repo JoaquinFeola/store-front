@@ -1,7 +1,8 @@
-import { useState } from "react";
-import { AdjustmentStock, ApiResponse, ApiResponseBody, PaginateRequest, PaginateResponse } from "../interfaces";
+import { useContext, useState } from "react";
+import { AdjustmentStock, ApiResponse, ApiResponseBody, PaginateRequest, PaginateResponse } from "../../interfaces";
 import { httpClient } from "@/api/axios-config";
 import { AxiosError } from "axios";
+import { AlertsContext } from "@/context";
 
 
 export const useAdjustmenStock = () => {
@@ -10,7 +11,7 @@ export const useAdjustmenStock = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [internalPageIndex, setInternalPageIndex] = useState<number>(1);
     const [adjustmentStock, setAdjustmentStock] = useState<AdjustmentStock[]>([]);
-
+    const { addAlert } = useContext(AlertsContext)
     
     const [adjustmentStockPagination, setAdjustmentStockPagination] = useState({
         pageIndex: 1,
@@ -44,11 +45,22 @@ export const useAdjustmenStock = () => {
 
     const createAdjustmentStock = async (adjustmentStock: Partial<AdjustmentStock>): Promise<null | AxiosError<ApiResponseBody>> => {
         try {
-             await httpClient.post('/stock-adjustment/create', adjustmentStock);    
+             const resp: ApiResponse = await httpClient.post('/stock-adjustment/create', adjustmentStock);    
+             addAlert({
+                duration: 6000,
+                message: resp.data.message,
+                type: 'success',
+             })
             return null;
         } 
         catch (error) {
-            return error as AxiosError<ApiResponseBody>
+            const err = error as AxiosError<ApiResponseBody>
+            addAlert({
+                duration: 6000,
+                message: err.response?.data.message || 'Ocurrio un error inesperado al intentar ajustar el stock',
+                type: 'error',
+             })
+            return err
         }
     }
 

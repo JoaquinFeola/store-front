@@ -1,11 +1,11 @@
+import { ListSales } from "@/app/components/sales/ListSales";
+import { SalesContext } from "@/context/SalesContext";
 import { useContext, useEffect } from "react";
-import { ListSales } from "../../components/ListSales"
-import { SalesContext } from "../../../context/SalesContext";
 
 
 
 
- const ListSalesView = () => {
+export const ListSalesView = () => {
     const {getSalesPaginated, sales,} = useContext(SalesContext);
 
 
@@ -16,10 +16,9 @@ import { SalesContext } from "../../../context/SalesContext";
         <div>
 
 
-            <ListSales sales={sales} ></ListSales>
+            <ListSales sales={sales}  />
         </div>
     )
 }
 
 
-export default ListSalesView

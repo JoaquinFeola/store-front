@@ -1,6 +1,6 @@
 import { ImageInput } from "@/app/components/ImageInput";
 import { SuppliersContext } from "@/context";
-import { useForm } from "@/hooks/useForm";
+import { useForm } from "@/hooks/store/useForm";
 import { Supplier } from "@/interfaces";
 import { Button } from "@/ui/components";
 import { LoadingInfo } from "@/ui/components/";
@@ -47,19 +47,19 @@ export const EditSuppliersView = () => {
     }, []);
 
     useEffect(() => {
-        assignAllNewValues({
-            businessName: supplier.busisnessName!,
-            email: supplier.email!,
-            name: supplier.name,
-            image: formState.image,
-            telephone: supplier.telephone!
-        })
+        const setInitialFormState = () => {
+            setIsLoading(true)
+            assignAllNewValues({
+                businessName: supplier.busisnessName!,
+                email: supplier.email!,
+                name: supplier.name,
+                image: supplier.image || '',
+                telephone: supplier.telephone!
+            })
+            setIsLoading(false)
+        }
+        setInitialFormState()
     }, [supplier])
-
-
-
-
-
 
 
     const handleSubmitForm = async (e: FormEvent<HTMLFormElement>) => {
@@ -153,7 +153,6 @@ export const EditSuppliersView = () => {
                     </div>
                     <div className="mb-10 ">
                         <ImageInput
-
                             onLoadFile={onInputLoadFile}
                             src={formState.image}
                             inputName="image"

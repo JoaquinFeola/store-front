@@ -6,12 +6,13 @@ import { App } from "./App";
 import './assets/index.css';
 import 'bootstrap-icons/font/bootstrap-icons.min.css';
 import 'animate.css';
+import React from "react";
 
 
 const root = createRoot(document.getElementById('root')!);
 
 root.render(
-    // <React.StrictMode>
+    <React.StrictMode>
         <BrowserRouter>
         <AlertsProvider>
             <AuthProvider>

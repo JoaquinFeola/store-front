@@ -5,7 +5,7 @@ export interface Stock {
     id: number;
     productId: number;
     quantity: never;
-    CreatedAt: Date;
+    createdAt: Date;
     UpdatedAt: Date;
     product: Product
 }

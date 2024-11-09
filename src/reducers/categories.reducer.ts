@@ -1,5 +1,5 @@
-import { CATEGORIES_TYPES } from "../consts";
-import { Action, Category } from "../interfaces";
+import { CATEGORIES_TYPES } from "@/consts";
+import { Action, Category } from "@/interfaces";
 
 
 

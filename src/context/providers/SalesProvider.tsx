@@ -1,6 +1,6 @@
 import { ReactNode } from "react"
 import { SalesContext } from "../SalesContext"
-import { useSales } from "../../hooks/useSales"
+import { useSales } from "../../hooks/store/useSales"
 
 
 

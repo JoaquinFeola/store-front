@@ -1,17 +1,16 @@
 import { Link } from "react-router-dom"
-import { Tooltip } from "../../../ui/components/tooltip/Tooltip"
+import { Tooltip, Button } from "@/ui/components/"
+import { ListImportedProducts } from "@/app/components/products/ListImportedProducts"
+import { ProductsContext } from "@/context"
+import { ProductToImport, ImportProductTemplate } from "@/interfaces"
+import { excel } from "@/plugins/exportAsExcel.plugin"
 import { useContext, useState, useRef, ChangeEvent } from "react"
-import { ProductsContext } from "../../../context"
-import { ProductToImport, ImportProductTemplate } from "../../../interfaces/product.interfaces"
-import { excel } from "../../../plugins/exportAsExcel.plugin"
-import { Button } from "../../../ui/components"
-import { ListImportedProducts } from "../../components/ListImportedProducts"
 
 export const ImportProductsView = () => {
     const { bulkCreateProducts } = useContext(ProductsContext)
     const [productsImported, setProductsImported] = useState<ProductToImport[]>([])
     const [errorslist, setErrorsList] = useState<string[]>([])
-    const [ isFormSubmitting, setIsFormSubmitting] = useState(false);
+    const [isFormSubmitting, setIsFormSubmitting] = useState(false);
 
 
     const inputFileRef = useRef<HTMLInputElement>(null);
@@ -65,10 +64,10 @@ export const ImportProductsView = () => {
     const onImportProducts = async () => {
         setIsFormSubmitting(true)
         if (productsImported.length === 0) return setIsFormSubmitting(false);
-        const response =   await bulkCreateProducts(productsImported)
-        
+        const response = await bulkCreateProducts(productsImported)
+
         scrollTo({ top: 0 })
-        if ( response.hasError ) {
+        if (response.hasError) {
             setErrorsList(response.errors!);
         }
         setIsFormSubmitting(false)
@@ -107,7 +106,7 @@ export const ImportProductsView = () => {
                 className=" hidden opacity-0 "
             />
             <ListImportedProducts setErrorsList={setErrorsList} setProductsExcelImported={setProductsImported} errorsList={errorslist} productsImported={productsImported} />
-            <Button isButtonLoading={isFormSubmitting} className="rounded-md mt-5 disabled:bg-blue-500/50"  disabled={productsImported.length === 0} onClick={onImportProducts}>Importar</Button>
+            <Button isButtonLoading={isFormSubmitting} className="rounded-md mt-5 disabled:bg-blue-500/50" disabled={productsImported.length === 0} onClick={onImportProducts}>Importar</Button>
         </div>
     )
 }

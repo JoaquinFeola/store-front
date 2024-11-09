@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
-import { AUTH_LOGIN_KEY, AUTH_STATE } from "../consts";
-import { User, UserCredentials, ApiResponse } from "../interfaces/";
-import { httpClient } from "../api/axios-config";
-import { getItemFromLocalStorage, removeItemFromLocalStorage, setItemToLocalStorage } from "../utils/localstorage.util";
-import { isTokenExpired } from "../utils/token.util";
-import { AlertsContext } from "../context";
+import { AUTH_LOGIN_KEY, AUTH_STATE } from "../../consts";
+import { User, UserCredentials, ApiResponse } from "../../interfaces";
+import { httpClient } from "../../api/axios-config";
+import { getItemFromLocalStorage, removeItemFromLocalStorage, setItemToLocalStorage } from "../../utils/localstorage.util";
+import { isTokenExpired } from "../../utils/token.util";
+import { AlertsContext } from "../../context";
 
 export interface AuthState {
   user: User | null;

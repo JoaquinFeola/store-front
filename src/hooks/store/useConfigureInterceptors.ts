@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
-import { AlertsContext, AuthContext } from "../context";
-import { getItemFromLocalStorage } from "../utils/localstorage.util";
-import { AUTH_LOGIN_KEY } from "../consts";
+import { AlertsContext, AuthContext } from "../../context";
+import { getItemFromLocalStorage } from "../../utils/localstorage.util";
+import { AUTH_LOGIN_KEY } from "../../consts";
 import { InternalAxiosRequestConfig } from "axios";
-import { isTokenExpired } from "../utils/token.util";
-import { httpClient } from "../api/axios-config";
+import { isTokenExpired } from "../../utils/token.util";
+import { httpClient } from "../../api/axios-config";
 
 
 

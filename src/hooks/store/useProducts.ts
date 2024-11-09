@@ -1,12 +1,12 @@
 import { useContext, useReducer, useState } from "react"
-import { AlertsContext } from "../context";
-import { ApiResponse, ApiResponseBody } from "../interfaces";
-import { httpClient } from "../api/axios-config";
-import { PRODUCTS_TYPES } from "../consts";
+import { AlertsContext } from "../../context";
+import { ApiResponse, ApiResponseBody } from "../../interfaces";
+import { httpClient } from "../../api/axios-config";
+import { PRODUCTS_TYPES } from "../../consts";
 import { useNavigate } from "react-router-dom";
 import { AxiosError } from "axios";
-import { productsReducer } from "../reducers/products.reducer";
-import { Product, ProductDTO, ProductPriceBySupplierRequestDTO, ProductRequestDTO, ProductToImport } from "../interfaces/product.interfaces";
+import { productsReducer } from "../../reducers/products.reducer";
+import { Product, ProductDTO, ProductPriceBySupplierRequestDTO, ProductRequestDTO, ProductToImport } from "../../interfaces/product.interfaces";
 
 
 interface ProductsPaginateResponse {

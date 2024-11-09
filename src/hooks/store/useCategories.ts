@@ -1,9 +1,9 @@
 import { useContext, useReducer, useState } from "react";
-import { categoriesReducer } from "../reducers/categories.reducer";
-import { httpClient } from "../api/axios-config";
-import { ApiResponse, Category } from "../interfaces";
-import { CATEGORIES_TYPES } from "../consts";
-import { AlertsContext } from "../context";
+import { categoriesReducer } from "../../reducers/categories.reducer";
+import { httpClient } from "../../api/axios-config";
+import { ApiResponse, Category } from "../../interfaces";
+import { CATEGORIES_TYPES } from "../../consts";
+import { AlertsContext } from "../../context";
 
 
 

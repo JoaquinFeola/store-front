@@ -1,8 +1,8 @@
 import { useContext, useState } from "react"
-import { BulkCreateStock, Stock, StockRequestDTO } from "../interfaces/stock.interfaces";
-import { ApiResponse, ApiResponseBody } from "../interfaces";
-import { httpClient } from "../api/axios-config";   
-import { AlertsContext } from "../context";
+import { BulkCreateStock, Stock, StockRequestDTO } from "../../interfaces/stock.interfaces";
+import { ApiResponse, ApiResponseBody } from "../../interfaces";
+import { httpClient } from "../../api/axios-config";
+import { AlertsContext } from "../../context";
 import { AxiosError } from "axios";
 
 interface StockPaginateResponse {
@@ -68,7 +68,7 @@ export const useStock = () => {
             await getStockPaginated()
         }
         catch (error) {
-
+            console.error(error)
         }
     }
 
@@ -81,13 +81,15 @@ export const useStock = () => {
                 type: 'success'
             })
 
-                // const errors = response.data.errors as string[];
-                // addAlert({
-                //     duration: 10000,
-                //     message: `${errors.join('\n')}`,
-                //     type: 'error'
-                // })
-                cb(response.data?.errors!)
+            // const errors = response.data.errors as string[];
+            // addAlert({
+            //     duration: 10000,
+            //     message: `${errors.join('\n')}`,
+            //     type: 'error'
+            // })
+            if ( response.data.errors ) {
+                cb(response.data?.errors)
+            }
 
         }
         catch (error) {
