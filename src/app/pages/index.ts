@@ -1,6 +1,0 @@
-export * from './categories/CategoriesPage'
-export * from './home/HomePage'
-export * from './products/ProductsPage'
-export * from './sales/SalesPage'
-export * from './stock/StockPage'
-export * from './suppliers'

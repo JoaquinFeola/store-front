@@ -1,5 +1,0 @@
-export * from './CreateProductView'
-export * from './EditProductView'
-export * from './ListProductsView'
-export * from './ImportProductsView'
-export * from './ProductView'
